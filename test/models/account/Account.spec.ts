@@ -83,6 +83,27 @@ describe("Account", () => {
     expect(signedTransaction.signature).to.be.equal("73d0e12d9ecc009d9ad580d1864a68117a79f096b8dae3101e154407cba070a74727d6cf694932495f949c61b392d1b540d5bbfa7bd2f1ad381cd082baf71702");
   });
 
+  it("should sign message string",()=>{
+    const account = new Account(recipientAccount, publicKey, privateKey);
+    const message = "Nem is Awesome";
+    const signatureMessage = account.signMessage(message).toString();
+    expect(signatureMessage).to.be.equal("e2be0d43c6b09f37ddce4807cad2c2fbf0fc6a3483f5de7bbd8c026d59c5e4e569380e459c6d6562630abbc12984d5fb9598d807561967e9094cd3a9bd250403");
+  });
+
+  it("should return true when signedMessage is signed with correct privateKey",()=> {
+    const account = new Account(recipientAccount, publicKey, privateKey);
+    const message = "Nem is Awesome";
+    const signatureMessage = "e2be0d43c6b09f37ddce4807cad2c2fbf0fc6a3483f5de7bbd8c026d59c5e4e569380e459c6d6562630abbc12984d5fb9598d807561967e9094cd3a9bd250403";
+    expect(account.verifySignedMessage(message,signatureMessage)).to.be.true;
+  });
+
+  it("should return false when signedMessage is signed with other privateKey",()=> {
+    const account = new Account(recipientAccount, publicKey, privateKey);
+    const message = "Nem is Awesome";
+    const signatureMessage = "e2be0d43c6b09f37ddce4807cad2c2fbf0fc6a3483f5de7bbd8c026d59c5e4e569380e459c6d6562630abbc12984d5fb9598d807561967e9094cd3a9bd2false";
+    expect(account.verifySignedMessage(message,signatureMessage)).to.be.false;
+  });
+
   it("should generate an account given a private key", () => {
     const account = Account.createWithPrivateKey(privateKey);
     expect(account.publicKey).to.be.equal(publicKey);
