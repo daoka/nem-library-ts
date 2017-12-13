@@ -63,7 +63,7 @@ export class EncryptedMessage extends Message {
    * @param privateKey
    * @returns {EncryptedMessage}
    */
-  public static create(message: string, recipientPublicAccount: PublicAccount, privateKey) {
+  public static create(message: string, recipientPublicAccount: PublicAccount, privateKey): EncryptedMessage {
     return new EncryptedMessage(nemSdk.default.crypto.helpers.encode(privateKey, recipientPublicAccount.publicKey, message), recipientPublicAccount);
   }
 
