@@ -66,7 +66,6 @@ export class MosaicTransferable {
   }
 
   /**
-   * @internal
    * @returns {number}
    */
   public quantity(): number {
