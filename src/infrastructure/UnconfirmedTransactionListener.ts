@@ -23,7 +23,7 @@
  */
 
 import * as _ from "lodash";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {Observer} from "rxjs/Observer";
 import {Address} from "../models/account/Address";
 import {Transaction} from "../models/transaction/Transaction";

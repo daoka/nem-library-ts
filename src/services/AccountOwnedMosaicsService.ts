@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {AccountHttp} from "../infrastructure/AccountHttp";
 import {MosaicHttp} from "../infrastructure/MosaicHttp";
 import {Address} from "../models/account/Address";
