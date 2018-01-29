@@ -54,6 +54,8 @@ export class UnconfirmedTransactionListener extends Listener {
       let lastTransaction: Transaction;
 
       client.connect({}, () => {
+        //initial subscription to address.
+        client.send("/w/api/account/subscribe", {}, "{'account':'" + address.plain() + "'}");
         client.subscribe("/unconfirmed/" + address.plain(), (data) => {
           try {
             const transaction = CreateUnconfirmedTransactionFromDTO(JSON.parse(data.body));

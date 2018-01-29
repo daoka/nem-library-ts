@@ -54,6 +54,8 @@ export class ConfirmedTransactionListener extends Listener {
       const client = this.createClient();
 
       client.connect({}, () => {
+        //initial subscription to address.
+        client.send("/w/api/account/subscribe", {}, "{'account':'" + address.plain() + "'}");
         client.subscribe("/transactions/" + address.plain(), (data) => {
           try {
             const transaction = CreateTransactionFromDTO(JSON.parse(data.body));
