@@ -51,7 +51,6 @@ export abstract class HttpEndpoint {
     else if (NEMLibrary.getNetworkType() == NetworkTypes.TEST_NET) {
       this.nodes = [
         {protocol: "http", domain: "bigalice2.nem.ninja", port: 7890},
-        {protocol: "https", domain: "pretestnet1.nem.ninja", port: 7891},
         {protocol: "http", domain: "192.3.61.243", port: 7890},
         {protocol: "http", domain: "23.228.67.85", port: 7890},
         {protocol: "http", domain: "50.3.87.123", port: 7890},
