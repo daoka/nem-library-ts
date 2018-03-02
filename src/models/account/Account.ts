@@ -94,6 +94,34 @@ export class Account extends PublicAccount {
   }
 
   /**
+   * generate new account
+   * @param walletName
+   * @param passphrase
+   * @param networkType
+   * @returns {Account}
+   */
+  public static generateAccount(walletName: string, passphrase: string, networkType: NetworkTypes): Account {
+    // Generate a random private key
+    // Note: we DON'T want to derivate the private key from the passphrase, since everytime the password is the same,
+    //   the same key pair would be generated (brain wallet).
+    //   Brain wallets are great, if the user can remember the password in his BRAIN and the
+    //   password is still complex enough to be secure and unique.
+    //   Hence, brain wallets are not the right choice for most users
+    const privateKey = nemSdk.crypto.js.lib.WordArray.random(32).toString();
+    const keyPair = nemSdk.crypto.keyPair.create(privateKey);
+    const address = nemSdk.model.address.toAddress(keyPair.publicKey);
+    const networkId = networkType === NetworkTypes.MAIN_NET
+      ? nemSdk.model.network.data.mainnet.id
+      : nemSdk.model.network.data.testnet.id;
+    const wallet = nemSdk.model.wallet.importPrivateKey(walletName, passphrase, privateKey, networkId);
+    return new Account(
+      new Address(address),
+      keyPair.publicKey,
+      keyPair.privateKey,
+    );
+  }
+
+  /**
    * Create a new encrypted Message
    * @param message
    * @param recipientPublicAccount
