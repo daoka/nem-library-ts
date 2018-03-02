@@ -106,4 +106,17 @@ describe("TransactionHttp", () => {
       });
   });
 
+  it("should create a new wallet and account", () => {
+    const accountOnTestnet = Account.generateAccount("my-new-test-wallet", "!4|\/|54+05|-|!:)", NetworkTypes.TEST_NET);
+    const accountOnMainnet = Account.generateAccount("my-new-main-wallet", "!4|\/|54+05|-|!:)", NetworkTypes.MAIN_NET);
+
+    expect(accountOnTestnet.address).to.have.property("length", 40);
+    expect(accountOnMainnet.address).to.have.property("length", 40);
+    expect(accountOnTestnet.publicKey).to.have.property("length", 64);
+    expect(accountOnMainnet.publicKey).to.have.property("length", 64);
+    expect(accountOnTestnet.address[0]).to.equal("T");
+    expect(accountOnMainnet.address[0]).to.equal("N");
+    expect(accountOnMainnet.address).to.not.equal(accountOnTestnet.address);
+  });
+
 });
