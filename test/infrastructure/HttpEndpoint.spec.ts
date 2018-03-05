@@ -36,13 +36,17 @@ class MockHttpEndpoint extends HttpEndpoint {
 
 describe("HttpEndpoint", () => {
 
-  it("should just have testnet nodes with protocol https", () => {
+  afterEach(() => {
+    NEMLibrary.reset();
+  });
+
+  /*it("should just have testnet nodes with protocol https", () => {
     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
     const mockHttpEndpoint = new MockHttpEndpoint(undefined, "https");
     expect(mockHttpEndpoint.nextNode()).to.contain("https://");
     expect(mockHttpEndpoint.nextNode()).to.contain("https://");
     NEMLibrary.reset();
-  });
+  });*/
 
   it("should just have testnet nodes with protocol http", () => {
     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
