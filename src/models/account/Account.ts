@@ -127,17 +127,14 @@ export class Account extends PublicAccount {
     //   Brain wallets are great, if the user can remember the password in his BRAIN and the
     //   password is still complex enough to be secure and unique.
     //   Hence, brain wallets are not the right choice for most users
-    const privateKey = nemSdk.crypto.js.lib.WordArray.random(32).toString();
-    const keyPair = nemSdk.crypto.keyPair.create(privateKey);
-    const address = nemSdk.model.address.toAddress(keyPair.publicKey);
-    const networkId = networkType === NetworkTypes.MAIN_NET
-      ? nemSdk.model.network.data.mainnet.id
-      : nemSdk.model.network.data.testnet.id;
-    const wallet = nemSdk.model.wallet.importPrivateKey(walletName, passphrase, privateKey, networkId);
+    const privateKey = nemSdk.default.crypto.js.lib.WordArray.random(32).toString();
+    const keyPair = nemSdk.default.crypto.keyPair.create(privateKey);
+
+    const address = PublicAccount.createWithPublicKey(keyPair.publicKey.toString()).address;
     return new Account(
-      new Address(address),
-      keyPair.publicKey,
-      keyPair.privateKey,
+      address,
+      keyPair.publicKey.toString(),
+      privateKey.toString(),
     );
   }
 

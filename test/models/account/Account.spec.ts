@@ -126,4 +126,12 @@ describe("Account", () => {
     }).to.throw(Error);
   });
 
+  it("should create a new wallet and account", () => {
+    const accountOnTestnet = Account.generateAccount("my-new-test-wallet", "!4|\/|54+05|-|!:)", NetworkTypes.TEST_NET);
+
+    expect(accountOnTestnet.address.plain().length).to.be.equal(40);
+    expect(accountOnTestnet.publicKey.length).to.be.equal(64);
+    expect(accountOnTestnet.address.plain()[0]).to.equal("T");
+  });
+
 });
