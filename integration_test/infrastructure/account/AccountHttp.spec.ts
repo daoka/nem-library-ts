@@ -177,7 +177,7 @@ describe("AccountHttp", () => {
     accountHttp.incomingTransactions(address, {id: 114305})
       .subscribe((confirmedTransactions) => {
           expect(confirmedTransactions).to.not.be.undefined;
-          expect(confirmedTransactions[0].getTransactionInfo().id).to.be.equal(114304);
+          expect(confirmedTransactions[0].getTransactionInfo().id).to.be.equal(112685);
           done();
         },
       );
@@ -226,7 +226,7 @@ describe("AccountHttp", () => {
       .subscribe((confirmedTransactions) => {
           expect(confirmedTransactions).to.not.be.undefined;
           expect(confirmedTransactions).to.have.length(10);
-          expect(confirmedTransactions[0].getTransactionInfo().id).to.be.equal(114304);
+          expect(confirmedTransactions[0].getTransactionInfo().id).to.be.equal(114190);
           done();
         },
       );
