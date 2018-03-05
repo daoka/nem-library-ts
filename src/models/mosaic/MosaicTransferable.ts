@@ -79,7 +79,7 @@ export class MosaicTransferable {
    * @returns {MosaicTransferable}
    */
   public static createWithMosaicDefinition(mosaicDefinition: MosaicDefinition, amount: number) {
-    return new MosaicTransferable(mosaicDefinition.id, mosaicDefinition.properties, amount, mosaicDefinition.levy == {} ? undefined : mosaicDefinition.levy);
+    return new MosaicTransferable(mosaicDefinition.id, mosaicDefinition.properties, amount, mosaicDefinition.levy);
   }
 
 }
