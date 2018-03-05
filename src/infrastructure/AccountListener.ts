@@ -50,6 +50,8 @@ export class AccountListener extends Listener {
     return Observable.create((observer: Observer<AccountInfoWithMetaData>) => {
       const client = this.createClient();
       client.connect({}, () => {
+        //initial subscription to address.
+        client.send("/w/api/account/subscribe", {}, "{'account':'" + address.plain() + "'}");
         client.subscribe("/account/" + address.plain(), (data) => {
           try {
             const account = AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(JSON.parse(data.body));

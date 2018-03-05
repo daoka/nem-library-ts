@@ -67,6 +67,26 @@ export class Account extends PublicAccount {
       signature: signature.toString(),
     };
   }
+  
+    /**
+   * Sign string
+   * @param messagestring
+   * @returns signatureString
+   */
+  public signMessage(message:string){
+    const keyPair: any = nemSdk.default.crypto.keyPair.create(nemSdk.default.utils.helpers.fixPrivateKey(this.privateKey));
+    return  keyPair.sign(message);
+  }
+
+  /**
+   * verify message
+   * @param signedMessage
+   * @param signature
+   * @returns true/false
+   */
+  public verifySignedMessage(signedMessage:string, signature:string){
+    return nemSdk.default.crypto.verifySignature(this.publicKey,signedMessage,signature);
+  }
 
   /**
    * constructor with private key
