@@ -132,6 +132,7 @@ describe("Account", () => {
     expect(accountOnTestnet.address.plain().length).to.be.equal(40);
     expect(accountOnTestnet.publicKey.length).to.be.equal(64);
     expect(accountOnTestnet.address.plain()[0]).to.equal("T");
+    expect(accountOnTestnet.privateKey.length).to.be.equal(64);
   });
 
 });
