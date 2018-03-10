@@ -1,6 +1,6 @@
 {
   "name": "nem-library",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Reactive Library for NEM",
   "scripts": {
     "pretest": "npm run build",
@@ -32,11 +32,10 @@
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
-    "@types/mocha": "^2.2.43",
-    "@types/nock": "^8.2.1",
-    "@stomp/stompjs": "^3.1.1",
     "@types/js-base64": "^2.1.5",
     "@types/lodash": "^4.14.78",
+    "@types/mocha": "^2.2.43",
+    "@types/nock": "^8.2.1",
     "@types/node": "^8.0.46",
     "@types/request": "^2.0.6",
     "@types/request-promise-native": "^1.0.8",
@@ -54,6 +53,7 @@
     "typescript": "^2.5.3"
   },
   "dependencies": {
+    "@stomp/stompjs": "^3.1.2",
     "crypto-js": "^3.1.9-1",
     "fs.realpath": "^1.0.0",
     "get-random-values": "^1.2.0",
