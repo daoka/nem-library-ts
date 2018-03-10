@@ -448,19 +448,21 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountHistoricalInfo[][]>
    */
   public getBatchHistoricalAccountData(addresses: Address[], startHeight: number, endHeight: number, increment: number): Observable<AccountHistoricalInfo[][]> {
-    return Observable.of("/account/historical/get/batch")
-      .flatMap((url) => requestPromise.post({
+    return Observable.of("historical/get/batch")
+      .flatMap((url) => {
+        return requestPromise.post({
         uri: this.nextHistoricalNode() + url,
-        body: {
-          accounts: addresses.map((a) => {
-            return {account: a.plain()};
-          }),
-          startHeight: (startHeight),
-          endHeight: (endHeight),
-          incrementBy: increment,
-        },
-        json: true,
-      }))
+          body: {
+            accounts: addresses.map((a) => {
+              return {account: a.plain()};
+            }),
+            startHeight: (startHeight),
+            endHeight: (endHeight),
+            incrementBy: increment,
+          },
+          json: true,
+        });
+      })
       .retryWhen(this.replyWhenRequestError)
       .map((batchHistoricalAccountData) => {
         return batchHistoricalAccountData.data.map((historicalAccountData) => {
@@ -477,16 +479,19 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountHistoricalInfo[][]>
    */
   public getBatchAccountData(addresses: Address[]): Observable<AccountInfoWithMetaData[]> {
-    return Observable.of("/account/get/batch")
-      .flatMap((url) => requestPromise.post({
-        uri: this.nextNode() + url,
-        body: {
-          accounts: addresses.map((a) => {
-            return {account: a.plain()};
-          }),
-        },
-        json: true,
-      }))
+    return Observable.of("get/batch")
+      .flatMap((url) => {
+        const options = {
+          uri: this.nextNode() + url,
+          body: {
+            data: addresses.map((a) => {
+              return {account: a.plain()};
+            }),
+          },
+          json: true,
+        };
+        return requestPromise.post(options);
+      })
       .retryWhen(this.replyWhenRequestError)
       .map((batchAccountData) => {
         return batchAccountData.data.map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
