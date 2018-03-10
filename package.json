@@ -17,11 +17,12 @@
   },
   "keywords": [
     "NEM",
+    "Library",
     "API",
     "RX"
   ],
   "license": "MIT",
-  "author": "Aleix Morgadas <aleix602@gmail.com>",
+  "author": "Aleix <aleix602@gmail.com>, Guillem <guillemchain@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/aleixmorgadas/nem-library-ts"
