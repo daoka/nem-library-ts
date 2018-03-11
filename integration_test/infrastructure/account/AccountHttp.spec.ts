@@ -326,14 +326,40 @@ describe("AccountHttp", () => {
   });
 
   it("should get historical account data", (done) => {
-    const accountHttp = new AccountHttp([{domain: TestVariables.ACCOUNT_HISTORICAL_DATA_NODE_DOMAIN}]);
-    accountHttp.getHistoricalAccountData(new Address("NALICELGU3IVY4DPJKHYLSSVYFFWYS5QPLYEZDJJ"), 17592, 17592, 1)
+    const accountHttp = new AccountHttp();
+    accountHttp.getHistoricalAccountData(new Address("TALICESKTW5TAN5GEOK4TQKD43AUGSDTHK7UIIAK"), 17592, 17592, 1)
       .subscribe((accountHistoryData) => {
         expect(accountHistoryData[0].address.plain()).to.not.be.null;
         expect(accountHistoryData[0].balance.balance).to.not.be.null;
         expect(accountHistoryData[0].balance.vestedBalance).to.not.be.null;
         expect(accountHistoryData[0].pageRank).to.not.be.null;
         expect(accountHistoryData[0].importance).to.not.be.null;
+        done();
+      });
+  });
+
+  it("should get batch account data", (done) => {
+    const accountHttp = new AccountHttp();
+    accountHttp.getBatchAccountData([new Address("TALICESKTW5TAN5GEOK4TQKD43AUGSDTHK7UIIAK")])
+      .subscribe((accountHistoryData) => {
+        expect(accountHistoryData[0].publicAccount.address.plain()).to.not.be.null;
+        expect(accountHistoryData[0].balance.balance).to.not.be.null;
+        expect(accountHistoryData[0].balance.vestedBalance).to.not.be.null;
+        expect(accountHistoryData[0].importance).to.not.be.null;
+        expect(accountHistoryData[0].harvestedBlocks).to.not.be.null;
+        done();
+      });
+  });
+
+  it("should get batch historical account data", (done) => {
+    const accountHttp = new AccountHttp();
+    accountHttp.getBatchHistoricalAccountData([new Address("TALICESKTW5TAN5GEOK4TQKD43AUGSDTHK7UIIAK")], 17592, 17592, 1)
+      .subscribe((accountHistoryData) => {
+        expect(accountHistoryData[0][0].address.plain()).to.not.be.null;
+        expect(accountHistoryData[0][0].balance.balance).to.not.be.null;
+        expect(accountHistoryData[0][0].balance.vestedBalance).to.not.be.null;
+        expect(accountHistoryData[0][0].pageRank).to.not.be.null;
+        expect(accountHistoryData[0][0].importance).to.not.be.null;
         done();
       });
   });
