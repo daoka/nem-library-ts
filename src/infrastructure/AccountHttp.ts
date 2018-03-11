@@ -476,7 +476,7 @@ export class AccountHttp extends HttpEndpoint {
   /**
    * Gets batch information for an array of accounts.
    * @param addresses - The addresses of the accounts as an array of addresses.
-   * @return Observable<AccountHistoricalInfo[][]>
+   * @return Observable<AccountInfoWithMetadata[]>
    */
   public getBatchAccountData(addresses: Address[]): Observable<AccountInfoWithMetaData[]> {
     return Observable.of("get/batch")
