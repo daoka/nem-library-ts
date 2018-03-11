@@ -71,4 +71,20 @@ describe("HttpEndpoint", () => {
     expect(mockHttpEndpoint.nextNode()).to.contain("http://");
     NEMLibrary.reset();
   });
+
+  it("should have the mainnet historical node with protocol http", () => {
+    NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
+    const mockHttpEndpoint = new MockHttpEndpoint(undefined, "http");
+    expect(mockHttpEndpoint.nextHistoricalNode()).to.equal("http://88.99.192.82:7890/mock/");
+    expect(mockHttpEndpoint.nextHistoricalNode()).to.equal("http://88.99.192.82:7890/mock/");
+    NEMLibrary.reset();
+  });
+
+  it("should have the testnet historical node with protocol http", () => {
+    NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+    const mockHttpEndpoint = new MockHttpEndpoint(undefined, "http");
+    expect(mockHttpEndpoint.nextHistoricalNode()).to.equal("http://104.128.226.60:7890/mock/");
+    expect(mockHttpEndpoint.nextHistoricalNode()).to.equal("http://104.128.226.60:7890/mock/");
+    NEMLibrary.reset();
+  });
 });

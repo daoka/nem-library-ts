@@ -1,0 +1,184 @@
+{
+    "data": [
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NA2PDM4VPUGA37RYVPGTD6H7G7A2S6HTFRQUI55S",
+                "harvestedBlocks": 0,
+                "balance": 4091422463,
+                "importance": 0.000019872968254351248,
+                "vestedBalance": 4091422463,
+                "publicKey": "70c0e0eccc4c81a3bc87c744002622a87a8ca84f58c4f61587af20d41f711367",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "INACTIVE"
+            },
+            "account": {
+                "address": "NBRUHCUQNNUUZEDC7HPE2NLXQ37WNZ76QWJAYR7X",
+                "harvestedBlocks": 0,
+                "balance": 0,
+                "importance": 0,
+                "vestedBalance": 0,
+                "publicKey": "f7db90424f73bf2c742c1af9aab0fe65937ccf00b2cb8225f72b173925821a43",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NBUB64DLCEX55BEMDKICVCS36SAZG4XEI4M2B5IT",
+                "harvestedBlocks": 23,
+                "balance": 90297706356,
+                "importance": 0.000017502734680741725,
+                "vestedBalance": 90296133541,
+                "publicKey": "7ac994078bf2f09a425dd6ad37adb75b5cead0fc8266c927fb66033a23ff2d26",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NBX3XORYMEBIMHVWURWPPYUTR4JHGN4ON7OHEBRG",
+                "harvestedBlocks": 4,
+                "balance": 10117427962,
+                "importance": 0.000009563441234868578,
+                "vestedBalance": 10100414054,
+                "publicKey": "04b2b7affab590a186a82df9f7b114d76de26750486022cea3f111c7aea962a3",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NC7DTK6KIVE3PIOWHDCJHRATDAHBBP6S2HMRYN66",
+                "harvestedBlocks": 1,
+                "balance": 27208661559,
+                "importance": 0.000009430335612549722,
+                "vestedBalance": 15975968432,
+                "publicKey": "2c154980d6b203a943f21717a2d58daf035d47969cdfa78cf117ce158399f861",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NCIELL3C776X5JM6VVJTRWBM73KRKF2BJM2DG4GO",
+                "harvestedBlocks": 0,
+                "balance": 10498500000,
+                "importance": 0,
+                "vestedBalance": 5477099996,
+                "publicKey": "2e153174f64c83e43d00f013cbe7db8ba61053e8adfb691106d529eac4530132",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NCVWYEJQR62AUWF7RQLICCRDZEH2XKJM7X4AJ5WS",
+                "harvestedBlocks": 0,
+                "balance": 14944995148,
+                "importance": 0.000009895540465098586,
+                "vestedBalance": 12701831556,
+                "publicKey": "49ed28cf0ed9be89c00a9633693fc1ee2a4d2b30acfc3e9da9cda5d57a5e8e15",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "ND7YZKRDJAPEFUYOMDA4LT2PCCNL3J7RZOX4YPQO",
+                "harvestedBlocks": 40,
+                "balance": 67153138814,
+                "importance": 0.000016983227715541027,
+                "vestedBalance": 64508092840,
+                "publicKey": "336424acb2b7d12f440a3acb0cac5f94ddd7fa8a86d8b5a174931002aab30d3c",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NDIBC7SQQIPVFIR2FYSZOWCHZ2W4FPTXOA56YFYU",
+                "harvestedBlocks": 44,
+                "balance": 500161854176,
+                "importance": 0.00005805718301683381,
+                "vestedBalance": 499976892322,
+                "publicKey": "82f3392fec552651c143a92f08bd48b6da9496eb5720b62cb4e1af13c9aa180e",
+                "label": null,
+                "multisigInfo": {}
+            }
+        },
+        {
+            "meta": {
+                "cosignatories": [],
+                "cosignatoryOf": [],
+                "status": "LOCKED",
+                "remoteStatus": "ACTIVE"
+            },
+            "account": {
+                "address": "NDIQO2RH64ZRKJHVYBUZLWKAUDDXNDQ77OI4MVS2",
+                "harvestedBlocks": 5,
+                "balance": 11813911621,
+                "importance": 0.00000973372654741825,
+                "vestedBalance": 11813666694,
+                "publicKey": "11cc90d54904306a47c2c4e4b123545838802ece5abba13533f83cb7296f2a55",
+                "label": null,
+                "multisigInfo": {}
+            }
+        }
+    ]
+}

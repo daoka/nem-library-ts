@@ -36,7 +36,9 @@ export interface ServerConfig {
 
 export abstract class HttpEndpoint {
   private readonly nodes: ServerConfig[];
+  private readonly historicalNodes: ServerConfig[];
   private pointer = 0;
+  private historicalPointer = 0;
 
   constructor(private resource: string, nodes?: ServerConfig[], preferProtocol?: Protocol) {
     if (nodes) {
@@ -78,6 +80,18 @@ export abstract class HttpEndpoint {
     if (preferProtocol) {
       this.nodes = this.nodes.filter((_) => _.protocol == preferProtocol);
     }
+
+    if (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) {
+      this.historicalNodes = [
+        {protocol: "http", domain: "104.128.226.60", port: 7890},
+      ];
+    } else if (NEMLibrary.getNetworkType() === NetworkTypes.MAIN_NET) {
+      this.historicalNodes = [
+        {protocol: "http", domain: "88.99.192.82", port: 7890},
+      ];
+    } else {
+      throw new Error("Nodes uninitialized");
+    }
   }
 
   /**
@@ -93,6 +107,22 @@ export abstract class HttpEndpoint {
     const port = this.nodes[this.pointer].port;
     const URL = protocol + "://" + domain + ":" + port + "/" + this.resource + "/";
     this.pointer++;
+    return URL;
+  }
+
+  /**
+   * @internal
+   * @returns {string}
+   */
+  public nextHistoricalNode(): string {
+    if (this.historicalPointer >= this.historicalNodes.length) {
+      this.historicalPointer = 0;
+    }
+    const protocol = this.historicalNodes[this.historicalPointer].protocol;
+    const domain = this.historicalNodes[this.historicalPointer].domain;
+    const port = this.historicalNodes[this.historicalPointer].port;
+    const URL = protocol + "://" + domain + ":" + port + "/" + this.resource + "/";
+    this.historicalPointer++;
     return URL;
   }
 

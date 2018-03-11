@@ -430,11 +430,72 @@ export class AccountHttp extends HttpEndpoint {
    */
   public getHistoricalAccountData(address: Address, startHeight: number, endHeight: number, increment: number): Observable<AccountHistoricalInfo[]> {
     return Observable.of("historical/get?address=" + address.plain() + "&startHeight=" + startHeight + "&endHeight=" + endHeight + "&increment=" + increment)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
+      .flatMap((url) => requestPromise.get(this.nextHistoricalNode() + url, {json: true}))
       .retryWhen(this.replyWhenRequestError)
       .map((historicalAccountData) => {
         return historicalAccountData.data.map((accountHistoricalDataViewModelDTO: AccountHistoricalDataViewModelDTO) => {
           return AccountHistoricalInfo.createFromAccountHistoricalDataViewModelDTO(accountHistoricalDataViewModelDTO);
+        });
+      });
+  }
+
+  /**
+   * Gets historical information for an array of accounts.
+   * @param addresses - The addresses of the accounts as an array of addresses.
+   * @param startHeight - The block height from which on the data should be supplied.
+   * @param endHeight - The block height up to which the data should be supplied. The end height must be greater than or equal to the start height.
+   * @param increment - The value by which the height is incremented between each data point. The value must be greater than 0. NIS can supply up to 1000 data points with one request. Requesting more than 1000 data points results in an error.
+   * @return Observable<AccountHistoricalInfo[][]>
+   */
+  public getBatchHistoricalAccountData(addresses: Address[], startHeight: number, endHeight: number, increment: number): Observable<AccountHistoricalInfo[][]> {
+    return Observable.of("historical/get/batch")
+      .flatMap((url) => {
+        return requestPromise.post({
+        uri: this.nextHistoricalNode() + url,
+          body: {
+            accounts: addresses.map((a) => {
+              return {account: a.plain()};
+            }),
+            startHeight: (startHeight),
+            endHeight: (endHeight),
+            incrementBy: increment,
+          },
+          json: true,
+        });
+      })
+      .retryWhen(this.replyWhenRequestError)
+      .map((batchHistoricalAccountData) => {
+        return batchHistoricalAccountData.data.map((historicalAccountData) => {
+          return historicalAccountData.data.map((accountHistoricalDataViewModelDTO: AccountHistoricalDataViewModelDTO) => {
+            return AccountHistoricalInfo.createFromAccountHistoricalDataViewModelDTO(accountHistoricalDataViewModelDTO);
+          });
+        });
+      });
+  }
+
+  /**
+   * Gets batch information for an array of accounts.
+   * @param addresses - The addresses of the accounts as an array of addresses.
+   * @return Observable<AccountInfoWithMetadata[]>
+   */
+  public getBatchAccountData(addresses: Address[]): Observable<AccountInfoWithMetaData[]> {
+    return Observable.of("get/batch")
+      .flatMap((url) => {
+        const options = {
+          uri: this.nextNode() + url,
+          body: {
+            data: addresses.map((a) => {
+              return {account: a.plain()};
+            }),
+          },
+          json: true,
+        };
+        return requestPromise.post(options);
+      })
+      .retryWhen(this.replyWhenRequestError)
+      .map((batchAccountData) => {
+        return batchAccountData.data.map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
+          return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
         });
       });
   }
