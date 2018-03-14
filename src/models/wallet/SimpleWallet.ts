@@ -99,7 +99,11 @@ export class SimpleWallet extends Wallet {
    * @returns {Account}
    */
   public open(password: Password): Account {
-    return Account.createWithPrivateKey(this.encryptedPrivateKey.decrypt(password));
+    const account = Account.createWithPrivateKey(this.encryptedPrivateKey.decrypt(password));
+    if (account.address.equals(this.address)) {
+      return account;
+    }
+    throw new Error('wrong password');
   }
 
   public unlockPrivateKey(password: Password): string {

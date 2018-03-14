@@ -22,17 +22,17 @@
  * SOFTWARE.
  */
 
-import { deepEqual } from "assert";
-import { expect } from "chai";
-import { LocalDateTime } from "js-joda";
-import { Account } from "../../../src/models/account/Account";
-import { Address } from "../../../src/models/account/Address";
-import { NetworkTypes } from "../../../src/models/node/NetworkTypes";
-import { EncryptedPrivateKey } from "../../../src/models/wallet/EncryptedPrivateKey";
-import { Password } from "../../../src/models/wallet/Password";
-import { SimpleWallet } from "../../../src/models/wallet/SimpleWallet";
-import { NEMLibrary } from "../../../src/NEMLibrary";
-import { TestVariables } from "../../config/TestVariables.spec";
+import {deepEqual} from "assert";
+import {expect} from "chai";
+import {LocalDateTime} from "js-joda";
+import {Account} from "../../../src/models/account/Account";
+import {Address} from "../../../src/models/account/Address";
+import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
+import {EncryptedPrivateKey} from "../../../src/models/wallet/EncryptedPrivateKey";
+import {Password} from "../../../src/models/wallet/Password";
+import {SimpleWallet} from "../../../src/models/wallet/SimpleWallet";
+import {NEMLibrary} from "../../../src/NEMLibrary";
+import {TestVariables} from "../../config/TestVariables.spec";
 
 declare let process: any;
 
@@ -119,5 +119,21 @@ describe("SimpleWallet", () => {
     expect(simpleWallet.name).to.be.equal("Joris test");
     deepEqual(simpleWallet.network, NetworkTypes.TEST_NET);
     deepEqual(simpleWallet.address, new Address("TDJHPSIHSHTX2Z2JUZVGHZA5HBPOXJJRMXNC34LT"));
-  })
+  });
+
+  it("should throw exception if the decoded private key is not the same as stored", () => {
+    const wrtFile = "eyJuYW1lIjoibXkgd2FsbGV0IiwibmV0d29yayI6IjE1MiIsImFkZHJlc3MiOiJURExaUUwyNlBQNVJWTzRRQ1RBSlJBVEdBNVI0VUVESEhRR0NGM0xSIiwiY3JlYXRpb25EYXRlIjoiMjAxOC0wMy0xNFQyMjo1NjoyMC42NTQiLCJzY2hlbWEiOjEsInR5cGUiOiJzaW1wbGUiLCJlbmNyeXB0ZWRQcml2YXRlS2V5IjoiYThkYWIxMjA1NmMzNWZjNmExYTI0MTgxNjEzNWRkNmI2MTBhNGQ2ZDc2YjEyZWMzMWQ4ZWE1Y2IzNTVlMTQyZTQ1ZjE1YThlMTZkNjRhYzJmNzI0ZGQ1ZDgyNTE1NmNiIiwiaXYiOiJhZmQ5YzdkNzdjNmQ4Yjk1YThhZDllZDgwNjI4ZTJjOSJ9";
+    const invalidPassword = new Password("12345678");
+    const simpleWallet = SimpleWallet.readFromWLT(wrtFile);
+    expect(() => {
+      simpleWallet.open(invalidPassword);
+    }).to.throw(Error);
+  });
+
+  it("should should open the wrt file", () => {
+    const wrtFile = "eyJuYW1lIjoibXkgd2FsbGV0IiwibmV0d29yayI6IjE1MiIsImFkZHJlc3MiOiJURExaUUwyNlBQNVJWTzRRQ1RBSlJBVEdBNVI0VUVESEhRR0NGM0xSIiwiY3JlYXRpb25EYXRlIjoiMjAxOC0wMy0xNFQyMjo1NjoyMC42NTQiLCJzY2hlbWEiOjEsInR5cGUiOiJzaW1wbGUiLCJlbmNyeXB0ZWRQcml2YXRlS2V5IjoiYThkYWIxMjA1NmMzNWZjNmExYTI0MTgxNjEzNWRkNmI2MTBhNGQ2ZDc2YjEyZWMzMWQ4ZWE1Y2IzNTVlMTQyZTQ1ZjE1YThlMTZkNjRhYzJmNzI0ZGQ1ZDgyNTE1NmNiIiwiaXYiOiJhZmQ5YzdkNzdjNmQ4Yjk1YThhZDllZDgwNjI4ZTJjOSJ9";
+    const validPassword = new Password("valid password");
+    const simpleWallet = SimpleWallet.readFromWLT(wrtFile);
+    deepEqual(simpleWallet.open(validPassword).address, simpleWallet.address);
+  });
 });
