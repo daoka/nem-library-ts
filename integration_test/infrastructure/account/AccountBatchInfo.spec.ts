@@ -29,7 +29,7 @@ import {Address} from "../../../src/models/account/Address";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
 
-describe("AccountAllTransactionsPageable", () => {
+describe("AccountBarchInfo", () => {
   let addresses: Address[];
   let accountHttp: AccountHttp;
 
