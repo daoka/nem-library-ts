@@ -12,7 +12,7 @@
 
 ### Via NPM
 
-`npm install nem-library --save`
+`npm install nem-library --save` 
 
 ## Documentation
  
