@@ -8,6 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Gitter chat](https://badges.gitter.im/nem-library-ts/Lobby.svg)](https://gitter.im/nem-library-ts/)
 
+:information_source: [NEM2-SDK](https://github.com/nemtech/nem2-sdk-typescript-javascript) is the successor of NEM Library for NEM2, a.k.a. Catapult. NEM Library will be mantained until NEM upgrades the NIS Nodes to NIS2.
+
 ## Installation and Usage
 
 ### Via NPM
