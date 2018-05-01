@@ -227,8 +227,8 @@ export class MosaicProperties {
     return new MosaicProperties(
       Number(mosaicProperties[0].value),
       Number(mosaicProperties[1].value),
-      (mosaicProperties[2].value == "true"),
       (mosaicProperties[3].value == "true"),
+      (mosaicProperties[2].value == "true"),
     );
   }
 }
