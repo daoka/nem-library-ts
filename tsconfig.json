@@ -19,7 +19,8 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "noStrictGenericChecks": true
+    "noStrictGenericChecks": true,
+    "skipLibCheck": true
   },
   "files": [
     "index.ts"

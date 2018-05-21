@@ -122,7 +122,7 @@ export class TransferTransaction extends Transaction {
    * @returns {boolean}
    */
   public containsMosaics() {
-    return this._mosaics !== undefined;
+    return this._mosaics !== undefined && this._mosaics.length > 0;
   }
 
   /**
