@@ -102,7 +102,7 @@ export const CreateUnconfirmedTransactionFromDTO = (dto: UnconfirmedTransactionM
       message = EmptyMessage;
     }
     return new TransferTransaction(new Address(transaction.recipient),
-      new XEM(transaction.amount),
+      new XEM(transaction.amount / 1000000),
       TimeWindow.createFromDTOInfo(transaction.timeStamp, transaction.deadline),
       transaction.version,
       transaction.fee,
