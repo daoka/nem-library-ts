@@ -39,7 +39,6 @@ export class Account extends PublicAccount {
 
   /**
    * Constructor
-   * @internal
    * @param address
    * @param publicKey
    * @param privateKey

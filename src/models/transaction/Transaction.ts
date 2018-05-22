@@ -117,9 +117,6 @@ export abstract class Transaction {
     return this.transactionInfo!;
   }
 
-  /**
-   * @internal
-   */
   public abstract toDTO(): TransactionDTO;
 
   /**
