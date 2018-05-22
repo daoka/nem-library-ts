@@ -94,7 +94,6 @@ export class ProvisionNamespaceTransaction extends Transaction {
   }
 
   /**
-   * @internal
    * @returns {TransactionDTO}
    */
   public toDTO(): TransactionDTO {

@@ -81,7 +81,6 @@ export class MultisigAggregateModificationTransaction extends Transaction {
   }
 
   /**
-   * @internal
    * @returns {MultisigAggregateModificationTransactionDTO}
    */
   public toDTO(): TransactionDTO {

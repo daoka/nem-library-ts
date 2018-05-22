@@ -53,7 +53,7 @@ export class NEMLibrary {
   }
 
   /**
-   * @internal
+   *
    */
   public static getEnvironment(): Environment {
     const isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
@@ -65,7 +65,7 @@ export class NEMLibrary {
 }
 
 /**
- * @internal
+ *
  */
 export enum Environment {
   Browser,

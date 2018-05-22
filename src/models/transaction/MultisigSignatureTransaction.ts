@@ -100,7 +100,6 @@ export class MultisigSignatureTransaction extends Transaction {
   }
 
   /**
-   * @internal
    * @returns {MultisigSignatureTransactionDTO}
    */
   public toDTO(): TransactionDTO {

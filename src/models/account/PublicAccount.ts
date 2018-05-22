@@ -35,7 +35,6 @@ export class PublicAccount {
   public readonly publicKey: string;
 
   /**
-   * @internal
    * @param address
    * @param publicKey
    */

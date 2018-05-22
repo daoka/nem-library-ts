@@ -122,7 +122,6 @@ export class MultisigTransaction extends Transaction {
 
   // region boilerplate
   /**
-   * @internal
    * @returns {MultisigTransactionDTO}
    */
   public toDTO(): TransactionDTO {

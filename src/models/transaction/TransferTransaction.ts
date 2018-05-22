@@ -135,7 +135,6 @@ export class TransferTransaction extends Transaction {
   }
 
   /**
-   * @internal
    * @returns {TransferTransactionDTO}
    */
   public toDTO(): TransactionDTO {

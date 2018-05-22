@@ -88,7 +88,6 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   }
 
   /**
-   * @internal
    * @returns {MosaicDefinitionCreationTransactionDTO}
    */
   public toDTO(): TransactionDTO {

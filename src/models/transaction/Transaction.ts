@@ -117,6 +117,9 @@ export abstract class Transaction {
     return this.transactionInfo!;
   }
 
+  /**
+   *
+   */
   public abstract toDTO(): TransactionDTO;
 
   /**
@@ -130,7 +133,6 @@ export abstract class Transaction {
   }
 
   /**
-   * @internal
    * @param networkType
    */
   public setNetworkType(networkType: NetworkTypes) {

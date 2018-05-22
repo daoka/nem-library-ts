@@ -94,7 +94,6 @@ export class MosaicSupplyChangeTransaction extends Transaction {
   }
 
   /**
-   * @internal
    * @returns TransactionDTO
    */
   public toDTO(): TransactionDTO {
