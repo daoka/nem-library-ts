@@ -29,4 +29,4 @@ export * from "./src/models";
 // Services
 export * from "./src/services";
 
-export {NEMLibrary} from "./src/NEMLibrary";
+export {NEMLibrary, Environment} from "./src/NEMLibrary";
