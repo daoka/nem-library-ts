@@ -100,6 +100,7 @@ export class MultisigSignatureTransaction extends Transaction {
   }
 
   /**
+   * Create MultisigSignatureTransaction
    * @returns {MultisigSignatureTransactionDTO}
    */
   public toDTO(): TransactionDTO {
@@ -125,8 +126,8 @@ export class MultisigSignatureTransaction extends Transaction {
    * @returns {MultisigSignatureTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                otherAccount: Address,
-                otherHash: HashData): MultisigSignatureTransaction {
+                       otherAccount: Address,
+                       otherHash: HashData): MultisigSignatureTransaction {
     const fee = Math.floor(3 * 0.05 * 1000000);
     return new MultisigSignatureTransaction(timeWindow, 1, otherAccount, otherHash, fee);
   }

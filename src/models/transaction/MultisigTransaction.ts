@@ -104,8 +104,8 @@ export class MultisigTransaction extends Transaction {
    * @returns {MultisigTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                otherTrans: Transaction,
-                multisig: PublicAccount): MultisigTransaction {
+                       otherTrans: Transaction,
+                       multisig: PublicAccount): MultisigTransaction {
     const fee = Math.floor(3 * 0.05 * 1000000);
     otherTrans.signer = multisig;
     return new MultisigTransaction(timeWindow, 1, otherTrans, fee, []);
@@ -122,6 +122,7 @@ export class MultisigTransaction extends Transaction {
 
   // region boilerplate
   /**
+   * Create DTO of MultisigTransaction
    * @returns {MultisigTransactionDTO}
    */
   public toDTO(): TransactionDTO {

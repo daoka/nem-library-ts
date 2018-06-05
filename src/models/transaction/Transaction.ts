@@ -104,7 +104,7 @@ export abstract class Transaction {
    * Checks if the transaction has been confirmed and included in a block
    */
   public isConfirmed(): boolean {
-    return this.transactionInfo != undefined;
+    return this.transactionInfo !== undefined;
   }
 
   /**
@@ -118,7 +118,7 @@ export abstract class Transaction {
   }
 
   /**
-   *
+   * Create DTO of the transaction
    */
   public abstract toDTO(): TransactionDTO;
 
@@ -133,13 +133,15 @@ export abstract class Transaction {
   }
 
   /**
+   * sets the network type for a transaction.
+   * This is done automatically when signing a transaction, you should not use it directly.
    * @param networkType
    */
   public setNetworkType(networkType: NetworkTypes) {
-    if (networkType == NetworkTypes.MAIN_NET) {
+    if (networkType === NetworkTypes.MAIN_NET) {
       this.networkVersion = 0x68000000 | this.version;
       return;
-    } else if (networkType == NetworkTypes.TEST_NET) {
+    } else if (networkType === NetworkTypes.TEST_NET) {
       this.networkVersion = 0x98000000 | this.version;
       return;
     }

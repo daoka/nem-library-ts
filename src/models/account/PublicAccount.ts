@@ -35,6 +35,7 @@ export class PublicAccount {
   public readonly publicKey: string;
 
   /**
+   * @internal
    * @param address
    * @param publicKey
    */
@@ -49,7 +50,7 @@ export class PublicAccount {
    * @returns {boolean}
    */
   public hasPublicKey(): boolean {
-    return this.publicKey != null && (this.publicKey.length == 64 || this.publicKey.length == 66);
+    return this.publicKey != null && (this.publicKey.length === 64 || this.publicKey.length === 66);
   }
 
   /**
@@ -58,13 +59,13 @@ export class PublicAccount {
    * @returns {PublicAccount}
    */
   public static createWithPublicKey(publicKey: string): PublicAccount {
-    if (publicKey == null || (publicKey.length != 64 && publicKey.length != 66)) {
+    if (publicKey == null || (publicKey.length !== 64 && publicKey.length !== 66)) {
       throw new Error("Not a valid public key");
     }
     let network;
-    if (NEMLibrary.getNetworkType() == NetworkTypes.MAIN_NET) {
+    if (NEMLibrary.getNetworkType() === NetworkTypes.MAIN_NET) {
       network = nemSdk.default.model.network.data.mainnet.id;
-    } else if (NEMLibrary.getNetworkType() == NetworkTypes.TEST_NET) {
+    } else if (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) {
       network = nemSdk.default.model.network.data.testnet.id;
     }
     const address: string = nemSdk.default.model.address.toAddress(publicKey, network);

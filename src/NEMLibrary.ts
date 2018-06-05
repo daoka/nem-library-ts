@@ -28,7 +28,7 @@ export class NEMLibrary {
   private static networkType?: NetworkTypes;
 
   public static bootstrap(networkType: NetworkTypes): void {
-    if (this.networkType != undefined) {
+    if (this.networkType !== undefined) {
       throw new Error("NEMLibrary should only be initialized once");
     }
     this.networkType = networkType;
@@ -53,7 +53,7 @@ export class NEMLibrary {
   }
 
   /**
-   *
+   * Gets the current runtime environment (Node or Browser)
    */
   public static getEnvironment(): Environment {
     const isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
@@ -65,7 +65,7 @@ export class NEMLibrary {
 }
 
 /**
- *
+ * Environment enumeration fer getEnvironment() call
  */
 export enum Environment {
   Browser,

@@ -94,6 +94,7 @@ export class ProvisionNamespaceTransaction extends Transaction {
   }
 
   /**
+   * Create DTO of ProvisionNamespaceTransaction
    * @returns {TransactionDTO}
    */
   public toDTO(): TransactionDTO {
@@ -121,14 +122,14 @@ export class ProvisionNamespaceTransaction extends Transaction {
    * @returns {ProvisionNamespaceTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                newPart: string,
-                parent?: string): ProvisionNamespaceTransaction {
+                       newPart: string,
+                       parent?: string): ProvisionNamespaceTransaction {
     const subnamespaceFee = 10 * 1000000;
     const RootNamespaceFee = 100 * 1000000;
     let rentalFeeSink;
-    if (NEMLibrary.getNetworkType() == NetworkTypes.TEST_NET) {
+    if (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) {
       rentalFeeSink = new Address("TAMESP-ACEWH4-MKFMBC-VFERDP-OOP4FK-7MTDJE-YP35");
-    } else if (NEMLibrary.getNetworkType() == NetworkTypes.MAIN_NET) {
+    } else if (NEMLibrary.getNetworkType() === NetworkTypes.MAIN_NET) {
       rentalFeeSink = new Address("NAMESP-ACEWH4-MKFMBC-VFERDP-OOP4FK-7MTBXD-PZZA");
     }
     const fee = Math.floor(3 * 0.05 * 1000000);

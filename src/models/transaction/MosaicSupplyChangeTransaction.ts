@@ -94,6 +94,7 @@ export class MosaicSupplyChangeTransaction extends Transaction {
   }
 
   /**
+   * Create DTO of MosaicSupplychangeTransaction
    * @returns TransactionDTO
    */
   public toDTO(): TransactionDTO {
@@ -121,9 +122,9 @@ export class MosaicSupplyChangeTransaction extends Transaction {
    * @returns {MosaicSupplyChangeTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                mosaicId: MosaicId,
-                supplyType: MosaicSupplyType,
-                delta: number): MosaicSupplyChangeTransaction {
+                       mosaicId: MosaicId,
+                       supplyType: MosaicSupplyType,
+                       delta: number): MosaicSupplyChangeTransaction {
     const fee = Math.floor(3.0 * 0.05 * 1000000);
     return new MosaicSupplyChangeTransaction(timeWindow, 1, mosaicId, supplyType, delta, fee);
   }
