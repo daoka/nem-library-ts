@@ -90,7 +90,6 @@ export class ImportanceTransferTransaction extends Transaction {
   }
 
   /**
-   * @internal
    * Create DTO of ImportanceTransferTransaction
    */
   public toDTO(): TransactionDTO {

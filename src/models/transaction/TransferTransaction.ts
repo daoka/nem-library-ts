@@ -104,7 +104,7 @@ export class TransferTransaction extends Transaction {
    * @returns {XEM}
    */
   public xem(): XEM {
-    if (this.containsMosaics()) throw new Error("contain mosaics");
+    if (this.containsMosaics()) { throw new Error("contain mosaics"); }
     return this._xem;
   }
 
@@ -113,7 +113,7 @@ export class TransferTransaction extends Transaction {
    * @returns {Mosaic[]}
    */
   public mosaics(): Mosaic[] {
-    if (this.containsMosaics()) return this._mosaics!;
+    if (this.containsMosaics()) { return this._mosaics!; }
     throw new Error("Does not contain mosaics");
   }
 
@@ -130,12 +130,12 @@ export class TransferTransaction extends Transaction {
    * @returns {MosaicId[]}
    */
   public mosaicIds(): MosaicId[] {
-    if (!this.containsMosaics()) throw new Error("does not contain mosaics");
+    if (!this.containsMosaics()) { throw new Error("does not contain mosaics"); }
     return this._mosaics!.map((_) => _.mosaicId);
   }
 
   /**
-   * @internal
+   * Create DTO of TransferTransaction
    * @returns {TransferTransactionDTO}
    */
   public toDTO(): TransactionDTO {
@@ -147,7 +147,7 @@ export class TransferTransaction extends Transaction {
       signature: this.signature,
       type: this.type,
       version,
-      mosaics: this._mosaics == undefined ? undefined : this._mosaics.map((mosaic) => new Mosaic(mosaic.mosaicId, mosaic.quantity)),
+      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Mosaic(mosaic.mosaicId, mosaic.quantity)),
       fee: this.fee,
       recipient: this.recipient.plain(),
       amount: this._xem.quantity(),
@@ -164,12 +164,12 @@ export class TransferTransaction extends Transaction {
    * @returns {TransferTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                recipient: Address,
-                xem: XEM,
-                message: PlainMessage | EncryptedMessage): TransferTransaction {
-    if (message instanceof EncryptedMessage && recipient.plain() != message.recipientPublicAccount!.address.plain()) throw new Error("Recipient address and recipientPublicAccount don't match");
+                       recipient: Address,
+                       xem: XEM,
+                       message: PlainMessage | EncryptedMessage): TransferTransaction {
+    if (message instanceof EncryptedMessage && recipient.plain() !== message.recipientPublicAccount!.address.plain()) { throw new Error("Recipient address and recipientPublicAccount don't match"); }
     let fee = Math.floor(0.05 * this.calculateMinimum(xem.quantity() / 1000000) * 1000000);
-    if (message.payload.length != 0) {
+    if (message.payload.length !== 0) {
       fee += 0.05 * (Math.floor((message.payload.length / 2) / 32) + 1) * 1000000;
     }
     return new TransferTransaction(recipient, xem, timeWindow, 1, fee, message, undefined, undefined);
@@ -194,15 +194,14 @@ export class TransferTransaction extends Transaction {
    * @returns {TransferTransaction}
    */
   public static createWithMosaics(timeWindow: TimeWindow,
-                           recipient: Address,
-                           mosaics: MosaicTransferable[],
-                           message: PlainMessage | EncryptedMessage): TransferTransaction {
-    if (message instanceof EncryptedMessage && recipient.plain() != message.recipientPublicAccount!.address.plain()) throw new Error("Recipient address and recipientPublicAccount don't match");
+                                  recipient: Address,
+                                  mosaics: MosaicTransferable[],
+                                  message: PlainMessage | EncryptedMessage): TransferTransaction {
+    if (message instanceof EncryptedMessage && recipient.plain() !== message.recipientPublicAccount!.address.plain()) { throw new Error("Recipient address and recipientPublicAccount don't match"); }
     const multiplier = new XEM(1);
     let fee = 0;
     mosaics.map((mosaic) => {
-      if (mosaic.properties.divisibility == 0 && mosaic.properties.initialSupply <= 10000) fee += 0.05 * 1000000;
-      else {
+      if (mosaic.properties.divisibility === 0 && mosaic.properties.initialSupply <= 10000) { fee += 0.05 * 1000000; } else {
         const quantity = mosaic.amount;
 
         const maxMosaicQuantity = 9000000000000000;
@@ -213,7 +212,7 @@ export class TransferTransaction extends Transaction {
         fee += 0.05 * Math.max(1, xemFee - supplyRelatedAdjustment) * 1000000;
       }
     });
-    if (message.payload.length != 0) {
+    if (message.payload.length !== 0) {
       fee += 0.05 * (Math.floor((message.payload.length / 2) / 32) + 1) * 1000000;
     }
     return new TransferTransaction(recipient,

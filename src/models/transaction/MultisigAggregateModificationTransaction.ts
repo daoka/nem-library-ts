@@ -81,7 +81,7 @@ export class MultisigAggregateModificationTransaction extends Transaction {
   }
 
   /**
-   * @internal
+   * Create DTO of MultisigAggregateModificationTransaction
    * @returns {MultisigAggregateModificationTransactionDTO}
    */
   public toDTO(): TransactionDTO {
@@ -114,8 +114,8 @@ export class MultisigAggregateModificationTransaction extends Transaction {
    * @returns {MultisigAggregateModificationTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                modifications: CosignatoryModification[],
-                relativeChange?: number): MultisigAggregateModificationTransaction {
+                       modifications: CosignatoryModification[],
+                       relativeChange?: number): MultisigAggregateModificationTransaction {
     const fee = Math.floor(10 * 0.05 * 1000000);
     return new MultisigAggregateModificationTransaction(timeWindow, 1, modifications, fee, undefined, relativeChange);
   }

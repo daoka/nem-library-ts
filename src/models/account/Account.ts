@@ -67,8 +67,8 @@ export class Account extends PublicAccount {
       signature: signature.toString(),
     };
   }
-  
-    /**
+
+  /**
    * Sign string
    * @param messagestring
    * @returns signatureString
