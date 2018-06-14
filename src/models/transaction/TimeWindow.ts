@@ -39,11 +39,10 @@ export class TimeWindow {
   public timeStamp: LocalDateTime;
 
   /**
-   * @internal
    * @param deadline - LocalDateTime
    * @param timeStamp - LocalDateTime
    */
-  private constructor(
+  constructor(
     timeStamp: LocalDateTime,
     deadline: LocalDateTime,
   ) {
