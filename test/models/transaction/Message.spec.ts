@@ -24,6 +24,7 @@
 
 import {expect} from "chai";
 import {Message} from "../../../src/models/transaction/Message";
+import { PlainMessage, HexMessage } from "../../../src/models";
 
 describe("Message", () => {
 
@@ -36,5 +37,15 @@ describe("Message", () => {
     const message = Message.decodeHex("74657374206d657373616765");
     expect(message).to.be.equal("test message");
   });
+
+  it("should it is not hex message", () => {
+    const message = PlainMessage.create("test message");
+    expect(message.isHexMessage()).to.be.false;
+  })
+
+  it("should it is hex message", () => {
+    const message = HexMessage.create("4e54590385412c4b934ee82d10e4d937b37284511c417f14d2cd81f01fb10583479873b0");
+    expect(message.isHexMessage()).to.be.true;
+  })
 
 });
