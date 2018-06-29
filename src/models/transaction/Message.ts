@@ -46,6 +46,10 @@ export abstract class Message {
 
   public abstract isPlain(): boolean;
 
+  public isHexMessage(): boolean {
+    return this.isPlain() && this.payload.indexOf("fe") === 0;
+  }
+
   /**
    * @internal
    * @param message
