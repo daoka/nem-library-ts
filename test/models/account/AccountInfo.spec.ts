@@ -52,6 +52,7 @@ describe("AccountInfo", () => {
       importance: 0.5,
       label: null,
       vestedBalance: 5000,
+      multisigInfo: {},
     } as AccountInfoDTO;
 
     const accountInfo = AccountInfo.createFromAccountInfoDTO(accountInfoDTO);
@@ -61,6 +62,8 @@ describe("AccountInfo", () => {
     expect(accountInfo.balance.vestedBalance).to.be.equal(5000);
     expect(accountInfo.harvestedBlocks).to.be.equal(1);
     expect(accountInfo.importance).to.be.equal(0.5);
+    expect(accountInfo.cosignatoriesCount).to.be.equal(undefined);
+    expect(accountInfo.minCosignatories).to.be.equal(undefined);
     done();
   });
 
@@ -73,6 +76,10 @@ describe("AccountInfo", () => {
       importance: 0.5,
       label: null,
       vestedBalance: 5000,
+      multisigInfo: {
+        cosignatoriesCount: 3,
+        minCosignatories: 2
+      },
     } as AccountInfoDTO;
 
     const accountInfoWithMetaDataDTO = {
@@ -98,6 +105,8 @@ describe("AccountInfo", () => {
     deepEqual(accountInfoWithMetaData.cosignatories, [accountInfo]);
     expect(accountInfoWithMetaData.status).to.be.equal("UNKNOWN");
     expect(accountInfoWithMetaData.remoteStatus).to.be.equal("REMOTE");
+    expect(accountInfoWithMetaData.cosignatoriesCount).to.be.equal(3);
+    expect(accountInfoWithMetaData.minCosignatories).to.be.equal(2);
     done();
   });
 
