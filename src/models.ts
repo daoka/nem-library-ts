@@ -50,6 +50,7 @@ export * from "./models/transaction/ImportanceTransferTransaction";
 export * from "./models/transaction/Message";
 export * from "./models/transaction/PlainMessage";
 export * from "./models/transaction/EncryptedMessage";
+export * from "./models/transaction/HexMessage";
 export * from "./models/transaction/MosaicDefinitionCreationTransaction";
 export * from "./models/transaction/MosaicSupplyChangeTransaction";
 export * from "./models/transaction/MultisigAggregateModificationTransaction";
