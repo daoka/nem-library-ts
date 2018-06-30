@@ -1,6 +1,6 @@
 {
   "name": "nem-library",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Reactive Library for NEM",
   "scripts": {
     "pretest": "npm run build",
@@ -22,7 +22,10 @@
     "RX"
   ],
   "license": "MIT",
-  "author": "Aleix <aleix602@gmail.com>, Guillem <guillemchain@gmail.com>",
+  "contributors": [
+    "Aleix <aleix602@gmail.com>",
+    "Guillem <guillemchain@gmail.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/aleixmorgadas/nem-library-ts"
