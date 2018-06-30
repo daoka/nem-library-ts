@@ -62,4 +62,21 @@ export interface AccountInfoDTO {
    * The number blocks that the account already harvested.
    */
   readonly harvestedBlocks: number;
+
+  /**
+   * The Object of multisigInfo
+   */
+  readonly multisigInfo: MultisigInfoDTO;
+}
+
+export interface MultisigInfoDTO {
+  /**
+   * The number of cosignatories.
+   */
+  readonly cosignatoriesCount: number | undefined;
+
+  /**
+   * The number of minCosignatories.
+   */
+  readonly minCosignatories: number | undefined;
 }
