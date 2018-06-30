@@ -187,6 +187,8 @@ export class AccountInfoWithMetaData extends AccountInfo {
       dto.account.importance,
       dto.account.publicKey,
       dto.account.harvestedBlocks,
+      dto.account.multisigInfo.cosignatoriesCount,
+      dto.account.multisigInfo.minCosignatories,
     );
   }
 }
