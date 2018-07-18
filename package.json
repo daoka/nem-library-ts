@@ -12,7 +12,7 @@
     "test:cov": "nyc npm run test && nyc report --reporter=text-lcov --timeout 90000 | coveralls",
     "build": "rm -rf dist && tsc && npm run copyjson && npm run copyvendor",
     "gen:docs": "typedoc --out ts-docs/ src/",
-    "copyjson": "cp -r test/infrastructure/account/responses/ dist/test/infrastructure/account/responses/ && cp -r integration_test/infrastructure/account/responses/ dist/integration_test/infrastructure/account/responses/",
+    "copyjson": "cp -r test/infrastructure/account/responses/ dist/test/infrastructure/account/responses/ && cp -r integration_test/infrastructure/account/responses/ dist/integration_test/infrastructure/account/responses/ && cp -r test/infrastructure/namespace/responses/ dist/test/infrastructure/namespace/responses/",
     "copyvendor": "cp -r src/vendor/ dist/src/vendor/"
   },
   "keywords": [
