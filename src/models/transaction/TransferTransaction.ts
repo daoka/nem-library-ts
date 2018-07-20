@@ -115,7 +115,7 @@ export class TransferTransaction extends Transaction {
   public mosaics(): Mosaic[] {
     if (this.containsMosaics()) { return this._mosaics!
       .map(x =>
-        new Mosaic(x.mosaicId, (x.quantity * (this._xem.amount / 1e6)))
+        new Mosaic(x.mosaicId, (x.quantity * (this._xem.quantity() / 1e6)))
       )}
     throw new Error("Does not contain mosaics");
   }
@@ -201,7 +201,7 @@ export class TransferTransaction extends Transaction {
                                   mosaics: MosaicTransferable[],
                                   message: PlainMessage | EncryptedMessage): TransferTransaction {
     if (message instanceof EncryptedMessage && recipient.plain() !== message.recipientPublicAccount!.address.plain()) { throw new Error("Recipient address and recipientPublicAccount don't match"); }
-    const multiplier = new XEM(1000000);
+    const multiplier = new XEM(1);
     let fee = 0;
     mosaics.map((mosaic) => {
       if (mosaic.properties.divisibility === 0 && mosaic.properties.initialSupply <= 10000) { fee += 0.05 * 1000000; } else {
