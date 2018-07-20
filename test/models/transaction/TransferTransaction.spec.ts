@@ -336,6 +336,7 @@ describe("TransferTransaction", () => {
     );
 
     expect(mosaicTransferTransaction.containsMosaics()).to.be.true;
+    expect(mosaicTransferTransaction.mosaics()[0].quantity).to.be.equal(150 * 1e3);
   });
 
   it("should throw error when the transaction does not contain mosaics and mosaic function is called", () => {
