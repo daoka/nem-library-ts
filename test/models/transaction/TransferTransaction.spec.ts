@@ -369,9 +369,9 @@ describe("TransferTransaction", () => {
       [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
       PlainMessage.create("message"),
     );
-    const  halfMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(2), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
+    const  doubleMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(2), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
 
-    expect(halfMultiplierTransferTransaction.mosaics()[0].quantity).to.be.equal(300 * 1e3);
+    expect(doubleMultiplierTransferTransaction.mosaics()[0].quantity).to.be.equal(300 * 1e3);
   });
 
   it("should throw error when the transaction does not contain mosaics and mosaic function is called", () => {
