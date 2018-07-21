@@ -39,7 +39,22 @@ describe("NamespaceHttp", () => {
     NEMLibrary.reset();
   });
 
-  it("should get all root namespaces", (done) => {
+  it("should get latest 25 root namespaces", (done) => {
+    const namespaceHttp = new NamespaceHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
+
+    namespaceHttp.getRootNamespaces()
+      .subscribe((namespaces) => {
+        expect(namespaces[0]).to.be.instanceOf(Namespace);
+        expect(namespaces[0].name).to.not.be.undefined;
+        expect(namespaces[0].owner).to.not.be.undefined;
+        expect(namespaces[0].height).to.not.be.undefined;
+        expect(namespaces[0].id).to.not.be.undefined;
+        expect(namespaces.length).to.be.equal(25);
+        done();
+    });
+  });
+
+  it("should get root namespaces before ID 12344", (done) => {
     const namespaceHttp = new NamespaceHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const id = 12344;
 
@@ -58,7 +73,7 @@ describe("NamespaceHttp", () => {
   it("should get all root namespaces setting pageSize", (done) => {
     const namespaceHttp = new NamespaceHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const id = 12344;
-    const pageSize = "15";
+    const pageSize = 15;
 
     namespaceHttp.getRootNamespaces(id, pageSize)
       .subscribe((namespaces) => {
