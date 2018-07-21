@@ -32,6 +32,46 @@ import {MosaicLevy} from "./MosaicLevy";
  */
 export class MosaicTransferable {
   /**
+   * Create a MosaicTransferable object with mosaic definition
+   * @param mosaicDefinition
+   * @param amount
+   * @returns {MosaicTransferable}
+   */
+  public static createWithMosaicDefinition(mosaicDefinition: MosaicDefinition, amount: number) {
+    return new MosaicTransferable(mosaicDefinition.id, mosaicDefinition.properties, amount, mosaicDefinition.levy);
+  }
+
+  /**
+   * Create MosaicTransferable with an absolute quantity
+   * @param mosaicDefinition
+   * @param quantity
+   * @returns {MosaicTransferable}
+   */
+  public static createAbsolute(mosaicDefinition: MosaicDefinition, quantity: number) {
+    return new MosaicTransferable(
+      mosaicDefinition.id,
+      mosaicDefinition.properties,
+      quantity,
+      mosaicDefinition.levy,
+    );
+  }
+
+  /**
+   * Create MosaicTransferable with an relative quantity
+   * @param mosaicDefinition
+   * @param quantity
+   * @returns {MosaicTransferable}
+   */
+  public static createRelative(mosaicDefinition: MosaicDefinition, quantity: number) {
+    return new MosaicTransferable(
+      mosaicDefinition.id,
+      mosaicDefinition.properties,
+      quantity * Math.pow(10, mosaicDefinition.properties.divisibility),
+      mosaicDefinition.levy,
+    );
+  }
+
+  /**
    * MosaicId
    */
   public readonly mosaicId: MosaicId;
@@ -39,7 +79,7 @@ export class MosaicTransferable {
   /**
    * Amount
    */
-  public readonly amount: number;
+  public readonly quantity: number;
 
   /**
    * Mosaic definition properties
@@ -55,31 +95,27 @@ export class MosaicTransferable {
    * constructor
    * @param mosaicId
    * @param properties
-   * @param amount
+   * @param quantity
    * @param levy
    */
-  constructor(mosaicId: MosaicId, properties: MosaicProperties, amount: number, levy?: MosaicLevy) {
+  constructor(mosaicId: MosaicId, properties: MosaicProperties, quantity: number, levy?: MosaicLevy) {
     this.mosaicId = mosaicId;
     this.properties = properties;
     this.levy = levy;
-    this.amount = amount;
+    this.quantity = quantity;
   }
 
   /**
    * @returns {number}
    */
-  public quantity(): number {
-    return this.amount * Math.pow(10, this.properties.divisibility);
+  public relativeQuantity(): number {
+    return this.quantity / Math.pow(10, this.properties.divisibility);
   }
 
   /**
-   * Create a MosaicTransferable object with mosaic definition
-   * @param mosaicDefinition
-   * @param amount
-   * @returns {MosaicTransferable}
+   * @returns {number}
    */
-  public static createWithMosaicDefinition(mosaicDefinition: MosaicDefinition, amount: number) {
-    return new MosaicTransferable(mosaicDefinition.id, mosaicDefinition.properties, amount, mosaicDefinition.levy);
+  public absoluteQuantity(): number {
+    return this.quantity;
   }
-
 }

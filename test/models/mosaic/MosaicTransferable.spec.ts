@@ -51,7 +51,7 @@ describe("Mosaic", () => {
     const mosaicTransferable = new MosaicTransferable(new MosaicId(namespaceId, name), new MosaicProperties(0, 1000, true, false), quantity);
     expect(mosaicTransferable.mosaicId.namespaceId).to.be.equal(namespaceId);
     expect(mosaicTransferable.mosaicId.name).to.be.equal(name);
-    expect(mosaicTransferable.quantity()).to.be.equal(quantity);
+    expect(mosaicTransferable.relativeQuantity()).to.be.equal(quantity);
     expect(mosaicTransferable.levy).to.be.undefined;
     expect(mosaicTransferable.properties.initialSupply).to.be.equal(1000);
     expect(mosaicTransferable.properties.divisibility).to.be.equal(0);
@@ -66,7 +66,7 @@ describe("Mosaic", () => {
 
     const mosaicTransferable = new MosaicTransferable(mosaicId, new MosaicProperties(0, 1000, true, false), quantity, levy);
     deepEqual(mosaicTransferable.mosaicId, mosaicId);
-    expect(mosaicTransferable.quantity()).to.be.equal(quantity);
+    expect(mosaicTransferable.relativeQuantity()).to.be.equal(quantity);
     expect(mosaicTransferable.properties.initialSupply).to.be.equal(1000);
     expect(mosaicTransferable.properties.divisibility).to.be.equal(0);
     expect(mosaicTransferable.properties.transferable).to.be.true;
@@ -85,7 +85,7 @@ describe("Mosaic", () => {
     const mosaicTransferable = MosaicTransferable.createWithMosaicDefinition(mosaicDefinition, 10);
 
     deepEqual(mosaicTransferable.mosaicId, id);
-    expect(mosaicTransferable.quantity()).to.be.equal(10);
+    expect(mosaicTransferable.relativeQuantity()).to.be.equal(10);
     expect(mosaicTransferable.properties.transferable).to.be.equal(true);
     expect(mosaicTransferable.properties.supplyMutable).to.be.equal(false);
     expect(mosaicTransferable.properties.initialSupply).to.be.equal(1000);

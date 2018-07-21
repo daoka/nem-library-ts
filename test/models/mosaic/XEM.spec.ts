@@ -28,7 +28,8 @@ import {XEM} from "../../../src/models/mosaic/XEM";
 describe("XEM", () => {
 
   it("should create a XEM", () => {
-    const amount = new XEM(10);
-    expect(amount.quantity()).to.be.equal(10 * 1000000);
+    const amount = XEM.fromRelative(10);
+    expect(amount.relativeQuantity()).to.be.equal(10);
+    expect(amount.absoluteQuantity()).to.be.equals(10 * 1e6);
   });
 });

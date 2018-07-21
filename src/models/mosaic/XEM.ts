@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-import {PublicAccount} from "../account/PublicAccount";
-import {MosaicDefinition, MosaicProperties} from "./MosaicDefinition";
-import {MosaicId} from "./MosaicId";
-import {MosaicTransferable} from "./MosaicTransferable";
+import { PublicAccount } from "../account/PublicAccount";
+import { MosaicDefinition, MosaicProperties } from "./MosaicDefinition";
+import { MosaicId } from "./MosaicId";
+import { MosaicTransferable } from "./MosaicTransferable";
 
 /**
  * XEM mosaic transferable
@@ -41,7 +41,7 @@ export class XEM extends MosaicTransferable {
    * Initial supply
    * @type {number}
    */
-  public static INITIALSUPPLY= 8999999999;
+  public static INITIALSUPPLY = 8999999999;
 
   /**
    * Is tranferable
@@ -62,11 +62,31 @@ export class XEM extends MosaicTransferable {
   public static MOSAICID = new MosaicId("nem", "xem");
 
   /**
-   * constructor
-   * @param amount
+   * Create XEM with an absolute quantity
+   * @param quantity
+   * @returns {MosaicTransferable}
    */
-  constructor(amount: number) {
-    super(XEM.MOSAICID, new MosaicProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE), amount);
+  public static fromAbsolute(quantity: number): XEM {
+    return new XEM(quantity / Math.pow(10, XEM.DIVISIBILITY));
+  }
+
+  /**
+   * Create XEM with an relative quantity
+   * @param quantity
+   * @returns {MosaicTransferable}
+   */
+  public static fromRelative(quantity: number): XEM {
+    return new XEM(quantity);
+  }
+
+  /**
+   * constructor
+   * @param quantity - Relative quantity
+   */
+  constructor(quantity: number) {
+    super(XEM.MOSAICID,
+      new MosaicProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE),
+      quantity * Math.pow(10, XEM.DIVISIBILITY));
   }
 
 }

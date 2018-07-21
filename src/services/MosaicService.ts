@@ -77,7 +77,7 @@ export class MosaicService {
     if (mosaicTransferable.levy!.type == MosaicLevyType.Absolute) {
       levyValue = mosaicTransferable.levy!.fee;
     } else {
-      levyValue = mosaicTransferable.quantity() * mosaicTransferable.levy!.fee / 10000;
+      levyValue = mosaicTransferable.relativeQuantity() * mosaicTransferable.levy!.fee / 10000;
     }
 
     const o = parseInt(levyValue, 10);

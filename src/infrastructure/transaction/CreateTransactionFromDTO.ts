@@ -113,7 +113,7 @@ export const CreateTransactionFromDTO = (dto: TransactionMetaDataPairDTO): Trans
       message = EmptyMessage;
     }
     return new TransferTransaction(new Address(transaction.recipient),
-      new XEM(transaction.amount / 1000000),
+      XEM.fromAbsolute(transaction.amount),
       TimeWindow.createFromDTOInfo(transaction.timeStamp, transaction.deadline),
       transaction.version,
       transaction.fee,
@@ -239,7 +239,7 @@ export const CreateSimpleTransactionFromDTO = (dto: TransactionDTO): Transaction
       message = EmptyMessage;
     }
     return new TransferTransaction(new Address(transaction.recipient),
-      new XEM(transaction.amount / 1000000),
+      XEM.fromAbsolute(transaction.amount),
       TimeWindow.createFromDTOInfo(transaction.timeStamp, transaction.deadline),
       transaction.version,
       transaction.fee,

@@ -89,7 +89,7 @@ describe("QRService", () => {
     const qrTransactionText = qrService.generateTransactionQRText(simpleWallet.address, 1, "message");
     const transaction = qrService.decryptTrasactionQRText(JSON.parse(qrTransactionText));
     expect((transaction.message as PlainMessage).plain()).to.be.equal("message");
-    expect(transaction.xem().quantity()).to.be.equal(1000000);
+    expect(transaction.xem().relativeQuantity()).to.be.equal(1);
     expect(transaction.recipient.plain()).to.be.equal(simpleWallet.address.plain());
   });
 });

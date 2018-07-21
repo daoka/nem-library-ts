@@ -60,7 +60,7 @@ describe("TransferTransaction", () => {
     const amount = 3;
     const transferTransaction = new TransferTransaction(
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      new XEM(amount),
+      XEM.fromRelative(amount),
       TimeWindow.createWithDeadline(),
       1744830466,
       4242424,
@@ -69,8 +69,9 @@ describe("TransferTransaction", () => {
     expect(transferTransaction.type).to.be.equal(TransactionTypes.TRANSFER);
     expect(transferTransaction.signer.publicKey).to.be.equal(PUBLIC_KEY);
     expect(transferTransaction.recipient.pretty()).to.be.equal("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA");
-    expect(transferTransaction.xem().quantity()).to.be.equal(amount * 1000000);
-    expect(transferTransaction.xem().amount).to.be.equal(amount);
+    expect(transferTransaction.xem().relativeQuantity()).to.be.equal(amount);
+    expect(transferTransaction.xem().quantity).to.be.equal(amount * 1e6);
+    expect(transferTransaction.xem().absoluteQuantity()).to.be.equal(amount * 1e6);
     expect(transferTransaction.fee).to.be.equal(4242424);
     expect(transferTransaction.version).to.be.equal(1744830466);
   });
@@ -137,8 +138,9 @@ describe("TransferTransaction", () => {
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
       new XEM(3),
       EmptyMessage);
-    expect(transferTransaction.xem().quantity()).to.be.equal(3000000);
-    expect(transferTransaction.xem().amount).to.be.equal(3);
+    expect(transferTransaction.xem().relativeQuantity()).to.be.equal(3);
+    expect(transferTransaction.xem().quantity).to.be.equal(3 * 1e6);
+    expect(transferTransaction.xem().absoluteQuantity()).to.be.equal(3 * 1e6);
     expect(transferTransaction.version).to.be.equal(1);
   });
 
@@ -177,7 +179,7 @@ describe("TransferTransaction", () => {
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
       new XEM(19999.9999),
       EmptyMessage);
-    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(0.05).quantity()));
+    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(0.05).absoluteQuantity()));
   });
 
   it("should take into account the maximum of fee for given an xem of less 19000", () => {
@@ -186,7 +188,7 @@ describe("TransferTransaction", () => {
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
       new XEM(20000),
       EmptyMessage);
-    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(0.10).quantity()));
+    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(0.10).absoluteQuantity()));
   });
 
   it("should take into account the maximum of fee for given a huge xem", () => {
@@ -195,7 +197,7 @@ describe("TransferTransaction", () => {
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
       new XEM(250000),
       EmptyMessage);
-    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(1.25).quantity()));
+    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(1.25).absoluteQuantity()));
   });
 
   it("should take into account the maximum of fee for given a huge xem -1", () => {
@@ -204,7 +206,7 @@ describe("TransferTransaction", () => {
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
       new XEM(249999),
       EmptyMessage);
-    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(1.20).quantity()));
+    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(1.20).absoluteQuantity()));
   });
 
   it("should take into account the maximum of fee for given a huge xem", () => {
@@ -213,7 +215,7 @@ describe("TransferTransaction", () => {
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
       new XEM(500000),
       EmptyMessage);
-    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(1.25).quantity()));
+    expect(transferTransaction.fee).to.be.equal(Math.floor(new XEM(1.25).absoluteQuantity()));
   });
 
   it("should get the same fee sending regular xem transaction and mosaic transaction xem 50", () => {
@@ -317,87 +319,90 @@ describe("TransferTransaction", () => {
     expect((transaction.message as PlainMessage).plain()).to.be.equal("test message");
   });
 
-  it("should return false when the transaction does not contain mosaics", () => {
-    const transferTransaction = TransferTransaction.create(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      new XEM(500000),
-      EmptyMessage);
-
-    expect(transferTransaction.containsMosaics()).to.be.false;
+  describe("containsMosaics", () => {
+    it("should return false when the transaction does not contain mosaics", () => {
+      const transferTransaction = TransferTransaction.create(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        new XEM(500000),
+        EmptyMessage);
+  
+      expect(transferTransaction.containsMosaics()).to.be.false;
+    });
+  
+    it("should return true when the transaction contains mosaics", () => {
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        PlainMessage.create("message"),
+      );
+  
+      expect(mosaicTransferTransaction.containsMosaics()).to.be.true;
+    });
   });
 
-  it("should return true when the transaction contains mosaics", () => {
-    const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
-      PlainMessage.create("message"),
-    );
-
-    expect(mosaicTransferTransaction.containsMosaics()).to.be.true;
-    expect(mosaicTransferTransaction.mosaics()[0].quantity).to.be.equal(150 * 1e3);
-  });
-
-  it("should return true when the transaction mosaics[0] amount equals expected value multiplier = 1", () => {
-    const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
-      PlainMessage.create("message"),
-    );
-
-    expect(mosaicTransferTransaction.mosaics()[0].quantity).to.be.equal(150 * 1e3);
-  });
-
-  it("should return true when the transaction mosaics[0] amount equals expected value multiplier = 0.5", () => {
-    const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
-      PlainMessage.create("message"),
-    );
-   const  halfMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(0.5), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
-
-    expect(halfMultiplierTransferTransaction.mosaics()[0].quantity).to.be.equal(75 * 1e3);
-  });
-
-  it("should return true when the transaction mosaics[0] amount equals expected value multiplier = 2", () => {
-    const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
-      PlainMessage.create("message"),
-    );
-    const  doubleMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(2), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
-
-    expect(doubleMultiplierTransferTransaction.mosaics()[0].quantity).to.be.equal(300 * 1e3);
-  });
-
-  it("should throw error when the transaction does not contain mosaics and mosaic function is called", () => {
-    const transferTransaction = TransferTransaction.create(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      new XEM(500000),
-      EmptyMessage);
-
-    expect(() => {
-      transferTransaction.mosaics();
-    }).to.throw(Error);
-  });
-
-  it("should throw error when the transaction has mosaics and xem method is called", () => {
-    const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
-      PlainMessage.create("message"),
-    );
-
-    expect(() => {
-      mosaicTransferTransaction.xem();
-    }).to.throw(Error);
-  });
+  describe("mosaics", () => {
+    it("should the same quantity when the transaction mosaics[0] quantity equals expected value multiplier = 1", () => {
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        PlainMessage.create("message"),
+      );
+  
+      expect(mosaicTransferTransaction.mosaics()[0].quantity).to.be.equal(150);
+    });
+  
+    it("should take into account quantity when the transaction mosaics[0] amount equals expected value multiplier = 0.5", () => {
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        PlainMessage.create("message"),
+      );
+     const  halfMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(0.5), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
+  
+      expect(halfMultiplierTransferTransaction.mosaics()[0].quantity).to.be.equal(75);
+    });
+  
+    it("should take into account when the transaction mosaics[0] amount equals expected value multiplier = 2", () => {
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        PlainMessage.create("message"),
+      );
+      const  doubleMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(2), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
+  
+      expect(doubleMultiplierTransferTransaction.mosaics()[0].quantity).to.be.equal(300);
+    });
+  
+    it("should throw error when the transaction does not contain mosaics and mosaic function is called", () => {
+      const transferTransaction = TransferTransaction.create(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        new XEM(500000),
+        EmptyMessage);
+  
+      expect(() => {
+        transferTransaction.mosaics();
+      }).to.throw(Error);
+    });
+  
+    it("should throw error when the transaction has mosaics and xem method is called", () => {
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        PlainMessage.create("message"),
+      );
+  
+      expect(() => {
+        mosaicTransferTransaction.xem();
+      }).to.throw(Error);
+    });
+  })
 
   it("should return the mosaic identifiers", () => {
     const mosaicId1 = new MosaicId("multisigns", "mosaic");
