@@ -52,7 +52,8 @@ describe("TransactionWithMosaics", () => {
   it("Create runtime MosaicTransferable with a server:other", (done) => {
     mosaicHttp.getMosaicTransferableWithAmount(new MosaicId("server", "other"), 1)
       .subscribe((mosaicTransferable) => {
-        expect(mosaicTransferable.relativeQuantity()).to.be.equal(1000000);
+        expect(mosaicTransferable.absoluteQuantity()).to.be.equal(1000000);
+        expect(mosaicTransferable.relativeQuantity).to.be.equal(1);
         done();
       });
   });
