@@ -24,15 +24,28 @@
 
 import * as requestPromise from "request-promise-native";
 import {Observable} from "rxjs";
+import {QueryParams} from "./AccountHttp";
 import {Namespace} from "../models/namespace/Namespace";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
 import {NamespaceDTO} from "./namespace/NamespaceDTO";
 import {NamespaceMetaDataPairDTO} from "./namespace/NamespaceMetaDataPairDTO";
+import {Pageable} from "./Pageable";
+import {NamespacesPageable} from "./NamespacesPageable";
 
 export class NamespaceHttp extends HttpEndpoint {
 
   constructor(nodes?: ServerConfig[]) {
     super("namespace", nodes);
+  }
+
+  /**
+   * Paginaged version of incomingTransactions request
+   * @param address
+   * @param params
+   */
+  public getRootNamespacesPaginated(params?: QueryParams): Pageable<Namespace[]> {
+    if (params === undefined) params = {};
+    return new NamespacesPageable(this, params);
   }
 
   /**
