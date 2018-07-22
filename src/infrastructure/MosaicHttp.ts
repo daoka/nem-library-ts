@@ -71,13 +71,24 @@ export class MosaicHttp extends HttpEndpoint {
   }
 
   /**
-   * Return a MosaicTransferable with the xem
+   * Return a MosaicTransferable
    * @param {string} mosaicId
-   * @param {number} amount
+   * @param {number} quantity
    * @returns {Observable<MosaicTransferable>}
    */
-  public getMosaicTransferableWithAmount(mosaicId: MosaicId, amount: number): Observable<MosaicTransferable> {
+  public getMosaicTransferableWithAbsoluteAmount(mosaicId: MosaicId, quantity: number): Observable<MosaicTransferable> {
     return this.getMosaicDefinition(mosaicId)
-      .map((mosaicDefinition) => MosaicTransferable.createWithMosaicDefinition(mosaicDefinition, amount));
+      .map((mosaicDefinition) => MosaicTransferable.createAbsolute(mosaicDefinition, quantity));
+  }
+
+  /**
+   * Return a MosaicTransferable
+   * @param {string} mosaicId
+   * @param {number} quantity
+   * @returns {Observable<MosaicTransferable>}
+   */
+  public getMosaicTransferableWithRelativeAmount(mosaicId: MosaicId, quantity: number): Observable<MosaicTransferable> {
+    return this.getMosaicDefinition(mosaicId)
+      .map((mosaicDefinition) => MosaicTransferable.createRelative(mosaicDefinition, quantity));
   }
 }
