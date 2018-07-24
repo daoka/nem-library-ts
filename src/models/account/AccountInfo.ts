@@ -95,7 +95,9 @@ export class AccountInfo {
               minCosignatories?: number) {
     this.balance = new Balance(balance, vestedBalance);
     this.importance = importance;
-    this.publicAccount = PublicAccount.createWithPublicKey(publicKey);
+    if (publicKey != null) {
+      this.publicAccount = PublicAccount.createWithPublicKey(publicKey);
+    }
     this.harvestedBlocks = harvestedBlocks;
     this.cosignatoriesCount = cosignatoriesCount;
     this.minCosignatories = minCosignatories;
