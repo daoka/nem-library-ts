@@ -196,6 +196,7 @@ export class TransferTransaction extends Transaction {
    * @param message
    * @returns {TransferTransaction}
    */
+  // tslint:disable-next-line:member-ordering
   public static createWithMosaics(timeWindow: TimeWindow,
                                   recipient: Address,
                                   mosaics: MosaicTransferable[],
@@ -209,9 +210,9 @@ export class TransferTransaction extends Transaction {
 
         const maxMosaicQuantity = 9000000000000000;
         const totalMosaicQuantity = mosaic.properties.initialSupply * Math.pow(10, mosaic.properties.divisibility);
-        const supplyRelatedAdjustment = Math.floor(0.8 * Math.log(maxMosaicQuantity / totalMosaicQuantity));
+        const supplyRelatedAdjustment = Math.floor(0.8 * Math.log(Math.floor(maxMosaicQuantity / totalMosaicQuantity)));
 
-        const xemFee = Math.min(25, quantity * 900000 / mosaic.properties.initialSupply);
+        const xemFee = Math.min(25, 0.05 * quantity / mosaic.properties.initialSupply / Math.pow(10, mosaic.properties.divisibility + 6));
         fee += 0.05 * Math.max(1, xemFee - supplyRelatedAdjustment) * 1000000;
       }
     });
