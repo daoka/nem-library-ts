@@ -103,12 +103,18 @@ export class SimpleWallet extends Wallet {
     if (account.address.equals(this.address)) {
       return account;
     }
-    throw new Error('wrong password');
+    throw new Error("wrong password");
   }
 
   public unlockPrivateKey(password: Password): string {
     const privateKey = this.encryptedPrivateKey.decrypt(password);
-    if (privateKey == "" || (privateKey.length != 64 && privateKey.length != 66)) throw new Error("Invalid password");
+    if (privateKey === "" || (privateKey.length !== 64 && privateKey.length !== 66)) {
+      throw new Error("Invalid password");
+    }
+    const account = Account.createWithPrivateKey(privateKey);
+    if (!account.address.equals(this.address)) {
+      throw new Error("Invalid password");
+    }
     return privateKey;
   }
 
