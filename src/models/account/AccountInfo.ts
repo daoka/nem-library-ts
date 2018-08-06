@@ -59,7 +59,7 @@ export class AccountInfo {
   /**
    * The public key of the account.
    */
-  public readonly publicAccount: PublicAccount;
+  public readonly publicAccount?: PublicAccount;
 
   /**
    * The number blocks that the account already harvested.
