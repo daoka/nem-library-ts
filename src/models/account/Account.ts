@@ -73,7 +73,7 @@ export class Account extends PublicAccount {
    * @param messagestring
    * @returns signatureString
    */
-  public signMessage(message:string){
+  public signMessage(message: string) {
     const keyPair: any = nemSdk.default.crypto.keyPair.create(nemSdk.default.utils.helpers.fixPrivateKey(this.privateKey));
     return  keyPair.sign(message);
   }
