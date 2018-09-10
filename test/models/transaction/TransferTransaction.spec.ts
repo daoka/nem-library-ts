@@ -240,16 +240,17 @@ describe("TransferTransaction", () => {
   });
 
   it("should get the same fee sending regular xem transaction and mosaic transaction xem 500000", () => {
+    const xem = new XEM(500000);
     const transferTransaction = TransferTransaction.create(
       TimeWindow.createWithDeadline(),
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      new XEM(500000),
+      xem,
       EmptyMessage);
 
     const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
       TimeWindow.createWithDeadline(),
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new XEM(500000)],
+      [xem],
       EmptyMessage,
     );
 
@@ -265,7 +266,7 @@ describe("TransferTransaction", () => {
       EmptyMessage,
     );
 
-    expect(mosaicTransferTransaction.fee).to.be.equal(200000);
+    expect(mosaicTransferTransaction.fee).to.be.equal(50000);
   });
 
   it("should calculate mosaic and message fee correctly", () => {
@@ -277,7 +278,7 @@ describe("TransferTransaction", () => {
       PlainMessage.create("message"),
     );
 
-    expect(mosaicTransferTransaction.fee).to.be.equal(250000);
+    expect(mosaicTransferTransaction.fee).to.be.equal(100000);
   });
 
   it("should throw error when recipient address and encrypted message recipient address don't match", () => {
