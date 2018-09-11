@@ -263,16 +263,40 @@ describe("TransferTransaction", () => {
     });
   });
 
-  it("should calculate mosaic fee correctly", () => {
+  describe("should calculate mosaic fee correctly", () => {
+    it("visibility 3, supply 9000000, quantity 150 is 0.05 XEM fee", () => {
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        EmptyMessage,
+      );
 
-    const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
-      TimeWindow.createWithDeadline(),
-      new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
-      EmptyMessage,
-    );
+      expect(mosaicTransferTransaction.fee).to.be.equal(0.05 * 1e6);
+    });
 
-    expect(mosaicTransferTransaction.fee).to.be.equal(50000);
+    it("visibility 0, supply 10_000 the fee is 0.05 no matter the quantity", () => {
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(0, 10000), 150000)],
+        EmptyMessage,
+      );
+
+      expect(mosaicTransferTransaction.fee).to.be.equal(0.05 * 1e6);
+    });
+
+    it("visibility 3, supply 9_000_000 the fee is 0.15 xem", () => {
+      const mosaic = MosaicTransferable.createRelative(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150);
+      const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
+        TimeWindow.createWithDeadline(),
+        new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
+        [mosaic],
+        EmptyMessage,
+      );
+
+      expect(mosaicTransferTransaction.fee).to.be.equal(0.15 * 1e6);
+    });
   });
 
   it("should calculate mosaic and message fee correctly", () => {

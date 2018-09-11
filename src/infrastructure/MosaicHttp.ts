@@ -78,7 +78,7 @@ export class MosaicHttp extends HttpEndpoint {
    */
   public getMosaicTransferableWithAbsoluteAmount(mosaicId: MosaicId, quantity: number): Observable<MosaicTransferable> {
     return this.getMosaicDefinition(mosaicId)
-      .map((mosaicDefinition) => MosaicTransferable.createAbsolute(mosaicDefinition, quantity));
+      .map((mosaicDefinition) => MosaicTransferable.createAbsolute(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
   }
 
   /**
@@ -89,6 +89,6 @@ export class MosaicHttp extends HttpEndpoint {
    */
   public getMosaicTransferableWithRelativeAmount(mosaicId: MosaicId, quantity: number): Observable<MosaicTransferable> {
     return this.getMosaicDefinition(mosaicId)
-      .map((mosaicDefinition) => MosaicTransferable.createRelative(mosaicDefinition, quantity));
+      .map((mosaicDefinition) => MosaicTransferable.createRelative(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
   }
 }

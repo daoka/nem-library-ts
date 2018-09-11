@@ -43,31 +43,35 @@ export class MosaicTransferable {
 
   /**
    * Create MosaicTransferable with an absolute quantity
-   * @param mosaicDefinition
+   * @param mosaicId
+   * @param properties
    * @param quantity
+   * @param levy
    * @returns {MosaicTransferable}
    */
-  public static createAbsolute(mosaicDefinition: MosaicDefinition, quantity: number) {
+  public static createAbsolute(mosaicId: MosaicId, properties: MosaicProperties, quantity: number, levy?: MosaicLevy) {
     return new MosaicTransferable(
-      mosaicDefinition.id,
-      mosaicDefinition.properties,
+      mosaicId,
+      properties,
       quantity,
-      mosaicDefinition.levy,
+      levy,
     );
   }
 
   /**
    * Create MosaicTransferable with an relative quantity
-   * @param mosaicDefinition
+   * @param mosaicId
+   * @param properties
    * @param quantity
+   * @param levy
    * @returns {MosaicTransferable}
    */
-  public static createRelative(mosaicDefinition: MosaicDefinition, quantity: number) {
+  public static createRelative(mosaicId: MosaicId, properties: MosaicProperties, quantity: number, levy?: MosaicLevy) {
     return new MosaicTransferable(
-      mosaicDefinition.id,
-      mosaicDefinition.properties,
-      quantity * Math.pow(10, mosaicDefinition.properties.divisibility),
-      mosaicDefinition.levy,
+      mosaicId,
+      properties,
+      quantity * Math.pow(10, properties.divisibility),
+      levy,
     );
   }
 

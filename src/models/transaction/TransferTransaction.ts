@@ -205,15 +205,20 @@ export class TransferTransaction extends Transaction {
     const multiplier = new XEM(1);
     let fee = 0;
     mosaics.map((mosaic) => {
-      if (mosaic.properties.divisibility === 0 && mosaic.properties.initialSupply <= 10000) { fee += 0.05 * 1000000; } else {
-        const quantity = mosaic.quantity;
-
+      if (mosaic.properties.divisibility === 0 && mosaic.properties.initialSupply <= 10000) {
+        fee += 0.05 * 1000000;
+      } else {
         const maxMosaicQuantity = 9000000000000000;
+
         const totalMosaicQuantity = mosaic.properties.initialSupply * Math.pow(10, mosaic.properties.divisibility);
         const supplyRelatedAdjustment = Math.floor(0.8 * Math.log(Math.floor(maxMosaicQuantity / totalMosaicQuantity)));
 
-        const xemFee = Math.min(25, 0.05 * quantity / mosaic.properties.initialSupply / Math.pow(10, mosaic.properties.divisibility + 6));
-        fee += 0.05 * Math.max(1, xemFee - supplyRelatedAdjustment) * 1000000;
+        const quantity = mosaic.quantity;
+
+        const xemFee = Math.min(25, Math.floor((8999999999 * quantity) / (totalMosaicQuantity * 10000)));
+
+        const unweightFee = Math.max(1, xemFee - supplyRelatedAdjustment);
+        fee += 0.05 * 1e6 * unweightFee ;
       }
     });
     if (message.payload.length !== 0) {
