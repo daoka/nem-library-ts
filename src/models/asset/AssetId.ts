@@ -86,7 +86,7 @@ export class AssetId {
   }
 
   /**
-   * Mosaic Id description in format namespaceId:name ex: nem:xem
+   * Asset Id description in format namespaceId:name ex: nem:xem
    */
   public description(): string {
     return this.namespaceId + ":" + this.name;

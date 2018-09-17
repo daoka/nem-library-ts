@@ -28,11 +28,11 @@ import {AssetId} from "./AssetId";
 import {AssetLevy} from "./AssetLevy";
 
 /**
- * Mosaic transferable model
+ * Asset transferable model
  */
 export class AssetTransferable {
   /**
-   * Create a MosaicTransferable object with mosaic definition
+   * Create a AssetTransferable object with mosaic definition
    * @param assetDefinition
    * @param amount
    * @returns {AssetTransferable}
@@ -42,7 +42,7 @@ export class AssetTransferable {
   }
 
   /**
-   * Create MosaicTransferable with an absolute quantity
+   * Create AssetTransferable with an absolute quantity
    * @param assetId
    * @param properties
    * @param quantity
@@ -59,7 +59,7 @@ export class AssetTransferable {
   }
 
   /**
-   * Create MosaicTransferable with an relative quantity
+   * Create AssetTransferable with an relative quantity
    * @param assetId
    * @param properties
    * @param quantity
@@ -76,7 +76,7 @@ export class AssetTransferable {
   }
 
   /**
-   * MosaicId
+   * AssetId
    */
   public readonly assetId: AssetId;
 
@@ -86,7 +86,7 @@ export class AssetTransferable {
   public readonly quantity: number;
 
   /**
-   * Mosaic definition properties
+   * Asset definition properties
    */
   public readonly properties: AssetProperties;
 

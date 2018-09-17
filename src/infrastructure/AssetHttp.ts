@@ -71,7 +71,7 @@ export class AssetHttp extends HttpEndpoint {
   }
 
   /**
-   * Return a MosaicTransferable
+   * Return a AssetTransferable
    * @param {string} assetId
    * @param {number} quantity
    * @returns {Observable<AssetTransferable>}
@@ -82,7 +82,7 @@ export class AssetHttp extends HttpEndpoint {
   }
 
   /**
-   * Return a MosaicTransferable
+   * Return a AssetTransferable
    * @param {string} assetId
    * @param {number} quantity
    * @returns {Observable<AssetTransferable>}

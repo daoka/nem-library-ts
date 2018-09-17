@@ -88,8 +88,8 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   }
 
   /**
-   * Create DTO of MosaicDefinitionCreationTransaction
-   * @returns {MosaicDefinitionCreationTransactionDTO}
+   * Create DTO of AssetDefinitionCreationTransaction
+   * @returns {AssetDefinitionCreationTransactionDTO}
    */
   public toDTO(): TransactionDTO {
     const version = this.networkVersion ? this.networkVersion : this.version;
@@ -108,10 +108,10 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   }
 
   /**
-   * Create a MosaicDefinitionCreationTransaction object
+   * Create a AssetDefinitionCreationTransaction object
    * @param timeWindow
    * @param assetDefinition
-   * @returns {MosaicDefinitionCreationTransaction}
+   * @returns {AssetDefinitionCreationTransaction}
    */
   public static create(timeWindow: TimeWindow,
                        mosaicDefinition: AssetDefinition): MosaicDefinitionCreationTransaction {

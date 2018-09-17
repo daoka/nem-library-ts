@@ -26,7 +26,7 @@ import {MosaicDTO} from "../../infrastructure/asset/MosaicDTO";
 import {AssetId} from "./AssetId";
 
 /**
- * A asset describes an instance of a asset definition. Mosaics can be transferred by means of a transfer transaction.
+ * A asset describes an instance of a asset definition. Assets can be transferred by means of a transfer transaction.
  */
 export class Asset {
 

@@ -94,7 +94,7 @@ export class AssetSupplyChangeTransaction extends Transaction {
   }
 
   /**
-   * Create DTO of MosaicSupplychangeTransaction
+   * Create DTO of AssetSupplychangeTransaction
    * @returns TransactionDTO
    */
   public toDTO(): TransactionDTO {

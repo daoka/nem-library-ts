@@ -52,7 +52,7 @@ export class AssetDefinition {
   public readonly description: string;
 
   /**
-   * Mosaic properties
+   * Asset properties
    */
   public readonly properties: AssetProperties;
 
@@ -221,7 +221,7 @@ export class AssetProperties {
   /**
    * @internal
    * @param dto
-   * @returns {MosaicProperty}
+   * @returns {AssetProperty}
    */
   public static createFromMosaicProperties(mosaicProperties: MosaicPropertyDTO[]): AssetProperties {
     return new AssetProperties(

@@ -64,7 +64,7 @@ export class TransferTransaction extends Transaction {
   public readonly message: PlainMessage | EncryptedMessage;
 
   /**
-   * The array of Mosaic objects.
+   * The array of Asset objects.
    */
   private readonly _mosaics?: Asset[];
 
@@ -129,7 +129,7 @@ export class TransferTransaction extends Transaction {
   }
 
   /**
-   * all the Mosaic Identifiers of the attached assets
+   * all the Asset Identifiers of the attached assets
    * @returns {AssetId[]}
    */
   public mosaicIds(): AssetId[] {
