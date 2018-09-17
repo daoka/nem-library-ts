@@ -68,7 +68,7 @@ export class AccountOwnedMosaicsService {
         else {
           return this.mosaicHttp.getMosaicDefinition(mosaic.assetId)
             .map((mosaicDefinition) => {
-              return AssetTransferable.createWithMosaicDefinition(mosaicDefinition, mosaic.quantity / Math.pow(10, mosaicDefinition.properties.divisibility));
+              return AssetTransferable.createWithAssetDefinition(mosaicDefinition, mosaic.quantity / Math.pow(10, mosaicDefinition.properties.divisibility));
             });
         }
       })

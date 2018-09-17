@@ -33,25 +33,25 @@ import {AssetLevy} from "./AssetLevy";
 export class AssetTransferable {
   /**
    * Create a MosaicTransferable object with mosaic definition
-   * @param mosaicDefinition
+   * @param assetDefinition
    * @param amount
    * @returns {AssetTransferable}
    */
-  public static createWithMosaicDefinition(mosaicDefinition: AssetDefinition, amount: number) {
-    return new AssetTransferable(mosaicDefinition.id, mosaicDefinition.properties, amount, mosaicDefinition.levy);
+  public static createWithAssetDefinition(assetDefinition: AssetDefinition, amount: number) {
+    return new AssetTransferable(assetDefinition.id, assetDefinition.properties, amount, assetDefinition.levy);
   }
 
   /**
    * Create MosaicTransferable with an absolute quantity
-   * @param mosaicId
+   * @param assetId
    * @param properties
    * @param quantity
    * @param levy
    * @returns {AssetTransferable}
    */
-  public static createAbsolute(mosaicId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
+  public static createAbsolute(assetId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
     return new AssetTransferable(
-      mosaicId,
+      assetId,
       properties,
       quantity,
       levy,
@@ -60,15 +60,15 @@ export class AssetTransferable {
 
   /**
    * Create MosaicTransferable with an relative quantity
-   * @param mosaicId
+   * @param assetId
    * @param properties
    * @param quantity
    * @param levy
    * @returns {AssetTransferable}
    */
-  public static createRelative(mosaicId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
+  public static createRelative(assetId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
     return new AssetTransferable(
-      mosaicId,
+      assetId,
       properties,
       quantity * Math.pow(10, properties.divisibility),
       levy,
@@ -78,7 +78,7 @@ export class AssetTransferable {
   /**
    * MosaicId
    */
-  public readonly mosaicId: AssetId;
+  public readonly assetId: AssetId;
 
   /**
    * Amount
@@ -103,7 +103,7 @@ export class AssetTransferable {
    * @param levy
    */
   constructor(mosaicId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
-    this.mosaicId = mosaicId;
+    this.assetId = mosaicId;
     this.properties = properties;
     this.levy = levy;
     this.quantity = quantity;

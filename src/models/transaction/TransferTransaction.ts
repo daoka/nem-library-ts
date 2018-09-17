@@ -231,7 +231,7 @@ export class TransferTransaction extends Transaction {
       fee,
       message,
       undefined,
-      mosaics.map((_) => new Asset(_.mosaicId, _.absoluteQuantity())));
+      mosaics.map((_) => new Asset(_.assetId, _.absoluteQuantity())));
   }
 
 }
