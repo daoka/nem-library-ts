@@ -26,7 +26,7 @@ import {MosaicDTO} from "../../infrastructure/asset/MosaicDTO";
 import {AssetId} from "./AssetId";
 
 /**
- * A mosaic describes an instance of a mosaic definition. Mosaics can be transferred by means of a transfer transaction.
+ * A asset describes an instance of a asset definition. Mosaics can be transferred by means of a transfer transaction.
  */
 export class Asset {
 
@@ -36,7 +36,7 @@ export class Asset {
   public readonly assetId: AssetId;
 
   /**
-   * The mosaic quantity. The quantity is always given in smallest units for the mosaic, i.e. if it has a divisibility of 3 the quantity is given in millis.
+   * The asset quantity. The quantity is always given in smallest units for the asset, i.e. if it has a divisibility of 3 the quantity is given in millis.
    */
   public readonly quantity: number;
 

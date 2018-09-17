@@ -35,8 +35,8 @@ import {TransactionInfo} from "./TransactionInfo";
 import {TransactionTypes} from "./TransactionTypes";
 
 /**
- * Before a mosaic can be created or transferred, a corresponding definition of the mosaic has to be created and published to the network.
- * This is done via a mosaic definition creation transaction.
+ * Before a asset can be created or transferred, a corresponding definition of the asset has to be created and published to the network.
+ * This is done via a asset definition creation transaction.
  */
 export class MosaicDefinitionCreationTransaction extends Transaction {
   /**
@@ -45,7 +45,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   public readonly fee: number;
 
   /**
-   * The fee for the creation of the mosaic.
+   * The fee for the creation of the asset.
    */
   public readonly creationFee: number;
 
@@ -55,7 +55,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   public readonly creationFeeSink: Address;
 
   /**
-   * The actual mosaic definition.
+   * The actual asset definition.
    */
   public readonly mosaicDefinition: AssetDefinition;
 
@@ -65,7 +65,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
    * @param version
    * @param creationFee
    * @param creationFeeSink
-   * @param mosaicDefinition
+   * @param assetDefinition
    * @param fee
    * @param signature
    * @param sender
@@ -110,7 +110,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   /**
    * Create a MosaicDefinitionCreationTransaction object
    * @param timeWindow
-   * @param mosaicDefinition
+   * @param assetDefinition
    * @returns {MosaicDefinitionCreationTransaction}
    */
   public static create(timeWindow: TimeWindow,

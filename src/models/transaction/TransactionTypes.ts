@@ -130,13 +130,13 @@ export class TransactionTypes {
   public static readonly PROVISION_NAMESPACE = TransactionTypes.NAMESPACE_TYPE | 0x01;
 
   /**
-   * A mosaic definition creation transaction.
+   * A asset definition creation transaction.
    * @type {number}
    */
   public static readonly MOSAIC_DEFINITION_CREATION = TransactionTypes.MOSAIC_TYPE | 0x01;
 
   /**
-   * A mosaic supply change transaction.
+   * A asset supply change transaction.
    * @type {number}
    */
   public static readonly MOSAIC_SUPPLY_CHANGE = TransactionTypes.MOSAIC_TYPE | 0x02;

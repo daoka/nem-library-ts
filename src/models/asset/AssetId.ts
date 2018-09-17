@@ -25,7 +25,7 @@
 import {MosaicIdDTO} from "../../infrastructure/asset/MosaicIdDTO";
 /**
  *
- * A mosaic id uniquely identifies an underlying mosaic definition.
+ * A asset id uniquely identifies an underlying asset definition.
  */
 export class AssetId {
 

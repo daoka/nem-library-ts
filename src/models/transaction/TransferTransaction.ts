@@ -40,7 +40,7 @@ import {TransactionInfo} from "./TransactionInfo";
 import {TransactionTypes} from "./TransactionTypes";
 
 /**
- * Transfer transactions contain data about transfers of XEM or mosaics to another account.
+ * Transfer transactions contain data about transfers of XEM or assets to another account.
  */
 export class TransferTransaction extends Transaction {
   /**
@@ -77,7 +77,7 @@ export class TransferTransaction extends Transaction {
    * @param fee
    * @param message
    * @param signature
-   * @param mosaic
+   * @param asset
    * @param sender
    * @param transactionInfo
    */
@@ -100,16 +100,16 @@ export class TransferTransaction extends Transaction {
   }
 
   /**
-   * in case that the transfer transaction contains mosaics, it throws an error
+   * in case that the transfer transaction contains assets, it throws an error
    * @returns {XEM}
    */
   public xem(): XEM {
-    if (this.containsMosaics()) { throw new Error("contain mosaics"); }
+    if (this.containsMosaics()) { throw new Error("contain assets"); }
     return this._xem;
   }
 
   /**
-   * in case that the transfer transaction does not contain mosaics, it throws an error
+   * in case that the transfer transaction does not contain assets, it throws an error
    * @returns {Asset[]}
    */
   public mosaics(): Asset[] {
@@ -117,7 +117,7 @@ export class TransferTransaction extends Transaction {
       return this._mosaics!.map((mosaic) =>
         new Asset(mosaic.assetId, (mosaic.quantity * (this._xem.relativeQuantity()))));
     }
-    throw new Error("Does not contain mosaics");
+    throw new Error("Does not contain assets");
   }
 
   /**
@@ -129,11 +129,11 @@ export class TransferTransaction extends Transaction {
   }
 
   /**
-   * all the Mosaic Identifiers of the attached mosaics
+   * all the Mosaic Identifiers of the attached assets
    * @returns {AssetId[]}
    */
   public mosaicIds(): AssetId[] {
-    if (!this.containsMosaics()) { throw new Error("does not contain mosaics"); }
+    if (!this.containsMosaics()) { throw new Error("does not contain assets"); }
     return this._mosaics!.map((_) => _.assetId);
   }
 
@@ -192,7 +192,7 @@ export class TransferTransaction extends Transaction {
    * Create a TransferTransaction object
    * @param timeWindow
    * @param recipient
-   * @param mosaics
+   * @param assets
    * @param message
    * @returns {TransferTransaction}
    */
