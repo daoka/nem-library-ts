@@ -61,7 +61,7 @@ export class AccountOwnedMosaicsService {
    * @returns {Observable<AssetDefinition[]>}
    */
   public fromAddress(address: Address): Observable<AssetTransferable[]> {
-    return this.accountHttp.getMosaicOwnedByAddress(address)
+    return this.accountHttp.getAssetsOwnedByAddress(address)
       .flatMap((_) => _)
       .flatMap((mosaic: Asset) => {
         if (XEM.MOSAICID.equals(mosaic.assetId)) return Observable.of(new XEM(mosaic.quantity / Math.pow(10, 6)));

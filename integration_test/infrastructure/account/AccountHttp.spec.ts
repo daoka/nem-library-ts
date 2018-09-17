@@ -284,7 +284,7 @@ describe("AccountHttp", () => {
 
   it("receives account created mosaics", (done) => {
     const accountHttp = new AccountHttp();
-    accountHttp.getMosaicCreatedByAddress(new Address(TestAccount.address))
+    accountHttp.getAssetsCreatedByAddress(new Address(TestAccount.address))
       .subscribe((mosaics) => {
         expect(mosaics[0].creator).to.not.be.null;
         expect(mosaics[0].id).to.not.be.null;
@@ -296,7 +296,7 @@ describe("AccountHttp", () => {
 
   it("receives account created mosaics from a namespace", (done) => {
     const accountHttp = new AccountHttp();
-    accountHttp.getMosaicCreatedByAddress(new Address(TestAccount.address), "server")
+    accountHttp.getAssetsCreatedByAddress(new Address(TestAccount.address), "server")
       .subscribe((mosaics) => {
         expect(mosaics[0].creator).to.not.be.null;
         expect(mosaics[0].id).to.not.be.null;
@@ -308,7 +308,7 @@ describe("AccountHttp", () => {
 
   it("receives account owned mosaics", (done) => {
     const accountHttp = new AccountHttp();
-    accountHttp.getMosaicOwnedByAddress(new Address("TANLDM5VDKSZJQX4GFLOEC4V5OVHIJZFACRHUWI5"))
+    accountHttp.getAssetsOwnedByAddress(new Address("TANLDM5VDKSZJQX4GFLOEC4V5OVHIJZFACRHUWI5"))
       .subscribe((mosaics) => {
         expect(mosaics[0].quantity).to.not.be.null;
         expect(mosaics[0].assetId).to.not.be.null;

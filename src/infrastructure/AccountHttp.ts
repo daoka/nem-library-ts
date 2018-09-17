@@ -335,7 +335,7 @@ export class AccountHttp extends HttpEndpoint {
    * @param id - The optional mosaic definition database id up to which mosaic definitions are returned.
    * @return Observable<AssetDefinition[]>
    */
-  public getMosaicCreatedByAddress(address: Address, parent?: string, id?: string): Observable<AssetDefinition[]> {
+  public getAssetsCreatedByAddress(address: Address, parent?: string, id?: string): Observable<AssetDefinition[]> {
     const url = "mosaic/definition/page?address=" + address.plain() +
       (parent === undefined ? "" : "&parent=" + parent) +
       (id === undefined ? "" : "&id=" + id);
@@ -355,7 +355,7 @@ export class AccountHttp extends HttpEndpoint {
    * @param address - Address
    * @return Observable<Asset[]>
    */
-  public getMosaicOwnedByAddress(address: Address): Observable<Asset[]> {
+  public getAssetsOwnedByAddress(address: Address): Observable<Asset[]> {
     return Observable.of("mosaic/owned?address=" + address.plain())
       .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
       .retryWhen(this.replyWhenRequestError)
