@@ -25,7 +25,7 @@
 import {expect} from "chai";
 import {Account} from "../../../src/models/account/Account";
 import {Address} from "../../../src/models/account/Address";
-import {XEM} from "../../../src/models/mosaic/XEM";
+import {XEM} from "../../../src/models/asset/XEM";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {MultisigSignatureTransaction} from "../../../src/models/transaction/MultisigSignatureTransaction";
 import {EmptyMessage, PlainMessage} from "../../../src/models/transaction/PlainMessage";

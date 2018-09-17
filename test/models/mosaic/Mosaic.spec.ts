@@ -26,10 +26,10 @@ import {deepEqual} from "assert";
 import {expect} from "chai";
 import {Address} from "../../../src/models/account/Address";
 import {PublicAccount} from "../../../src/models/account/PublicAccount";
-import {Asset} from "../../../src/models/mosaic/Asset";
-import {AssetDefinition, MosaicProperties} from "../../../src/models/mosaic/AssetDefinition";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
-import {MosaicLevy} from "../../../src/models/mosaic/MosaicLevy";
+import {Asset} from "../../../src/models/asset/Asset";
+import {AssetDefinition, AssetProperties} from "../../../src/models/asset/AssetDefinition";
+import {AssetId} from "../../../src/models/asset/AssetId";
+import {AssetLevy} from "../../../src/models/asset/AssetLevy";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
 
@@ -47,9 +47,9 @@ describe("Mosaic", () => {
     const name = "coin";
     const quantity = 10;
 
-    const mosaic = new Asset(new MosaicId(namespaceId, name), quantity);
-    expect(mosaic.mosaicId.namespaceId).to.be.equal(namespaceId);
-    expect(mosaic.mosaicId.name).to.be.equal(name);
+    const mosaic = new Asset(new AssetId(namespaceId, name), quantity);
+    expect(mosaic.assetId.namespaceId).to.be.equal(namespaceId);
+    expect(mosaic.assetId.name).to.be.equal(name);
     expect(mosaic.quantity).to.be.equal(quantity);
   });
 
@@ -57,7 +57,7 @@ describe("Mosaic", () => {
     const namespaceId = "nem";
     const name = "coin";
 
-    const mosaic = new MosaicId(namespaceId, name);
+    const mosaic = new AssetId(namespaceId, name);
     expect(mosaic.namespaceId).to.be.equal(namespaceId);
     expect(mosaic.name).to.be.equal(name);
   });
@@ -65,20 +65,20 @@ describe("Mosaic", () => {
   it("should create a mosaicLevy object", () => {
     const type = 1;
     const recipient = new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA");
-    const mosaicId = new MosaicId("nem", "coin");
+    const mosaicId = new AssetId("nem", "coin");
     const fee = 1000000;
 
-    const mosaicLevy = new MosaicLevy(type, recipient, mosaicId, fee);
+    const mosaicLevy = new AssetLevy(type, recipient, mosaicId, fee);
     expect(mosaicLevy.type).to.be.equal(type);
     expect(mosaicLevy.recipient).to.be.equal(recipient);
   });
 
   it("should create a mosaicDefinition object", () => {
     const creator = PublicAccount.createWithPublicKey("a4f9d42cf8e1f7c6c3216ede81896c4fa9f49071ee4aee2a4843e2711899b23a");
-    const id = new MosaicId("nem", "coin");
+    const id = new AssetId("nem", "coin");
     const description = "mosaicDescription";
-    const properties = new MosaicProperties(1000, 1000, true, false);
-    const levy: MosaicLevy = new MosaicLevy(1, new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"), id, 1000000);
+    const properties = new AssetProperties(1000, 1000, true, false);
+    const levy: AssetLevy = new AssetLevy(1, new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"), id, 1000000);
 
     const mosaic = new AssetDefinition(creator, id, description, properties, levy);
     deepEqual(mosaic.creator, creator);

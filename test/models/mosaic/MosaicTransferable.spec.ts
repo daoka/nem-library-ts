@@ -26,11 +26,11 @@ import {deepEqual} from "assert";
 import {expect} from "chai";
 import {Address} from "../../../src/models/account/Address";
 import {PublicAccount} from "../../../src/models/account/PublicAccount";
-import {Asset} from "../../../src/models/mosaic/Asset";
-import {AssetDefinition, MosaicProperties} from "../../../src/models/mosaic/AssetDefinition";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
-import {MosaicLevy, MosaicLevyType} from "../../../src/models/mosaic/MosaicLevy";
-import {MosaicTransferable} from "../../../src/models/mosaic/MosaicTransferable";
+import {Asset} from "../../../src/models/asset/Asset";
+import {AssetDefinition, AssetProperties} from "../../../src/models/asset/AssetDefinition";
+import {AssetId} from "../../../src/models/asset/AssetId";
+import {AssetLevy, AssetLevyType} from "../../../src/models/asset/AssetLevy";
+import {AssetTransferable} from "../../../src/models/asset/AssetTransferable";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
 
@@ -48,7 +48,7 @@ describe("Mosaic", () => {
     const name = "coin";
     const quantity = 10;
 
-    const mosaicTransferable = new MosaicTransferable(new MosaicId(namespaceId, name), new MosaicProperties(0, 1000, true, false), quantity);
+    const mosaicTransferable = new AssetTransferable(new AssetId(namespaceId, name), new AssetProperties(0, 1000, true, false), quantity);
     expect(mosaicTransferable.mosaicId.namespaceId).to.be.equal(namespaceId);
     expect(mosaicTransferable.mosaicId.name).to.be.equal(name);
     expect(mosaicTransferable.relativeQuantity()).to.be.equal(quantity);
@@ -61,10 +61,10 @@ describe("Mosaic", () => {
 
   it("should create a mosaic transferable object with levy", () => {
     const quantity = 10;
-    const mosaicId = new MosaicId("nem", "xem");
-    const levy = new MosaicLevy(MosaicLevyType.Absolute, new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"), new MosaicId("nem", "xem"), 1);
+    const mosaicId = new AssetId("nem", "xem");
+    const levy = new AssetLevy(AssetLevyType.Absolute, new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"), new AssetId("nem", "xem"), 1);
 
-    const mosaicTransferable = new MosaicTransferable(mosaicId, new MosaicProperties(0, 1000, true, false), quantity, levy);
+    const mosaicTransferable = new AssetTransferable(mosaicId, new AssetProperties(0, 1000, true, false), quantity, levy);
     deepEqual(mosaicTransferable.mosaicId, mosaicId);
     expect(mosaicTransferable.relativeQuantity()).to.be.equal(quantity);
     expect(mosaicTransferable.properties.initialSupply).to.be.equal(1000);
@@ -76,13 +76,13 @@ describe("Mosaic", () => {
 
   it("should create a mosaicDefinition object", () => {
     const creator = PublicAccount.createWithPublicKey("a4f9d42cf8e1f7c6c3216ede81896c4fa9f49071ee4aee2a4843e2711899b23a");
-    const id = new MosaicId("nem", "coin");
+    const id = new AssetId("nem", "coin");
     const description = "mosaicDescription";
-    const properties = new MosaicProperties(0, 1000, true, false);
-    const levy: MosaicLevy = new MosaicLevy(1, new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"), id, 1000000);
+    const properties = new AssetProperties(0, 1000, true, false);
+    const levy: AssetLevy = new AssetLevy(1, new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"), id, 1000000);
 
     const mosaicDefinition = new AssetDefinition(creator, id, description, properties, levy);
-    const mosaicTransferable = MosaicTransferable.createWithMosaicDefinition(mosaicDefinition, 10);
+    const mosaicTransferable = AssetTransferable.createWithMosaicDefinition(mosaicDefinition, 10);
 
     deepEqual(mosaicTransferable.mosaicId, id);
     expect(mosaicTransferable.relativeQuantity()).to.be.equal(10);

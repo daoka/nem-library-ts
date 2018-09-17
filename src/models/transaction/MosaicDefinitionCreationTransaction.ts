@@ -27,7 +27,7 @@ import {TransactionDTO} from "../../infrastructure/transaction/TransactionDTO";
 import {NEMLibrary} from "../../NEMLibrary";
 import {Address} from "../account/Address";
 import {PublicAccount} from "../account/PublicAccount";
-import {AssetDefinition} from "../mosaic/AssetDefinition";
+import {AssetDefinition} from "../asset/AssetDefinition";
 import {NetworkTypes} from "../node/NetworkTypes";
 import {TimeWindow} from "./TimeWindow";
 import {Transaction} from "./Transaction";

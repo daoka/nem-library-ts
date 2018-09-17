@@ -24,7 +24,7 @@
 
 import {expect} from "chai";
 import {MosaicHttp} from "../../../src/infrastructure/MosaicHttp";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
+import {AssetId} from "../../../src/models/asset/AssetId";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
 import {TestVariables} from "../../config/TestVariables.spec";
@@ -95,7 +95,7 @@ describe("MosaicHttp", () => {
   });
 
   it("should look for an expecific mosaic", (done) => {
-    new MosaicHttp().getMosaicDefinition(new MosaicId("server", "mosaic"))
+    new MosaicHttp().getMosaicDefinition(new AssetId("server", "mosaic"))
       .subscribe((mosaic) =>  {
         expect(mosaic.id.name).to.be.equal("mosaic");
         done();

@@ -27,8 +27,8 @@ import {MosaicDefinitionMetaDataPairDTO} from "../../infrastructure/mosaic/Mosai
 import {MosaicLevyDTO} from "../../infrastructure/mosaic/MosaicLevyDTO";
 import {MosaicPropertyDTO} from "../../infrastructure/mosaic/MosaicPropertyDTO";
 import {PublicAccount} from "../account/PublicAccount";
-import {MosaicId} from "./MosaicId";
-import {MosaicLevy} from "./MosaicLevy";
+import {AssetId} from "./AssetId";
+import {AssetLevy} from "./AssetLevy";
 
 /**
  * A mosaic definition describes an asset class. Some fields are mandatory while others are optional.
@@ -44,7 +44,7 @@ export class AssetDefinition {
   /**
    * The mosaic id
    */
-  public readonly id: MosaicId;
+  public readonly id: AssetId;
 
   /**
    * The mosaic description. The description may have a length of up to 512 characters and cannot be empty.
@@ -54,12 +54,12 @@ export class AssetDefinition {
   /**
    * Mosaic properties
    */
-  public readonly properties: MosaicProperties;
+  public readonly properties: AssetProperties;
 
   /**
    * The optional levy for the mosaic. A creator can demand that each mosaic transfer induces an additional fee
    */
-  public readonly levy?: MosaicLevy;
+  public readonly levy?: AssetLevy;
 
   /**
    * The id for the mosaic definition object.
@@ -77,10 +77,10 @@ export class AssetDefinition {
    */
   constructor(
     creator: PublicAccount,
-    id: MosaicId,
+    id: AssetId,
     description: string,
-    properties: MosaicProperties,
-    levy?: MosaicLevy,
+    properties: AssetProperties,
+    levy?: AssetLevy,
     metaId?: number,
   ) {
     this.creator = creator;
@@ -100,10 +100,10 @@ export class AssetDefinition {
     const levy = dto.levy as MosaicLevyDTO;
     return new AssetDefinition(
       PublicAccount.createWithPublicKey(dto.creator),
-      MosaicId.createFromMosaicIdDTO(dto.id),
+      AssetId.createFromMosaicIdDTO(dto.id),
       dto.description,
-      MosaicProperties.createFromMosaicProperties(dto.properties),
-      levy.mosaicId === undefined ? undefined : MosaicLevy.createFromMosaicLevyDTO(levy),
+      AssetProperties.createFromMosaicProperties(dto.properties),
+      levy.mosaicId === undefined ? undefined : AssetLevy.createFromMosaicLevyDTO(levy),
     );
   }
 
@@ -116,17 +116,17 @@ export class AssetDefinition {
     const levy = dto.mosaic.levy as MosaicLevyDTO;
     return new AssetDefinition(
       PublicAccount.createWithPublicKey(dto.mosaic.creator),
-      MosaicId.createFromMosaicIdDTO(dto.mosaic.id),
+      AssetId.createFromMosaicIdDTO(dto.mosaic.id),
       dto.mosaic.description,
-      MosaicProperties.createFromMosaicProperties(dto.mosaic.properties),
-      levy.mosaicId === undefined ? undefined : MosaicLevy.createFromMosaicLevyDTO(levy),
+      AssetProperties.createFromMosaicProperties(dto.mosaic.properties),
+      levy.mosaicId === undefined ? undefined : AssetLevy.createFromMosaicLevyDTO(levy),
       dto.meta.id,
     );
   }
 
   /**
    * @internal
-   * @returns {{description: string, id: MosaicId, levy: (MosaicLevyDTO|{}), properties: MosaicProperty[], creator: string}}
+   * @returns {{description: string, id: AssetId, levy: (MosaicLevyDTO|{}), properties: MosaicProperty[], creator: string}}
    */
   public toDTO(): MosaicDefinitionDTO {
     return {
@@ -144,7 +144,7 @@ export class AssetDefinition {
  * Each property has a default value which will be applied in case it was not specified.
  * Future release may add additional properties to the set of available properties
  */
-export class MosaicProperties {
+export class AssetProperties {
 
   /**
    * initialSupply: The creator can specify an initial supply of mosaics when creating the definition.
@@ -223,8 +223,8 @@ export class MosaicProperties {
    * @param dto
    * @returns {MosaicProperty}
    */
-  public static createFromMosaicProperties(mosaicProperties: MosaicPropertyDTO[]): MosaicProperties {
-    return new MosaicProperties(
+  public static createFromMosaicProperties(mosaicProperties: MosaicPropertyDTO[]): AssetProperties {
+    return new AssetProperties(
       Number(mosaicProperties[0].value),
       Number(mosaicProperties[1].value),
       (mosaicProperties[3].value == "true"),

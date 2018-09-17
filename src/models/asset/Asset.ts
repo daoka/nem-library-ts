@@ -22,73 +22,46 @@
  * SOFTWARE.
  */
 
-import {MosaicIdDTO} from "../../infrastructure/mosaic/MosaicIdDTO";
+import {MosaicDTO} from "../../infrastructure/mosaic/MosaicDTO";
+import {AssetId} from "./AssetId";
+
 /**
- *
- * A mosaic id uniquely identifies an underlying mosaic definition.
+ * A mosaic describes an instance of a mosaic definition. Mosaics can be transferred by means of a transfer transaction.
  */
-export class MosaicId {
+export class Asset {
 
   /**
-   * The corresponding namespace id
+   * The asset id
    */
-  public readonly namespaceId: string;
+  public readonly assetId: AssetId;
 
   /**
-   * The name of the mosaic definition.
+   * The mosaic quantity. The quantity is always given in smallest units for the mosaic, i.e. if it has a divisibility of 3 the quantity is given in millis.
    */
-  public readonly name: string;
+  public readonly quantity: number;
 
   /**
    * constructor
-   * @param namespaceId
-   * @param name
+   * @param assetId
+   * @param quantity
    */
   constructor(
-    namespaceId: string,
-    name: string,
+    assetId: AssetId,
+    quantity: number,
   ) {
-    this.namespaceId = namespaceId;
-    this.name = name;
-  }
-
-  public toString(): string {
-    return this.description();
-  }
-
-  /**
-   * @internal
-   * @returns {{name: string, namespaceId: string}}
-   */
-  public toDTO(): MosaicIdDTO {
-    return {
-      name: this.name,
-      namespaceId: this.namespaceId,
-    };
+    this.assetId = assetId;
+    this.quantity = quantity;
   }
 
   /**
    * @internal
    * @param dto
-   * @returns {MosaicId}
+   * @returns {Asset}
    */
-  public static createFromMosaicIdDTO(dto: MosaicIdDTO): MosaicId {
-    return new MosaicId(dto.namespaceId, dto.name);
+  public static createFromMosaicDTO(dto: MosaicDTO): Asset {
+    return new Asset(
+      AssetId.createFromMosaicIdDTO(dto.mosaicId),
+      dto.quantity);
   }
 
-  /**
-   * Compares mosaicIds for equality
-   * @param mosaicId
-   * @returns {boolean}
-   */
-  public equals(mosaicId: MosaicId): boolean {
-    return this.namespaceId == mosaicId.namespaceId && this.name == mosaicId.name;
-  }
-
-  /**
-   * Mosaic Id description in format namespaceId:name ex: nem:xem
-   */
-  public description(): string {
-    return this.namespaceId + ":" + this.name;
-  }
 }

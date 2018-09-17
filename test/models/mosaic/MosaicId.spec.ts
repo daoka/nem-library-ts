@@ -23,7 +23,7 @@
  */
 
 import {expect} from "chai";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
+import {AssetId} from "../../../src/models/asset/AssetId";
 
 describe("MosaicId", () => {
 
@@ -31,36 +31,36 @@ describe("MosaicId", () => {
     const namespaceId = "nem";
     const name = "coin";
 
-    const mosaicId = new MosaicId(namespaceId, name);
+    const mosaicId = new AssetId(namespaceId, name);
 
     expect(mosaicId.namespaceId).to.be.equal(namespaceId);
     expect(mosaicId.name).to.be.equal(name);
   });
 
   it("should two mosaics be equal", () => {
-    const mosaic = new MosaicId("nem", "coin");
+    const mosaic = new AssetId("nem", "coin");
     expect(mosaic.equals(mosaic)).to.be.true;
   });
 
   it("should two mosaics be different with different namespaceId", () => {
-    const mosaic = new MosaicId("nem", "coin");
-    const otherMosaic = new MosaicId("xem", "coin");
+    const mosaic = new AssetId("nem", "coin");
+    const otherMosaic = new AssetId("xem", "coin");
     expect(mosaic.equals(otherMosaic)).to.be.false;
   });
 
   it("should two mosaics be different with different name", () => {
-    const mosaic = new MosaicId("nem", "coin");
-    const otherMosaic = new MosaicId("nem", "xem");
+    const mosaic = new AssetId("nem", "coin");
+    const otherMosaic = new AssetId("nem", "xem");
     expect(mosaic.equals(otherMosaic)).to.be.false;
   });
 
   it("should return mosaicId description", () => {
-    const mosaic = new MosaicId("nem", "coin");
+    const mosaic = new AssetId("nem", "coin");
     expect(mosaic.description()).to.be.equal("nem:coin");
   });
 
   it("should return the mosaic to string", () => {
-    const mosaic = new MosaicId("nem", "coin");
+    const mosaic = new AssetId("nem", "coin");
     expect(mosaic.toString()).to.be.equal("nem:coin");
     expect("" + mosaic).to.be.equal("nem:coin");
   });

@@ -24,10 +24,10 @@
 
 import {Observable} from "rxjs/Observable";
 import {MosaicHttp} from "../infrastructure/MosaicHttp";
-import {MosaicProperties} from "../models/mosaic/AssetDefinition";
-import {MosaicLevyType} from "../models/mosaic/MosaicLevy";
-import {MosaicTransferable} from "../models/mosaic/MosaicTransferable";
-import {XEM} from "../models/mosaic/XEM";
+import {AssetProperties} from "../models/asset/AssetDefinition";
+import {AssetLevyType} from "../models/asset/AssetLevy";
+import {AssetTransferable} from "../models/asset/AssetTransferable";
+import {XEM} from "../models/asset/XEM";
 /**
  * Mosaic service
  */
@@ -52,14 +52,14 @@ export class MosaicService {
    * @param mosaicTransferable
    * @returns {any}
    */
-  public calculateLevy(mosaicTransferable: MosaicTransferable): Observable<number> {
+  public calculateLevy(mosaicTransferable: AssetTransferable): Observable<number> {
     if (mosaicTransferable.levy == undefined) return Observable.of(0);
-    if (mosaicTransferable.levy.mosaicId.equals(XEM.MOSAICID)) {
+    if (mosaicTransferable.levy.assetId.equals(XEM.MOSAICID)) {
       return Observable.of(
-        this.levyFee(mosaicTransferable, new MosaicProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE)),
+        this.levyFee(mosaicTransferable, new AssetProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE)),
       );
     } else {
-      return this.mosaicHttp.getMosaicDefinition(mosaicTransferable.levy.mosaicId).map((levyMosaicDefinition) => {
+      return this.mosaicHttp.getMosaicDefinition(mosaicTransferable.levy.assetId).map((levyMosaicDefinition) => {
         return this.levyFee(mosaicTransferable, levyMosaicDefinition.properties);
       });
     }
@@ -71,10 +71,10 @@ export class MosaicService {
    * @param levy
    * @returns {any}
    */
-  private levyFee(mosaicTransferable: MosaicTransferable, levyProperties: MosaicProperties): number {
+  private levyFee(mosaicTransferable: AssetTransferable, levyProperties: AssetProperties): number {
     let levyValue;
 
-    if (mosaicTransferable.levy!.type == MosaicLevyType.Absolute) {
+    if (mosaicTransferable.levy!.type == AssetLevyType.Absolute) {
       levyValue = mosaicTransferable.levy!.fee;
     } else {
       levyValue = mosaicTransferable.relativeQuantity() * mosaicTransferable.levy!.fee / 10000;

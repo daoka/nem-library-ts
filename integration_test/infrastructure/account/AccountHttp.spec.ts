@@ -311,7 +311,7 @@ describe("AccountHttp", () => {
     accountHttp.getMosaicOwnedByAddress(new Address("TANLDM5VDKSZJQX4GFLOEC4V5OVHIJZFACRHUWI5"))
       .subscribe((mosaics) => {
         expect(mosaics[0].quantity).to.not.be.null;
-        expect(mosaics[0].mosaicId).to.not.be.null;
+        expect(mosaics[0].assetId).to.not.be.null;
         done();
       });
   });

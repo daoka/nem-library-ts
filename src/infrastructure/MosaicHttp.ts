@@ -24,9 +24,9 @@
 
 import * as requestPromise from "request-promise-native";
 import {Observable} from "rxjs";
-import {AssetDefinition, MosaicProperties} from "../models/mosaic/AssetDefinition";
-import {MosaicId} from "../models/mosaic/MosaicId";
-import {MosaicTransferable} from "../models/mosaic/MosaicTransferable";
+import {AssetDefinition, AssetProperties} from "../models/asset/AssetDefinition";
+import {AssetId} from "../models/asset/AssetId";
+import {AssetTransferable} from "../models/asset/AssetTransferable";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
 import {MosaicDefinitionMetaDataPairDTO} from "./mosaic/MosaicDefinitionMetaDataPairDTO";
 
@@ -63,7 +63,7 @@ export class MosaicHttp extends HttpEndpoint {
    * @param {string} mosaicId
    * @returns {Observable<AssetDefinition>}
    */
-  public getMosaicDefinition(mosaicId: MosaicId): Observable<AssetDefinition> {
+  public getMosaicDefinition(mosaicId: AssetId): Observable<AssetDefinition> {
     return this.getAllMosaicsGivenNamespace(mosaicId.namespaceId, undefined, 100)
       .flatMap((_) => _)
       .filter((mosaicDefinition) => mosaicDefinition.id.equals(mosaicId))
@@ -74,21 +74,21 @@ export class MosaicHttp extends HttpEndpoint {
    * Return a MosaicTransferable
    * @param {string} mosaicId
    * @param {number} quantity
-   * @returns {Observable<MosaicTransferable>}
+   * @returns {Observable<AssetTransferable>}
    */
-  public getMosaicTransferableWithAbsoluteAmount(mosaicId: MosaicId, quantity: number): Observable<MosaicTransferable> {
+  public getMosaicTransferableWithAbsoluteAmount(mosaicId: AssetId, quantity: number): Observable<AssetTransferable> {
     return this.getMosaicDefinition(mosaicId)
-      .map((mosaicDefinition) => MosaicTransferable.createAbsolute(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
+      .map((mosaicDefinition) => AssetTransferable.createAbsolute(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
   }
 
   /**
    * Return a MosaicTransferable
    * @param {string} mosaicId
    * @param {number} quantity
-   * @returns {Observable<MosaicTransferable>}
+   * @returns {Observable<AssetTransferable>}
    */
-  public getMosaicTransferableWithRelativeAmount(mosaicId: MosaicId, quantity: number): Observable<MosaicTransferable> {
+  public getMosaicTransferableWithRelativeAmount(mosaicId: AssetId, quantity: number): Observable<AssetTransferable> {
     return this.getMosaicDefinition(mosaicId)
-      .map((mosaicDefinition) => MosaicTransferable.createRelative(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
+      .map((mosaicDefinition) => AssetTransferable.createRelative(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
   }
 }

@@ -23,7 +23,7 @@
  */
 
 import {expect} from "chai";
-import {XEM} from "../../../src/models/mosaic/XEM";
+import {XEM} from "../../../src/models/asset/XEM";
 
 describe("XEM", () => {
 
