@@ -26,13 +26,13 @@ import {MosaicDefinitionDTO} from "../asset/MosaicDefinitionDTO";
 import {TransactionDTO} from "./TransactionDTO";
 /**
  * @internal
- * Before a mosaic can be created or transferred, a corresponding definition of the mosaic has to be created and published to the network.
- * This is done via a mosaic definition creation transaction.
+ * Before a asset can be created or transferred, a corresponding definition of the asset has to be created and published to the network.
+ * This is done via a asset definition creation transaction.
  */
 export interface MosaicDefinitionCreationTransactionDTO extends TransactionDTO {
 
   /**
-   * The fee for the creation of the mosaic.
+   * The fee for the creation of the asset.
    */
   readonly creationFee: number;
 
@@ -42,7 +42,7 @@ export interface MosaicDefinitionCreationTransactionDTO extends TransactionDTO {
   readonly creationFeeSink: string;
 
   /**
-   * The actual mosaic definition
+   * The actual asset definition
    */
   readonly mosaicDefinition: MosaicDefinitionDTO;
 

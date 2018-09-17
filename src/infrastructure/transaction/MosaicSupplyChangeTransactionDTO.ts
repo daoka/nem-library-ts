@@ -34,7 +34,7 @@ export type MosaicSupplyType = 1 | 2;
 
 /**
  * @internal
- * In case a mosaic definition has the property 'supplyMutable' set to true, the creator of the mosaic definition can change the supply, i.e. increase or decrease the supply.
+ * In case a asset definition has the property 'supplyMutable' set to true, the creator of the asset definition can change the supply, i.e. increase or decrease the supply.
  */
 export interface MosaicSupplyChangeTransactionDTO extends TransactionDTO {
 
@@ -44,12 +44,12 @@ export interface MosaicSupplyChangeTransactionDTO extends TransactionDTO {
   readonly supplyType: MosaicSupplyType;
 
   /**
-   * The supply change in units for the mosaic.
+   * The supply change in units for the asset.
    */
   readonly delta: number;
 
   /**
-   * 	The mosaic id.
+   * 	The asset id.
    */
   readonly mosaicId: MosaicIdDTO;
 

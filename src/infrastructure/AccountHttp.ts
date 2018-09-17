@@ -327,12 +327,12 @@ export class AccountHttp extends HttpEndpoint {
   }
 
   /**
-   * Gets an array of mosaic definition objects for a given account address. The parent parameter is optional.
-   * If supplied, only mosaic definitions for the given parent namespace are returned.
-   * The id parameter is optional and allows retrieving mosaic definitions in batches of 25 mosaic definitions.
+   * Gets an array of asset definition objects for a given account address. The parent parameter is optional.
+   * If supplied, only asset definitions for the given parent namespace are returned.
+   * The id parameter is optional and allows retrieving asset definitions in batches of 25 asset definitions.
    * @param address - The address of the account.
    * @param parent - The optional parent namespace id.
-   * @param id - The optional mosaic definition database id up to which mosaic definitions are returned.
+   * @param id - The optional asset definition database id up to which asset definitions are returned.
    * @return Observable<AssetDefinition[]>
    */
   public getAssetsCreatedByAddress(address: Address, parent?: string, id?: string): Observable<AssetDefinition[]> {
@@ -351,7 +351,7 @@ export class AccountHttp extends HttpEndpoint {
   }
 
   /**
-   * Gets an array of mosaic objects for a given account address.
+   * Gets an array of asset objects for a given account address.
    * @param address - Address
    * @return Observable<Asset[]>
    */

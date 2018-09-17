@@ -24,7 +24,7 @@
 
 /**
  * @internal
- * A mosaic id uniquely identifies an underlying mosaic definition.
+ * A asset id uniquely identifies an underlying asset definition.
  */
 export interface MosaicIdDTO {
 
@@ -34,7 +34,7 @@ export interface MosaicIdDTO {
   readonly namespaceId: string;
 
   /**
-   * The name of the mosaic definition.
+   * The name of the asset definition.
    */
   readonly name: string;
 }
