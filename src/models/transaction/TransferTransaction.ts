@@ -26,8 +26,8 @@ import {TransactionDTO} from "../../infrastructure/transaction/TransactionDTO";
 import {TransferTransactionDTO} from "../../infrastructure/transaction/TransferTransactionDTO";
 import {Address} from "../account/Address";
 import {PublicAccount} from "../account/PublicAccount";
-import {Mosaic} from "../mosaic/Mosaic";
-import {MosaicDefinition} from "../mosaic/MosaicDefinition";
+import {Asset} from "../mosaic/Asset";
+import {AssetDefinition} from "../mosaic/AssetDefinition";
 import {MosaicId} from "../mosaic/MosaicId";
 import {MosaicTransferable} from "../mosaic/MosaicTransferable";
 import {XEM} from "../mosaic/XEM";
@@ -66,7 +66,7 @@ export class TransferTransaction extends Transaction {
   /**
    * The array of Mosaic objects.
    */
-  private readonly _mosaics?: Mosaic[];
+  private readonly _mosaics?: Asset[];
 
   /**
    * @internal
@@ -88,7 +88,7 @@ export class TransferTransaction extends Transaction {
               fee: number,
               message: PlainMessage | EncryptedMessage,
               signature?: string,
-              mosaic?: Mosaic[],
+              mosaic?: Asset[],
               sender?: PublicAccount,
               transactionInfo?: TransactionInfo) {
     super(TransactionTypes.TRANSFER, version, timeWindow, signature, sender, transactionInfo);
@@ -110,12 +110,12 @@ export class TransferTransaction extends Transaction {
 
   /**
    * in case that the transfer transaction does not contain mosaics, it throws an error
-   * @returns {Mosaic[]}
+   * @returns {Asset[]}
    */
-  public mosaics(): Mosaic[] {
+  public mosaics(): Asset[] {
     if (this.containsMosaics()) {
       return this._mosaics!.map((mosaic) =>
-        new Mosaic(mosaic.mosaicId, (mosaic.quantity * (this._xem.relativeQuantity()))));
+        new Asset(mosaic.mosaicId, (mosaic.quantity * (this._xem.relativeQuantity()))));
     }
     throw new Error("Does not contain mosaics");
   }
@@ -150,7 +150,7 @@ export class TransferTransaction extends Transaction {
       signature: this.signature,
       type: this.type,
       version,
-      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Mosaic(mosaic.mosaicId, mosaic.quantity)),
+      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Asset(mosaic.mosaicId, mosaic.quantity)),
       fee: this.fee,
       recipient: this.recipient.plain(),
       amount: this._xem.absoluteQuantity(),
@@ -231,7 +231,7 @@ export class TransferTransaction extends Transaction {
       fee,
       message,
       undefined,
-      mosaics.map((_) => new Mosaic(_.mosaicId, _.absoluteQuantity())));
+      mosaics.map((_) => new Asset(_.mosaicId, _.absoluteQuantity())));
   }
 
 }

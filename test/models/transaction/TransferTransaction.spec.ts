@@ -27,7 +27,7 @@ import {expect} from "chai";
 import {Account} from "../../../src/models/account/Account";
 import {Address} from "../../../src/models/account/Address";
 import {PublicAccount} from "../../../src/models/account/PublicAccount";
-import {MosaicProperties} from "../../../src/models/mosaic/MosaicDefinition";
+import {MosaicProperties} from "../../../src/models/mosaic/AssetDefinition";
 import {MosaicId} from "../../../src/models/mosaic/MosaicId";
 import {MosaicTransferable} from "../../../src/models/mosaic/MosaicTransferable";
 import {XEM} from "../../../src/models/mosaic/XEM";

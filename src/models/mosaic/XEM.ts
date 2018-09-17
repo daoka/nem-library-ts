@@ -23,7 +23,7 @@
  */
 
 import { PublicAccount } from "../account/PublicAccount";
-import { MosaicDefinition, MosaicProperties } from "./MosaicDefinition";
+import { AssetDefinition, MosaicProperties } from "./AssetDefinition";
 import { MosaicId } from "./MosaicId";
 import { MosaicTransferable } from "./MosaicTransferable";
 

@@ -26,8 +26,8 @@ import {deepEqual} from "assert";
 import {expect} from "chai";
 import {Address} from "../../../src/models/account/Address";
 import {PublicAccount} from "../../../src/models/account/PublicAccount";
-import {Mosaic} from "../../../src/models/mosaic/Mosaic";
-import {MosaicDefinition, MosaicProperties} from "../../../src/models/mosaic/MosaicDefinition";
+import {Asset} from "../../../src/models/mosaic/Asset";
+import {AssetDefinition, MosaicProperties} from "../../../src/models/mosaic/AssetDefinition";
 import {MosaicId} from "../../../src/models/mosaic/MosaicId";
 import {MosaicLevy} from "../../../src/models/mosaic/MosaicLevy";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
@@ -47,7 +47,7 @@ describe("Mosaic", () => {
     const name = "coin";
     const quantity = 10;
 
-    const mosaic = new Mosaic(new MosaicId(namespaceId, name), quantity);
+    const mosaic = new Asset(new MosaicId(namespaceId, name), quantity);
     expect(mosaic.mosaicId.namespaceId).to.be.equal(namespaceId);
     expect(mosaic.mosaicId.name).to.be.equal(name);
     expect(mosaic.quantity).to.be.equal(quantity);
@@ -80,7 +80,7 @@ describe("Mosaic", () => {
     const properties = new MosaicProperties(1000, 1000, true, false);
     const levy: MosaicLevy = new MosaicLevy(1, new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"), id, 1000000);
 
-    const mosaic = new MosaicDefinition(creator, id, description, properties, levy);
+    const mosaic = new AssetDefinition(creator, id, description, properties, levy);
     deepEqual(mosaic.creator, creator);
     deepEqual(mosaic.id, id);
     expect(mosaic.description).to.be.equal(description);

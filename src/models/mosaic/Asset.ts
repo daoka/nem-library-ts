@@ -28,7 +28,7 @@ import {MosaicId} from "./MosaicId";
 /**
  * A mosaic describes an instance of a mosaic definition. Mosaics can be transferred by means of a transfer transaction.
  */
-export class Mosaic {
+export class Asset {
 
   /**
    * The mosaic id
@@ -56,10 +56,10 @@ export class Mosaic {
   /**
    * @internal
    * @param dto
-   * @returns {Mosaic}
+   * @returns {Asset}
    */
-  public static createFromMosaicDTO(dto: MosaicDTO): Mosaic {
-    return new Mosaic(
+  public static createFromMosaicDTO(dto: MosaicDTO): Asset {
+    return new Asset(
       MosaicId.createFromMosaicIdDTO(dto.mosaicId),
       dto.quantity);
   }

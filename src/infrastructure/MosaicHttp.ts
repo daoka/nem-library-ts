@@ -24,7 +24,7 @@
 
 import * as requestPromise from "request-promise-native";
 import {Observable} from "rxjs";
-import {MosaicDefinition, MosaicProperties} from "../models/mosaic/MosaicDefinition";
+import {AssetDefinition, MosaicProperties} from "../models/mosaic/AssetDefinition";
 import {MosaicId} from "../models/mosaic/MosaicId";
 import {MosaicTransferable} from "../models/mosaic/MosaicTransferable";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
@@ -41,9 +41,9 @@ export class MosaicHttp extends HttpEndpoint {
    * @param namespace
    * @param id - The topmost mosaic definition database id up to which root mosaic definitions are returned. The parameter is optional. If not supplied the most recent mosaic definitiona are returned.
    * @param pageSize - The number of mosaic definition objects to be returned for each request. The parameter is optional. The default value is 25, the minimum value is 5 and hte maximum value is 100.
-   * @returns Observable<MosaicDefinition[]>
+   * @returns Observable<AssetDefinition[]>
    */
-  public getAllMosaicsGivenNamespace(namespace: string, id?: number, pageSize?: number): Observable<MosaicDefinition[]> {
+  public getAllMosaicsGivenNamespace(namespace: string, id?: number, pageSize?: number): Observable<AssetDefinition[]> {
     const url = "mosaic/definition/page?namespace=" + namespace +
       (id === undefined ? "" : "&id=" + id) +
       (pageSize === undefined ? "" : "&pageSize=" + pageSize);
@@ -53,7 +53,7 @@ export class MosaicHttp extends HttpEndpoint {
       .retryWhen(this.replyWhenRequestError)
       .map((mosaicDefinitionsData) => {
         return mosaicDefinitionsData.data.map((mosaicDefinitionMetaDataPairDTO: MosaicDefinitionMetaDataPairDTO) => {
-          return MosaicDefinition.createFromMosaicDefinitionMetaDataPairDTO(mosaicDefinitionMetaDataPairDTO);
+          return AssetDefinition.createFromMosaicDefinitionMetaDataPairDTO(mosaicDefinitionMetaDataPairDTO);
         });
       });
   }
@@ -61,9 +61,9 @@ export class MosaicHttp extends HttpEndpoint {
   /**
    * Return the Mosaic Definition given a namespace and mosaic. Throw exception if no mosaic is found
    * @param {string} mosaicId
-   * @returns {Observable<MosaicDefinition>}
+   * @returns {Observable<AssetDefinition>}
    */
-  public getMosaicDefinition(mosaicId: MosaicId): Observable<MosaicDefinition> {
+  public getMosaicDefinition(mosaicId: MosaicId): Observable<AssetDefinition> {
     return this.getAllMosaicsGivenNamespace(mosaicId.namespaceId, undefined, 100)
       .flatMap((_) => _)
       .filter((mosaicDefinition) => mosaicDefinition.id.equals(mosaicId))

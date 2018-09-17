@@ -31,8 +31,8 @@ import {AccountImportanceInfo} from "../models/account/AccountImportanceInfo";
 import {AccountInfoWithMetaData} from "../models/account/AccountInfo";
 import {Address} from "../models/account/Address";
 import {NodeHarvestInfo} from "../models/account/NodeHarvestInfo";
-import {Mosaic} from "../models/mosaic/Mosaic";
-import {MosaicDefinition} from "../models/mosaic/MosaicDefinition";
+import {Asset} from "../models/mosaic/Asset";
+import {AssetDefinition} from "../models/mosaic/AssetDefinition";
 import {Namespace} from "../models/namespace/Namespace";
 import {Transaction} from "../models/transaction/Transaction";
 import {AccountHistoricalDataViewModelDTO} from "./account/AccountHistoricalDataViewModelDTO";
@@ -333,9 +333,9 @@ export class AccountHttp extends HttpEndpoint {
    * @param address - The address of the account.
    * @param parent - The optional parent namespace id.
    * @param id - The optional mosaic definition database id up to which mosaic definitions are returned.
-   * @return Observable<MosaicDefinition[]>
+   * @return Observable<AssetDefinition[]>
    */
-  public getMosaicCreatedByAddress(address: Address, parent?: string, id?: string): Observable<MosaicDefinition[]> {
+  public getMosaicCreatedByAddress(address: Address, parent?: string, id?: string): Observable<AssetDefinition[]> {
     const url = "mosaic/definition/page?address=" + address.plain() +
       (parent === undefined ? "" : "&parent=" + parent) +
       (id === undefined ? "" : "&id=" + id);
@@ -345,7 +345,7 @@ export class AccountHttp extends HttpEndpoint {
       .retryWhen(this.replyWhenRequestError)
       .map((mosaicsData) => {
         return mosaicsData.data.map((mosaicDefinitionDTO: MosaicDefinitionDTO) => {
-          return MosaicDefinition.createFromMosaicDefinitionDTO(mosaicDefinitionDTO);
+          return AssetDefinition.createFromMosaicDefinitionDTO(mosaicDefinitionDTO);
         });
       });
   }
@@ -353,15 +353,15 @@ export class AccountHttp extends HttpEndpoint {
   /**
    * Gets an array of mosaic objects for a given account address.
    * @param address - Address
-   * @return Observable<Mosaic[]>
+   * @return Observable<Asset[]>
    */
-  public getMosaicOwnedByAddress(address: Address): Observable<Mosaic[]> {
+  public getMosaicOwnedByAddress(address: Address): Observable<Asset[]> {
     return Observable.of("mosaic/owned?address=" + address.plain())
       .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
       .retryWhen(this.replyWhenRequestError)
       .map((mosaicsData) => {
         return mosaicsData.data.map((mosaicDTO: MosaicDTO) => {
-          return Mosaic.createFromMosaicDTO(mosaicDTO);
+          return Asset.createFromMosaicDTO(mosaicDTO);
         });
       });
   }

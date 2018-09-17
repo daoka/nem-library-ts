@@ -26,8 +26,8 @@ import {Observable} from "rxjs";
 import {AccountHttp} from "../infrastructure/AccountHttp";
 import {MosaicHttp} from "../infrastructure/MosaicHttp";
 import {Address} from "../models/account/Address";
-import {Mosaic} from "../models/mosaic/Mosaic";
-import {MosaicDefinition} from "../models/mosaic/MosaicDefinition";
+import {Asset} from "../models/mosaic/Asset";
+import {AssetDefinition} from "../models/mosaic/AssetDefinition";
 import {MosaicTransferable} from "../models/mosaic/MosaicTransferable";
 import {XEM} from "../models/mosaic/XEM";
 
@@ -58,12 +58,12 @@ export class AccountOwnedMosaicsService {
   /**
    * Account owned mosaics definitions
    * @param address
-   * @returns {Observable<MosaicDefinition[]>}
+   * @returns {Observable<AssetDefinition[]>}
    */
   public fromAddress(address: Address): Observable<MosaicTransferable[]> {
     return this.accountHttp.getMosaicOwnedByAddress(address)
       .flatMap((_) => _)
-      .flatMap((mosaic: Mosaic) => {
+      .flatMap((mosaic: Asset) => {
         if (XEM.MOSAICID.equals(mosaic.mosaicId)) return Observable.of(new XEM(mosaic.quantity / Math.pow(10, 6)));
         else {
           return this.mosaicHttp.getMosaicDefinition(mosaic.mosaicId)

@@ -29,8 +29,8 @@ import {TransactionHttp} from "../../src/infrastructure/TransactionHttp";
 import {Account} from "../../src/models/account/Account";
 import {Address} from "../../src/models/account/Address";
 import {PublicAccount} from "../../src/models/account/PublicAccount";
-import {Mosaic} from "../../src/models/mosaic/Mosaic";
-import {MosaicDefinition, MosaicProperties} from "../../src/models/mosaic/MosaicDefinition";
+import {Asset} from "../../src/models/mosaic/Asset";
+import {AssetDefinition, MosaicProperties} from "../../src/models/mosaic/AssetDefinition";
 import {MosaicId} from "../../src/models/mosaic/MosaicId";
 import {MosaicLevy, MosaicLevyType} from "../../src/models/mosaic/MosaicLevy";
 import {MosaicTransferable} from "../../src/models/mosaic/MosaicTransferable";
@@ -187,7 +187,7 @@ describe("TransactionHttp", () => {
     const account = Account.createWithPrivateKey(privateKey);
     const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
-      new MosaicDefinition(
+      new AssetDefinition(
         PublicAccount.createWithPublicKey(account.publicKey),
         new MosaicId("newpart", "joe12"),
         "mosaic description",
@@ -209,7 +209,7 @@ describe("TransactionHttp", () => {
     const account = Account.createWithPrivateKey(privateKey);
     const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
-      new MosaicDefinition(
+      new AssetDefinition(
         PublicAccount.createWithPublicKey(account.publicKey),
         new MosaicId("newpart", "joe11"),
         "mosaic description",
@@ -380,7 +380,7 @@ describe("TransactionHttp", () => {
 
     const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
-      new MosaicDefinition(
+      new AssetDefinition(
         multisigAccount,
         new MosaicId("multisigns", "mosaic3"),
         "mosaic description",

@@ -24,8 +24,8 @@
 
 import {Address} from "../../models/account/Address";
 import {PublicAccount} from "../../models/account/PublicAccount";
-import {Mosaic} from "../../models/mosaic/Mosaic";
-import {MosaicDefinition, MosaicProperties} from "../../models/mosaic/MosaicDefinition";
+import {Asset} from "../../models/mosaic/Asset";
+import {AssetDefinition, MosaicProperties} from "../../models/mosaic/AssetDefinition";
 import {MosaicId} from "../../models/mosaic/MosaicId";
 import {MosaicLevy} from "../../models/mosaic/MosaicLevy";
 import {XEM} from "../../models/mosaic/XEM";
@@ -108,7 +108,7 @@ export const CreateUnconfirmedTransactionFromDTO = (dto: UnconfirmedTransactionM
       transaction.fee,
       message,
       transaction.signature,
-      transaction.mosaics === undefined ? undefined : transaction.mosaics.map((mosaicDTO: MosaicDTO) => Mosaic.createFromMosaicDTO(mosaicDTO)),
+      transaction.mosaics === undefined ? undefined : transaction.mosaics.map((mosaicDTO: MosaicDTO) => Asset.createFromMosaicDTO(mosaicDTO)),
       PublicAccount.createWithPublicKey(transaction.signer),
       undefined,
 
@@ -147,7 +147,7 @@ export const CreateUnconfirmedTransactionFromDTO = (dto: UnconfirmedTransactionM
     const transaction = dto.transaction as MosaicDefinitionCreationTransactionDTO;
     const levy = (transaction.mosaicDefinition.levy as MosaicLevyDTO).mosaicId === undefined ?
       undefined : MosaicLevy.createFromMosaicLevyDTO(transaction.mosaicDefinition.levy as MosaicLevyDTO);
-    const mosaicDefinition = new MosaicDefinition(
+    const mosaicDefinition = new AssetDefinition(
       PublicAccount.createWithPublicKey(transaction.mosaicDefinition.creator),
       new MosaicId(transaction.mosaicDefinition.id.namespaceId, transaction.mosaicDefinition.id.name),
       transaction.mosaicDefinition.description,

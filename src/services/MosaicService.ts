@@ -24,7 +24,7 @@
 
 import {Observable} from "rxjs/Observable";
 import {MosaicHttp} from "../infrastructure/MosaicHttp";
-import {MosaicProperties} from "../models/mosaic/MosaicDefinition";
+import {MosaicProperties} from "../models/mosaic/AssetDefinition";
 import {MosaicLevyType} from "../models/mosaic/MosaicLevy";
 import {MosaicTransferable} from "../models/mosaic/MosaicTransferable";
 import {XEM} from "../models/mosaic/XEM";

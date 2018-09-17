@@ -26,7 +26,7 @@ import {expect} from "chai";
 import {AccountHttp} from "../../src/infrastructure/AccountHttp";
 import {MosaicHttp} from "../../src/infrastructure/MosaicHttp";
 import {Address} from "../../src/models/account/Address";
-import {MosaicDefinition} from "../../src/models/mosaic/MosaicDefinition";
+import {AssetDefinition} from "../../src/models/mosaic/AssetDefinition";
 import {MosaicTransferable} from "../../src/models/mosaic/MosaicTransferable";
 import {NetworkTypes} from "../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../src/NEMLibrary";

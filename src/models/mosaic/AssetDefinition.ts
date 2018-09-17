@@ -34,7 +34,7 @@ import {MosaicLevy} from "./MosaicLevy";
  * A mosaic definition describes an asset class. Some fields are mandatory while others are optional.
  * The properties of a mosaic definition always have a default value and only need to be supplied if they differ from the default value.
  */
-export class MosaicDefinition {
+export class AssetDefinition {
 
   /**
    * 	The public key of the mosaic definition creator.
@@ -94,11 +94,11 @@ export class MosaicDefinition {
   /**
    * @internal
    * @param dto
-   * @returns {MosaicDefinition}
+   * @returns {AssetDefinition}
    */
-  public static createFromMosaicDefinitionDTO(dto: MosaicDefinitionDTO): MosaicDefinition {
+  public static createFromMosaicDefinitionDTO(dto: MosaicDefinitionDTO): AssetDefinition {
     const levy = dto.levy as MosaicLevyDTO;
-    return new MosaicDefinition(
+    return new AssetDefinition(
       PublicAccount.createWithPublicKey(dto.creator),
       MosaicId.createFromMosaicIdDTO(dto.id),
       dto.description,
@@ -110,11 +110,11 @@ export class MosaicDefinition {
   /**
    * @internal
    * @param dto
-   * @returns {MosaicDefinition}
+   * @returns {AssetDefinition}
    */
-  public static createFromMosaicDefinitionMetaDataPairDTO(dto: MosaicDefinitionMetaDataPairDTO): MosaicDefinition {
+  public static createFromMosaicDefinitionMetaDataPairDTO(dto: MosaicDefinitionMetaDataPairDTO): AssetDefinition {
     const levy = dto.mosaic.levy as MosaicLevyDTO;
-    return new MosaicDefinition(
+    return new AssetDefinition(
       PublicAccount.createWithPublicKey(dto.mosaic.creator),
       MosaicId.createFromMosaicIdDTO(dto.mosaic.id),
       dto.mosaic.description,

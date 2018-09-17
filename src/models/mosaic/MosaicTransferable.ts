@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-import {Mosaic} from "./Mosaic";
-import {MosaicDefinition, MosaicProperties} from "./MosaicDefinition";
+import {Asset} from "./Asset";
+import {AssetDefinition, MosaicProperties} from "./AssetDefinition";
 import {MosaicId} from "./MosaicId";
 import {MosaicLevy} from "./MosaicLevy";
 
@@ -37,7 +37,7 @@ export class MosaicTransferable {
    * @param amount
    * @returns {MosaicTransferable}
    */
-  public static createWithMosaicDefinition(mosaicDefinition: MosaicDefinition, amount: number) {
+  public static createWithMosaicDefinition(mosaicDefinition: AssetDefinition, amount: number) {
     return new MosaicTransferable(mosaicDefinition.id, mosaicDefinition.properties, amount, mosaicDefinition.levy);
   }
 

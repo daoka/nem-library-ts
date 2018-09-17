@@ -25,7 +25,7 @@
 import {expect} from "chai";
 import {MosaicHttp} from "../../src/infrastructure/MosaicHttp";
 import {Address} from "../../src/models/account/Address";
-import {MosaicProperties} from "../../src/models/mosaic/MosaicDefinition";
+import {MosaicProperties} from "../../src/models/mosaic/AssetDefinition";
 import {MosaicId} from "../../src/models/mosaic/MosaicId";
 import {MosaicLevy, MosaicLevyType} from "../../src/models/mosaic/MosaicLevy";
 import {MosaicTransferable} from "../../src/models/mosaic/MosaicTransferable";
