@@ -24,7 +24,7 @@
 
 import {Observable} from "rxjs";
 import {AccountHttp} from "../infrastructure/AccountHttp";
-import {MosaicHttp} from "../infrastructure/MosaicHttp";
+import {AssetHttp} from "../infrastructure/AssetHttp";
 import {Address} from "../models/account/Address";
 import {Asset} from "../models/asset/Asset";
 import {AssetDefinition} from "../models/asset/AssetDefinition";
@@ -43,14 +43,14 @@ export class AccountOwnedMosaicsService {
   /**
    * mosaicHttp
    */
-  private mosaicHttp: MosaicHttp;
+  private mosaicHttp: AssetHttp;
 
   /**
    * constructor
    * @param accountHttp
    * @param mosaicHttp
    */
-  constructor(accountHttp: AccountHttp, mosaicHttp: MosaicHttp) {
+  constructor(accountHttp: AccountHttp, mosaicHttp: AssetHttp) {
     this.accountHttp = accountHttp;
     this.mosaicHttp = mosaicHttp;
   }
@@ -66,7 +66,7 @@ export class AccountOwnedMosaicsService {
       .flatMap((mosaic: Asset) => {
         if (XEM.MOSAICID.equals(mosaic.assetId)) return Observable.of(new XEM(mosaic.quantity / Math.pow(10, 6)));
         else {
-          return this.mosaicHttp.getMosaicDefinition(mosaic.assetId)
+          return this.mosaicHttp.getAssetDefinition(mosaic.assetId)
             .map((mosaicDefinition) => {
               return AssetTransferable.createWithAssetDefinition(mosaicDefinition, mosaic.quantity / Math.pow(10, mosaicDefinition.properties.divisibility));
             });

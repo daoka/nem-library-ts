@@ -24,17 +24,17 @@
 
 import {expect} from "chai";
 import {Observable} from "rxjs/Observable";
-import {MosaicHttp} from "../../../src/infrastructure/MosaicHttp";
+import {AssetHttp} from "../../../src/infrastructure/AssetHttp";
 import {AssetId} from "../../../src/models/asset/AssetId";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
 
 describe("TransactionWithMosaics", () => {
-  let mosaicHttp: MosaicHttp;
+  let mosaicHttp: AssetHttp;
 
   before(() => {
     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
-    mosaicHttp = new MosaicHttp();
+    mosaicHttp = new AssetHttp();
   });
 
   after(() => {
@@ -42,7 +42,7 @@ describe("TransactionWithMosaics", () => {
   });
 
   it("Create runtime MosaicTransferable with a server:mosaic", (done) => {
-    mosaicHttp.getMosaicTransferableWithAbsoluteAmount(new AssetId("server", "mosaic"), 1)
+    mosaicHttp.getAssetTransferableWithAbsoluteAmount(new AssetId("server", "mosaic"), 1)
       .subscribe((mosaicTransferable) => {
         expect(mosaicTransferable.relativeQuantity()).to.be.equal(1);
         expect(mosaicTransferable.absoluteQuantity()).to.be.equal(1);
@@ -51,7 +51,7 @@ describe("TransactionWithMosaics", () => {
   });
 
   it("Create runtime MosaicTransferable with a server:other", (done) => {
-    mosaicHttp.getMosaicTransferableWithRelativeAmount(new AssetId("server", "other"), 1)
+    mosaicHttp.getAssetTransferableWithRelativeAmount(new AssetId("server", "other"), 1)
       .subscribe((mosaicTransferable) => {
         expect(mosaicTransferable.absoluteQuantity()).to.be.equal(1000000);
         expect(mosaicTransferable.relativeQuantity()).to.be.equal(1);
@@ -63,7 +63,7 @@ describe("TransactionWithMosaics", () => {
     Observable.from([
       {namespace: "server", mosaic: "mosaic", amount: 1},
       {namespace: "server", mosaic: "other", amount: 1},
-    ]).flatMap((_) => mosaicHttp.getMosaicTransferableWithAbsoluteAmount(new AssetId(_.namespace, _.mosaic), _.amount))
+    ]).flatMap((_) => mosaicHttp.getAssetTransferableWithAbsoluteAmount(new AssetId(_.namespace, _.mosaic), _.amount))
       .toArray()
       .subscribe((x) => {
         expect(x).to.have.length(2);

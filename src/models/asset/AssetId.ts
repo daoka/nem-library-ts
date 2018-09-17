@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {MosaicIdDTO} from "../../infrastructure/mosaic/MosaicIdDTO";
+import {MosaicIdDTO} from "../../infrastructure/asset/MosaicIdDTO";
 /**
  *
  * A mosaic id uniquely identifies an underlying mosaic definition.

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {MosaicIdDTO} from "../mosaic/MosaicIdDTO";
+import {MosaicIdDTO} from "../asset/MosaicIdDTO";
 import {TransactionDTO} from "./TransactionDTO";
 
 /**

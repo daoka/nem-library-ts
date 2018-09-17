@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {MosaicDefinitionDTO} from "../mosaic/MosaicDefinitionDTO";
+import {MosaicDefinitionDTO} from "../asset/MosaicDefinitionDTO";
 import {TransactionDTO} from "./TransactionDTO";
 /**
  * @internal

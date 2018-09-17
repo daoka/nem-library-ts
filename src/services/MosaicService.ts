@@ -23,7 +23,7 @@
  */
 
 import {Observable} from "rxjs/Observable";
-import {MosaicHttp} from "../infrastructure/MosaicHttp";
+import {AssetHttp} from "../infrastructure/AssetHttp";
 import {AssetProperties} from "../models/asset/AssetDefinition";
 import {AssetLevyType} from "../models/asset/AssetLevy";
 import {AssetTransferable} from "../models/asset/AssetTransferable";
@@ -36,13 +36,13 @@ export class MosaicService {
   /**
    * mosaicHttp
    */
-  private mosaicHttp: MosaicHttp;
+  private mosaicHttp: AssetHttp;
 
   /**
    * constructor
    * @param mosaicHttp
    */
-  constructor(mosaicHttp: MosaicHttp) {
+  constructor(mosaicHttp: AssetHttp) {
     this.mosaicHttp = mosaicHttp;
 
   }
@@ -59,7 +59,7 @@ export class MosaicService {
         this.levyFee(mosaicTransferable, new AssetProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE)),
       );
     } else {
-      return this.mosaicHttp.getMosaicDefinition(mosaicTransferable.levy.assetId).map((levyMosaicDefinition) => {
+      return this.mosaicHttp.getAssetDefinition(mosaicTransferable.levy.assetId).map((levyMosaicDefinition) => {
         return this.levyFee(mosaicTransferable, levyMosaicDefinition.properties);
       });
     }

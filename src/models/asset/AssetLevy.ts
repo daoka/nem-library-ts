@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {MosaicLevyDTO} from "../../infrastructure/mosaic/MosaicLevyDTO";
+import {MosaicLevyDTO} from "../../infrastructure/asset/MosaicLevyDTO";
 import {Address} from "../account/Address";
 import {AssetId} from "./AssetId";
 

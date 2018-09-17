@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-import {MosaicDefinitionDTO} from "../../infrastructure/mosaic/MosaicDefinitionDTO";
-import {MosaicDefinitionMetaDataPairDTO} from "../../infrastructure/mosaic/MosaicDefinitionMetaDataPairDTO";
-import {MosaicLevyDTO} from "../../infrastructure/mosaic/MosaicLevyDTO";
-import {MosaicPropertyDTO} from "../../infrastructure/mosaic/MosaicPropertyDTO";
+import {MosaicDefinitionDTO} from "../../infrastructure/asset/MosaicDefinitionDTO";
+import {MosaicDefinitionMetaDataPairDTO} from "../../infrastructure/asset/MosaicDefinitionMetaDataPairDTO";
+import {MosaicLevyDTO} from "../../infrastructure/asset/MosaicLevyDTO";
+import {MosaicPropertyDTO} from "../../infrastructure/asset/MosaicPropertyDTO";
 import {PublicAccount} from "../account/PublicAccount";
 import {AssetId} from "./AssetId";
 import {AssetLevy} from "./AssetLevy";

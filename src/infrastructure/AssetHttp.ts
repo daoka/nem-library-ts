@@ -28,9 +28,9 @@ import {AssetDefinition, AssetProperties} from "../models/asset/AssetDefinition"
 import {AssetId} from "../models/asset/AssetId";
 import {AssetTransferable} from "../models/asset/AssetTransferable";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
-import {MosaicDefinitionMetaDataPairDTO} from "./mosaic/MosaicDefinitionMetaDataPairDTO";
+import {MosaicDefinitionMetaDataPairDTO} from "./asset/MosaicDefinitionMetaDataPairDTO";
 
-export class MosaicHttp extends HttpEndpoint {
+export class AssetHttp extends HttpEndpoint {
 
   constructor(nodes?: ServerConfig[]) {
     super("namespace", nodes);
@@ -43,7 +43,7 @@ export class MosaicHttp extends HttpEndpoint {
    * @param pageSize - The number of mosaic definition objects to be returned for each request. The parameter is optional. The default value is 25, the minimum value is 5 and hte maximum value is 100.
    * @returns Observable<AssetDefinition[]>
    */
-  public getAllMosaicsGivenNamespace(namespace: string, id?: number, pageSize?: number): Observable<AssetDefinition[]> {
+  public getAllAssetsGivenNamespace(namespace: string, id?: number, pageSize?: number): Observable<AssetDefinition[]> {
     const url = "mosaic/definition/page?namespace=" + namespace +
       (id === undefined ? "" : "&id=" + id) +
       (pageSize === undefined ? "" : "&pageSize=" + pageSize);
@@ -60,35 +60,35 @@ export class MosaicHttp extends HttpEndpoint {
 
   /**
    * Return the Mosaic Definition given a namespace and mosaic. Throw exception if no mosaic is found
-   * @param {string} mosaicId
+   * @param {string} assetId
    * @returns {Observable<AssetDefinition>}
    */
-  public getMosaicDefinition(mosaicId: AssetId): Observable<AssetDefinition> {
-    return this.getAllMosaicsGivenNamespace(mosaicId.namespaceId, undefined, 100)
+  public getAssetDefinition(assetId: AssetId): Observable<AssetDefinition> {
+    return this.getAllAssetsGivenNamespace(assetId.namespaceId, undefined, 100)
       .flatMap((_) => _)
-      .filter((mosaicDefinition) => mosaicDefinition.id.equals(mosaicId))
+      .filter((assetDefinition) => assetDefinition.id.equals(assetId))
       .last();
   }
 
   /**
    * Return a MosaicTransferable
-   * @param {string} mosaicId
+   * @param {string} assetId
    * @param {number} quantity
    * @returns {Observable<AssetTransferable>}
    */
-  public getMosaicTransferableWithAbsoluteAmount(mosaicId: AssetId, quantity: number): Observable<AssetTransferable> {
-    return this.getMosaicDefinition(mosaicId)
-      .map((mosaicDefinition) => AssetTransferable.createAbsolute(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
+  public getAssetTransferableWithAbsoluteAmount(assetId: AssetId, quantity: number): Observable<AssetTransferable> {
+    return this.getAssetDefinition(assetId)
+      .map((assetDefinition) => AssetTransferable.createAbsolute(assetDefinition.id, assetDefinition.properties, quantity, assetDefinition.levy));
   }
 
   /**
    * Return a MosaicTransferable
-   * @param {string} mosaicId
+   * @param {string} assetId
    * @param {number} quantity
    * @returns {Observable<AssetTransferable>}
    */
-  public getMosaicTransferableWithRelativeAmount(mosaicId: AssetId, quantity: number): Observable<AssetTransferable> {
-    return this.getMosaicDefinition(mosaicId)
-      .map((mosaicDefinition) => AssetTransferable.createRelative(mosaicDefinition.id, mosaicDefinition.properties, quantity, mosaicDefinition.levy));
+  public getAssetTransferableWithRelativeAmount(assetId: AssetId, quantity: number): Observable<AssetTransferable> {
+    return this.getAssetDefinition(assetId)
+      .map((assetDefinition) => AssetTransferable.createRelative(assetDefinition.id, assetDefinition.properties, quantity, assetDefinition.levy));
   }
 }

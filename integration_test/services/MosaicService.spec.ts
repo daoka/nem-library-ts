@@ -23,7 +23,7 @@
  */
 
 import {expect} from "chai";
-import {MosaicHttp} from "../../src/infrastructure/MosaicHttp";
+import {AssetHttp} from "../../src/infrastructure/AssetHttp";
 import {Address} from "../../src/models/account/Address";
 import {AssetProperties} from "../../src/models/asset/AssetDefinition";
 import {AssetId} from "../../src/models/asset/AssetId";
@@ -45,7 +45,7 @@ describe("MosaicService", () => {
   });
 
   it("should return levy 0 when mosaicTransferable don't have levy", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const mosaicTransferable = new XEM(10);
     mosaicService.calculateLevy(mosaicTransferable).subscribe((levy) => {
       expect(levy).to.be.equal(0);
@@ -54,7 +54,7 @@ describe("MosaicService", () => {
   });
 
   it("should calculate levy for absolute", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const properties = new AssetProperties(0, 100000000, true, false);
     const mosaicId = XEM.MOSAICID;
     const levy = new AssetLevy(AssetLevyType.Absolute, new Address("TBV7LE4TFDEMGVOON5MYOK2P7TU2KEKLMHOLHQT6"), XEM.MOSAICID, 5);
@@ -66,7 +66,7 @@ describe("MosaicService", () => {
   });
 
   it("should calculate levy for absolute different xem", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const properties = new AssetProperties(0, 100000000, true, false);
     const mosaicId = XEM.MOSAICID;
     const levy = new AssetLevy(AssetLevyType.Absolute, new Address("TBV7LE4TFDEMGVOON5MYOK2P7TU2KEKLMHOLHQT6"), XEM.MOSAICID, 5);
@@ -78,7 +78,7 @@ describe("MosaicService", () => {
   });
 
   it("should calculate levy for percentile xem 100", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const properties = new AssetProperties(0, 100000000, true, false);
     const mosaicId = XEM.MOSAICID;
     const levy = new AssetLevy(AssetLevyType.Percentil, new Address("TBV7LE4TFDEMGVOON5MYOK2P7TU2KEKLMHOLHQT6"), XEM.MOSAICID, 150);
@@ -90,7 +90,7 @@ describe("MosaicService", () => {
   });
 
   it("should calculate levy for percentile xem 1000", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const properties = new AssetProperties(0, 100000000, true, false);
     const mosaicId = XEM.MOSAICID;
     const levy = new AssetLevy(AssetLevyType.Percentil, new Address("TBV7LE4TFDEMGVOON5MYOK2P7TU2KEKLMHOLHQT6"), XEM.MOSAICID, 150);
@@ -102,7 +102,7 @@ describe("MosaicService", () => {
   });
 
   it("should calculate levy for percentile xem 10000", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const properties = new AssetProperties(0, 100000000, true, false);
     const mosaicId = XEM.MOSAICID;
     const levy = new AssetLevy(AssetLevyType.Percentil, new Address("TBV7LE4TFDEMGVOON5MYOK2P7TU2KEKLMHOLHQT6"), XEM.MOSAICID, 150);
@@ -114,7 +114,7 @@ describe("MosaicService", () => {
   });
 
   it("should calculate levy for mosaic no XEM xem 10000", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const properties = new AssetProperties(0, 10000000, true, false);
     const mosaicId = new AssetId("server", "alcapone");
     const levyMosaicId = new AssetId("server", "masteroftheworld");
@@ -127,7 +127,7 @@ describe("MosaicService", () => {
   });
 
   it("should calculate levy for mosaic no XEM xem 100000", (done) => {
-    const mosaicService = new MosaicService(new MosaicHttp());
+    const mosaicService = new MosaicService(new AssetHttp());
     const properties = new AssetProperties(0, 10000000, true, false);
     const mosaicId = new AssetId("server", "alcapone");
     const levyMosaicId = new AssetId("server", "masteroftheworld");
