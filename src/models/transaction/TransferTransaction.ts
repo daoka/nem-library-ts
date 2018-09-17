@@ -150,7 +150,7 @@ export class TransferTransaction extends Transaction {
       signature: this.signature,
       type: this.type,
       version,
-      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Asset(mosaic.assetId, mosaic.quantity)),
+      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Asset(mosaic.assetId, mosaic.quantity).toDTO()),
       fee: this.fee,
       recipient: this.recipient.plain(),
       amount: this._xem.absoluteQuantity(),

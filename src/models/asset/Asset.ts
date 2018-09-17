@@ -64,4 +64,13 @@ export class Asset {
       dto.quantity);
   }
 
+  /**
+   * @internal
+   */
+  public toDTO() {
+    return {
+      mosaicId: this.assetId,
+      quantity: this.quantity
+    }
+  }
 }
