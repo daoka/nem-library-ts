@@ -24,10 +24,13 @@
 
 import * as requestPromise from "request-promise-native";
 import {Observable} from "rxjs";
+import {QueryParams} from "./AccountHttp";
 import {Namespace} from "../models/namespace/Namespace";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
 import {NamespaceDTO} from "./namespace/NamespaceDTO";
 import {NamespaceMetaDataPairDTO} from "./namespace/NamespaceMetaDataPairDTO";
+import {Pageable} from "./Pageable";
+import {NamespacesPageable} from "./NamespacesPageable";
 
 export class NamespaceHttp extends HttpEndpoint {
 
@@ -36,15 +39,27 @@ export class NamespaceHttp extends HttpEndpoint {
   }
 
   /**
+   * Paginaged version of incomingTransactions request
+   * @param address
+   * @param params
+   */
+  public getRootNamespacesPaginated(params?: QueryParams): Pageable<Namespace[]> {
+    if (params === undefined) params = {};
+    return new NamespacesPageable(this, params);
+  }
+
+  /**
    * Gets the root namespaces. The requests supports paging, i.e. retrieving the root namespaces in batches of a specified size.
    * @param id - The topmost namespace database id up to which root namespaces are returned. The parameter is optional. If not supplied the most recent rented root namespaces are returned.
-   * @param pageSize - (Optional) The number of namespace objects to be returned for each request. The parameter is optional. The default value is 25, the minimum value is 5 and hte maximum value is 100.
+   * @param pageSize - (Optional) The number of namespace objects to be returned for each request. The parameter is optional. The default value is 25, the minimum value is 5 and the maximum value is 100.
    * @returns Observable<Namespace[]>
    */
-  public getRootNamespaces(id: number, pageSize?: string): Observable<Namespace[]> {
-    const url = "root/page?id=" + id +
-      (pageSize === undefined ? "" : "&pageSize=" + pageSize);
-
+  public getRootNamespaces(id?: number, pageSize?: number): Observable<Namespace[]> {
+    const query = [
+      id ? "id=" + id : null,
+      pageSize ? "pageSize=" + pageSize : null
+    ].filter(_ => _).join("&")
+    const url = "root/page" + (query.length > 0 ? "?" + query : "")
     return Observable.of(url)
       .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
       .retryWhen(this.replyWhenRequestError)
