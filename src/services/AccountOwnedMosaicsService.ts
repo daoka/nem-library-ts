@@ -34,29 +34,29 @@ import {XEM} from "../models/asset/XEM";
 /**
  * Service to get account owned mosaics
  */
-export class AccountOwnedMosaicsService {
+export class AccountOwnedAssetService {
   /**
    * accountHttp
    */
   private accountHttp: AccountHttp;
 
   /**
-   * mosaicHttp
+   * assetHttp
    */
-  private mosaicHttp: AssetHttp;
+  private assetHttp: AssetHttp;
 
   /**
    * constructor
    * @param accountHttp
-   * @param mosaicHttp
+   * @param assetHttp
    */
-  constructor(accountHttp: AccountHttp, mosaicHttp: AssetHttp) {
+  constructor(accountHttp: AccountHttp, assetHttp: AssetHttp) {
     this.accountHttp = accountHttp;
-    this.mosaicHttp = mosaicHttp;
+    this.assetHttp = assetHttp;
   }
 
   /**
-   * Account owned mosaics definitions
+   * Account owned assets definitions
    * @param address
    * @returns {Observable<AssetDefinition[]>}
    */
@@ -66,9 +66,9 @@ export class AccountOwnedMosaicsService {
       .flatMap((mosaic: Asset) => {
         if (XEM.MOSAICID.equals(mosaic.assetId)) return Observable.of(new XEM(mosaic.quantity / Math.pow(10, 6)));
         else {
-          return this.mosaicHttp.getAssetDefinition(mosaic.assetId)
-            .map((mosaicDefinition) => {
-              return AssetTransferable.createWithAssetDefinition(mosaicDefinition, mosaic.quantity / Math.pow(10, mosaicDefinition.properties.divisibility));
+          return this.assetHttp.getAssetDefinition(mosaic.assetId)
+            .map((assetDefinition) => {
+              return AssetTransferable.createWithAssetDefinition(assetDefinition, mosaic.quantity / Math.pow(10, assetDefinition.properties.divisibility));
             });
         }
       })
