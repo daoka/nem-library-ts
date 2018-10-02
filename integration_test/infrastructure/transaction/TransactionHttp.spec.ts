@@ -23,12 +23,12 @@
  */
 import {expect} from "chai";
 import {Observable} from "rxjs/Observable";
-import {MosaicHttp} from "../../../src/infrastructure/MosaicHttp";
+import {AssetHttp} from "../../../src/infrastructure/AssetHttp";
 import {TransactionHttp} from "../../../src/infrastructure/TransactionHttp";
 import {Account} from "../../../src/models/account/Account";
 import {Address} from "../../../src/models/account/Address";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
-import {XEM} from "../../../src/models/mosaic/XEM";
+import {AssetId} from "../../../src/models/asset/AssetId";
+import {XEM} from "../../../src/models/asset/XEM";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {EmptyMessage, PlainMessage} from "../../../src/models/transaction/PlainMessage";
 import {TimeWindow} from "../../../src/models/transaction/TimeWindow";

@@ -24,17 +24,17 @@
 
 import {expect} from "chai";
 import {Observable} from "rxjs/Observable";
-import {MosaicHttp} from "../../src/infrastructure/MosaicHttp";
+import {AssetHttp} from "../../src/infrastructure/AssetHttp";
 import {TransactionHttp} from "../../src/infrastructure/TransactionHttp";
 import {Account} from "../../src/models/account/Account";
 import {Address} from "../../src/models/account/Address";
 import {PublicAccount} from "../../src/models/account/PublicAccount";
-import {Mosaic} from "../../src/models/mosaic/Mosaic";
-import {MosaicDefinition, MosaicProperties} from "../../src/models/mosaic/MosaicDefinition";
-import {MosaicId} from "../../src/models/mosaic/MosaicId";
-import {MosaicLevy, MosaicLevyType} from "../../src/models/mosaic/MosaicLevy";
-import {MosaicTransferable} from "../../src/models/mosaic/MosaicTransferable";
-import {XEM} from "../../src/models/mosaic/XEM";
+import {Asset} from "../../src/models/asset/Asset";
+import {AssetDefinition, AssetProperties} from "../../src/models/asset/AssetDefinition";
+import {AssetId} from "../../src/models/asset/AssetId";
+import {AssetLevy, AssetLevyType} from "../../src/models/asset/AssetLevy";
+import {AssetTransferable} from "../../src/models/asset/AssetTransferable";
+import {XEM} from "../../src/models/asset/XEM";
 import {NetworkTypes} from "../../src/models/node/NetworkTypes";
 import {EncryptedMessage} from "../../src/models/transaction/EncryptedMessage";
 import {
@@ -43,9 +43,9 @@ import {
 } from "../../src/models/transaction/ImportanceTransferTransaction";
 import {MosaicDefinitionCreationTransaction} from "../../src/models/transaction/MosaicDefinitionCreationTransaction";
 import {
-  MosaicSupplyChangeTransaction,
-  MosaicSupplyType,
-} from "../../src/models/transaction/MosaicSupplyChangeTransaction";
+  AssetSupplyChangeTransaction,
+  AssetSupplyType,
+} from "../../src/models/transaction/AssetSupplyChangeTransaction";
 import {
   CosignatoryModification,
   CosignatoryModificationAction,
@@ -187,11 +187,11 @@ describe("TransactionHttp", () => {
     const account = Account.createWithPrivateKey(privateKey);
     const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
-      new MosaicDefinition(
+      new AssetDefinition(
         PublicAccount.createWithPublicKey(account.publicKey),
-        new MosaicId("newpart", "joe12"),
+        new AssetId("newpart", "joe12"),
         "mosaic description",
-        new MosaicProperties(0, 10000, true, true),
+        new AssetProperties(0, 10000, true, true),
       ),
     );
 
@@ -209,15 +209,15 @@ describe("TransactionHttp", () => {
     const account = Account.createWithPrivateKey(privateKey);
     const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
-      new MosaicDefinition(
+      new AssetDefinition(
         PublicAccount.createWithPublicKey(account.publicKey),
-        new MosaicId("newpart", "joe11"),
+        new AssetId("newpart", "joe11"),
         "mosaic description",
-        new MosaicProperties(0, 10000, true, true),
-        new MosaicLevy(
-          MosaicLevyType.Percentil,
+        new AssetProperties(0, 10000, true, true),
+        new AssetLevy(
+          AssetLevyType.Percentil,
           account.address,
-          new MosaicId("nem", "xem"),
+          new AssetId("nem", "xem"),
           2,
         ),
       ),
@@ -235,7 +235,7 @@ describe("TransactionHttp", () => {
   it("creates a MOSAIC_SUPPLY_CHANGE", (done) => {
     const transactionHttp = new TransactionHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const account = Account.createWithPrivateKey(privateKey);
-    const mosaicSupplyChange = MosaicSupplyChangeTransaction.create(TimeWindow.createWithDeadline(), new MosaicId("newpart", "joe6"), MosaicSupplyType.Increase, 10);
+    const mosaicSupplyChange = AssetSupplyChangeTransaction.create(TimeWindow.createWithDeadline(), new AssetId("newpart", "joe6"), AssetSupplyType.Increase, 10);
     const signedTransaction = account.signTransaction(mosaicSupplyChange);
     // transactionHttp.announceTransaction(signedTransaction).subscribe(announceSuccessResult => {
     //  expect(announceSuccessResult.transactionHash.data).to.not.null;
@@ -317,9 +317,9 @@ describe("TransactionHttp", () => {
     const transferTransaction = TransferTransaction.createWithMosaics(
       TimeWindow.createWithDeadline(),
       new Address(recipientAccount),
-      [new MosaicTransferable(new MosaicId("multisigns", "mosaic"), new MosaicProperties(), 1),
-        new MosaicTransferable(new MosaicId("multisigns", "mosaic"), new MosaicProperties(), 1),
-        new MosaicTransferable(new MosaicId("multisigns", "mosaic"), new MosaicProperties(), 1)],
+      [new AssetTransferable(new AssetId("multisigns", "mosaic"), new AssetProperties(), 1),
+        new AssetTransferable(new AssetId("multisigns", "mosaic"), new AssetProperties(), 1),
+        new AssetTransferable(new AssetId("multisigns", "mosaic"), new AssetProperties(), 1)],
       PlainMessage.create("test message"),
     );
     const multisigTransferTransaction = MultisigTransaction.create(
@@ -380,15 +380,15 @@ describe("TransactionHttp", () => {
 
     const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
-      new MosaicDefinition(
+      new AssetDefinition(
         multisigAccount,
-        new MosaicId("multisigns", "mosaic3"),
+        new AssetId("multisigns", "mosaic3"),
         "mosaic description",
-        new MosaicProperties(0, 10000, true, true),
-        new MosaicLevy(
-          MosaicLevyType.Percentil,
+        new AssetProperties(0, 10000, true, true),
+        new AssetLevy(
+          AssetLevyType.Percentil,
           account.address,
-          new MosaicId("nem", "xem"),
+          new AssetId("nem", "xem"),
           2,
         ),
       ),
@@ -412,7 +412,7 @@ describe("TransactionHttp", () => {
     const transactionHttp = new TransactionHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const account = Account.createWithPrivateKey(privateKey);
 
-    const mosaicSupplyChange = MosaicSupplyChangeTransaction.create(TimeWindow.createWithDeadline(), new MosaicId("multisigns", "mosaic3"), MosaicSupplyType.Increase, 10);
+    const mosaicSupplyChange = AssetSupplyChangeTransaction.create(TimeWindow.createWithDeadline(), new AssetId("multisigns", "mosaic3"), AssetSupplyType.Increase, 10);
     const multisigTransferTransaction = MultisigTransaction.create(
       TimeWindow.createWithDeadline(),
       mosaicSupplyChange,

@@ -24,16 +24,16 @@
 
 import {Address} from "../../models/account/Address";
 import {PublicAccount} from "../../models/account/PublicAccount";
-import {Mosaic} from "../../models/mosaic/Mosaic";
-import {MosaicDefinition, MosaicProperties} from "../../models/mosaic/MosaicDefinition";
-import {MosaicId} from "../../models/mosaic/MosaicId";
-import {MosaicLevy} from "../../models/mosaic/MosaicLevy";
-import {XEM} from "../../models/mosaic/XEM";
+import {Asset} from "../../models/asset/Asset";
+import {AssetDefinition, AssetProperties} from "../../models/asset/AssetDefinition";
+import {AssetId} from "../../models/asset/AssetId";
+import {AssetLevy} from "../../models/asset/AssetLevy";
+import {XEM} from "../../models/asset/XEM";
 import {EncryptedMessage} from "../../models/transaction/EncryptedMessage";
 import {ImportanceTransferTransaction} from "../../models/transaction/ImportanceTransferTransaction";
 import {Message} from "../../models/transaction/Message";
 import {MosaicDefinitionCreationTransaction} from "../../models/transaction/MosaicDefinitionCreationTransaction";
-import {MosaicSupplyChangeTransaction} from "../../models/transaction/MosaicSupplyChangeTransaction";
+import {AssetSupplyChangeTransaction} from "../../models/transaction/AssetSupplyChangeTransaction";
 import {
   CosignatoryModification,
   MultisigAggregateModificationTransaction,
@@ -47,8 +47,8 @@ import {Transaction} from "../../models/transaction/Transaction";
 import {HashData} from "../../models/transaction/TransactionInfo";
 import {TransactionTypes} from "../../models/transaction/TransactionTypes";
 import {TransferTransaction} from "../../models/transaction/TransferTransaction";
-import {MosaicDTO} from "../mosaic/MosaicDTO";
-import {MosaicLevyDTO} from "../mosaic/MosaicLevyDTO";
+import {MosaicDTO} from "../asset/MosaicDTO";
+import {MosaicLevyDTO} from "../asset/MosaicLevyDTO";
 import {CreateSimpleTransactionFromDTO} from "./CreateTransactionFromDTO";
 import {ImportanceTransferTransactionDTO} from "./ImportanceTransferTransactionDTO";
 import {MosaicDefinitionCreationTransactionDTO} from "./MosaicDefinitionCreationTransactionDTO";
@@ -108,7 +108,7 @@ export const CreateUnconfirmedTransactionFromDTO = (dto: UnconfirmedTransactionM
       transaction.fee,
       message,
       transaction.signature,
-      transaction.mosaics === undefined ? undefined : transaction.mosaics.map((mosaicDTO: MosaicDTO) => Mosaic.createFromMosaicDTO(mosaicDTO)),
+      transaction.mosaics === undefined ? undefined : transaction.mosaics.map((mosaicDTO: MosaicDTO) => Asset.createFromMosaicDTO(mosaicDTO)),
       PublicAccount.createWithPublicKey(transaction.signer),
       undefined,
 
@@ -146,12 +146,12 @@ export const CreateUnconfirmedTransactionFromDTO = (dto: UnconfirmedTransactionM
   else if (dto.transaction.type == TransactionTypes.MOSAIC_DEFINITION_CREATION) {
     const transaction = dto.transaction as MosaicDefinitionCreationTransactionDTO;
     const levy = (transaction.mosaicDefinition.levy as MosaicLevyDTO).mosaicId === undefined ?
-      undefined : MosaicLevy.createFromMosaicLevyDTO(transaction.mosaicDefinition.levy as MosaicLevyDTO);
-    const mosaicDefinition = new MosaicDefinition(
+      undefined : AssetLevy.createFromMosaicLevyDTO(transaction.mosaicDefinition.levy as MosaicLevyDTO);
+    const mosaicDefinition = new AssetDefinition(
       PublicAccount.createWithPublicKey(transaction.mosaicDefinition.creator),
-      new MosaicId(transaction.mosaicDefinition.id.namespaceId, transaction.mosaicDefinition.id.name),
+      new AssetId(transaction.mosaicDefinition.id.namespaceId, transaction.mosaicDefinition.id.name),
       transaction.mosaicDefinition.description,
-      MosaicProperties.createFromMosaicProperties(transaction.mosaicDefinition.properties),
+      AssetProperties.createFromMosaicProperties(transaction.mosaicDefinition.properties),
       levy,
     );
     return new MosaicDefinitionCreationTransaction(
@@ -167,10 +167,10 @@ export const CreateUnconfirmedTransactionFromDTO = (dto: UnconfirmedTransactionM
   }
   else if (dto.transaction.type == TransactionTypes.MOSAIC_SUPPLY_CHANGE) {
     const transaction = dto.transaction as MosaicSupplyChangeTransactionDTO;
-    return new MosaicSupplyChangeTransaction(
+    return new AssetSupplyChangeTransaction(
       TimeWindow.createFromDTOInfo(transaction.timeStamp, transaction.deadline),
       transaction.version,
-      new MosaicId(transaction.mosaicId.namespaceId, transaction.mosaicId.name),
+      new AssetId(transaction.mosaicId.namespaceId, transaction.mosaicId.name),
       transaction.supplyType,
       transaction.delta,
       transaction.fee,

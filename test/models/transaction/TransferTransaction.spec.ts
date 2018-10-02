@@ -27,10 +27,10 @@ import {expect} from "chai";
 import {Account} from "../../../src/models/account/Account";
 import {Address} from "../../../src/models/account/Address";
 import {PublicAccount} from "../../../src/models/account/PublicAccount";
-import {MosaicProperties} from "../../../src/models/mosaic/MosaicDefinition";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
-import {MosaicTransferable} from "../../../src/models/mosaic/MosaicTransferable";
-import {XEM} from "../../../src/models/mosaic/XEM";
+import {AssetProperties} from "../../../src/models/asset/AssetDefinition";
+import {AssetId} from "../../../src/models/asset/AssetId";
+import {AssetTransferable} from "../../../src/models/asset/AssetTransferable";
+import {XEM} from "../../../src/models/asset/XEM";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {EmptyMessage, PlainMessage} from "../../../src/models/transaction/PlainMessage";
 import {TimeWindow} from "../../../src/models/transaction/TimeWindow";
@@ -148,11 +148,11 @@ describe("TransferTransaction", () => {
     const transaction = TransferTransaction.createWithMosaics(
       TimeWindow.createWithDeadline(),
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("multisigns", "mosaic"), new MosaicProperties(), 4000)],
+      [new AssetTransferable(new AssetId("multisigns", "mosaic"), new AssetProperties(), 4000)],
       EmptyMessage,
     );
     expect(transaction.version).to.be.equal(2);
-    deepEqual(transaction.mosaics()[0].mosaicId, new MosaicId("multisigns", "mosaic"));
+    deepEqual(transaction.mosaics()[0].assetId, new AssetId("multisigns", "mosaic"));
   });
 
   it("should have the minimum fee calculated 0 xem transaction for TEST_NET", () => {
@@ -268,7 +268,7 @@ describe("TransferTransaction", () => {
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150)],
         EmptyMessage,
       );
 
@@ -279,7 +279,7 @@ describe("TransferTransaction", () => {
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(0, 10000), 150000)],
+        [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(0, 10000), 150000)],
         EmptyMessage,
       );
 
@@ -287,7 +287,7 @@ describe("TransferTransaction", () => {
     });
 
     it("visibility 3, supply 9_000_000 the fee is 0.15 xem", () => {
-      const mosaic = MosaicTransferable.createRelative(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150);
+      const mosaic = AssetTransferable.createRelative(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150);
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
@@ -304,7 +304,7 @@ describe("TransferTransaction", () => {
     const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
       TimeWindow.createWithDeadline(),
       new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-      [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+      [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150)],
       PlainMessage.create("message"),
     );
 
@@ -326,9 +326,9 @@ describe("TransferTransaction", () => {
       TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         recipientPublicAccount.address,
-        [new MosaicTransferable(new MosaicId("multisigns", "mosaic"), new MosaicProperties(), 1),
-          new MosaicTransferable(new MosaicId("multisigns", "mosaic2"), new MosaicProperties(), 1),
-          new MosaicTransferable(new MosaicId("multisigns", "mosaic3"), new MosaicProperties(), 1)],
+        [new AssetTransferable(new AssetId("multisigns", "mosaic"), new AssetProperties(), 1),
+          new AssetTransferable(new AssetId("multisigns", "mosaic2"), new AssetProperties(), 1),
+          new AssetTransferable(new AssetId("multisigns", "mosaic3"), new AssetProperties(), 1)],
         encryptedMessage,
       );
     }).to.throw(Error, "Recipient address and recipientPublicAccount don't match");
@@ -369,7 +369,7 @@ describe("TransferTransaction", () => {
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150)],
         PlainMessage.create("message"),
       );
 
@@ -382,7 +382,7 @@ describe("TransferTransaction", () => {
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150)],
         PlainMessage.create("message"),
       );
 
@@ -393,7 +393,7 @@ describe("TransferTransaction", () => {
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150)],
         PlainMessage.create("message"),
       );
       const halfMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(0.5), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
@@ -405,7 +405,7 @@ describe("TransferTransaction", () => {
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150)],
         PlainMessage.create("message"),
       );
       const doubleMultiplierTransferTransaction = new TransferTransaction(mosaicTransferTransaction.recipient, new XEM(2), mosaicTransferTransaction.timeWindow, 2, mosaicTransferTransaction.fee, mosaicTransferTransaction.message, undefined, mosaicTransferTransaction.mosaics());
@@ -429,7 +429,7 @@ describe("TransferTransaction", () => {
       const mosaicTransferTransaction = TransferTransaction.createWithMosaics(
         TimeWindow.createWithDeadline(),
         new Address("TCJZJH-AV63RE-2JSKN2-7DFIHZ-RXIHAI-736WXE-OJGA"),
-        [new MosaicTransferable(new MosaicId("test", "test"), new MosaicProperties(3, 9000000), 150)],
+        [new AssetTransferable(new AssetId("test", "test"), new AssetProperties(3, 9000000), 150)],
         PlainMessage.create("message"),
       );
 
@@ -440,15 +440,15 @@ describe("TransferTransaction", () => {
   })
 
   it("should return the mosaic identifiers", () => {
-    const mosaicId1 = new MosaicId("multisigns", "mosaic");
-    const mosaicId2 = new MosaicId("multisigns", "mosaic2");
-    const mosaicId3 = new MosaicId("multisigns", "mosaic3");
+    const mosaicId1 = new AssetId("multisigns", "mosaic");
+    const mosaicId2 = new AssetId("multisigns", "mosaic2");
+    const mosaicId3 = new AssetId("multisigns", "mosaic3");
     const transaction = TransferTransaction.createWithMosaics(
       TimeWindow.createWithDeadline(),
       recipientPublicAccount.address,
-      [new MosaicTransferable(mosaicId1, new MosaicProperties(), 1),
-        new MosaicTransferable(mosaicId2, new MosaicProperties(), 1),
-        new MosaicTransferable(mosaicId3, new MosaicProperties(), 1)],
+      [new AssetTransferable(mosaicId1, new AssetProperties(), 1),
+        new AssetTransferable(mosaicId2, new AssetProperties(), 1),
+        new AssetTransferable(mosaicId3, new AssetProperties(), 1)],
       EmptyMessage,
     );
     expect(transaction.mosaicIds()).to.be.deep.equal([mosaicId1, mosaicId2, mosaicId3]);

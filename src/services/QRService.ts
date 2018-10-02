@@ -26,7 +26,7 @@ import * as CryptoJS from "crypto-js";
 import get_random_values = require("get-random-values");
 import * as nemSdk from "nem-sdk";
 import {Address} from "../models/account/Address";
-import {XEM} from "../models/mosaic/XEM";
+import {XEM} from "../models/asset/XEM";
 import {NetworkTypes} from "../models/node/NetworkTypes";
 import {PlainMessage} from "../models/transaction/PlainMessage";
 import {TimeWindow} from "../models/transaction/TimeWindow";

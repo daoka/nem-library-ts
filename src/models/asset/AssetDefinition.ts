@@ -22,47 +22,47 @@
  * SOFTWARE.
  */
 
-import {MosaicDefinitionDTO} from "../../infrastructure/mosaic/MosaicDefinitionDTO";
-import {MosaicDefinitionMetaDataPairDTO} from "../../infrastructure/mosaic/MosaicDefinitionMetaDataPairDTO";
-import {MosaicLevyDTO} from "../../infrastructure/mosaic/MosaicLevyDTO";
-import {MosaicPropertyDTO} from "../../infrastructure/mosaic/MosaicPropertyDTO";
+import {MosaicDefinitionDTO} from "../../infrastructure/asset/MosaicDefinitionDTO";
+import {MosaicDefinitionMetaDataPairDTO} from "../../infrastructure/asset/MosaicDefinitionMetaDataPairDTO";
+import {MosaicLevyDTO} from "../../infrastructure/asset/MosaicLevyDTO";
+import {MosaicPropertyDTO} from "../../infrastructure/asset/MosaicPropertyDTO";
 import {PublicAccount} from "../account/PublicAccount";
-import {MosaicId} from "./MosaicId";
-import {MosaicLevy} from "./MosaicLevy";
+import {AssetId} from "./AssetId";
+import {AssetLevy} from "./AssetLevy";
 
 /**
- * A mosaic definition describes an asset class. Some fields are mandatory while others are optional.
- * The properties of a mosaic definition always have a default value and only need to be supplied if they differ from the default value.
+ * A asset definition describes an asset class. Some fields are mandatory while others are optional.
+ * The properties of a asset definition always have a default value and only need to be supplied if they differ from the default value.
  */
-export class MosaicDefinition {
+export class AssetDefinition {
 
   /**
-   * 	The public key of the mosaic definition creator.
+   * 	The public key of the asset definition creator.
    */
   public readonly creator: PublicAccount;
 
   /**
-   * The mosaic id
+   * The asset id
    */
-  public readonly id: MosaicId;
+  public readonly id: AssetId;
 
   /**
-   * The mosaic description. The description may have a length of up to 512 characters and cannot be empty.
+   * The asset description. The description may have a length of up to 512 characters and cannot be empty.
    */
   public readonly description: string;
 
   /**
-   * Mosaic properties
+   * Asset properties
    */
-  public readonly properties: MosaicProperties;
+  public readonly properties: AssetProperties;
 
   /**
-   * The optional levy for the mosaic. A creator can demand that each mosaic transfer induces an additional fee
+   * The optional levy for the asset. A creator can demand that each asset transfer induces an additional fee
    */
-  public readonly levy?: MosaicLevy;
+  public readonly levy?: AssetLevy;
 
   /**
-   * The id for the mosaic definition object.
+   * The id for the asset definition object.
    */
   public readonly metaId?: number;
 
@@ -77,10 +77,10 @@ export class MosaicDefinition {
    */
   constructor(
     creator: PublicAccount,
-    id: MosaicId,
+    id: AssetId,
     description: string,
-    properties: MosaicProperties,
-    levy?: MosaicLevy,
+    properties: AssetProperties,
+    levy?: AssetLevy,
     metaId?: number,
   ) {
     this.creator = creator;
@@ -94,39 +94,39 @@ export class MosaicDefinition {
   /**
    * @internal
    * @param dto
-   * @returns {MosaicDefinition}
+   * @returns {AssetDefinition}
    */
-  public static createFromMosaicDefinitionDTO(dto: MosaicDefinitionDTO): MosaicDefinition {
+  public static createFromMosaicDefinitionDTO(dto: MosaicDefinitionDTO): AssetDefinition {
     const levy = dto.levy as MosaicLevyDTO;
-    return new MosaicDefinition(
+    return new AssetDefinition(
       PublicAccount.createWithPublicKey(dto.creator),
-      MosaicId.createFromMosaicIdDTO(dto.id),
+      AssetId.createFromMosaicIdDTO(dto.id),
       dto.description,
-      MosaicProperties.createFromMosaicProperties(dto.properties),
-      levy.mosaicId === undefined ? undefined : MosaicLevy.createFromMosaicLevyDTO(levy),
+      AssetProperties.createFromMosaicProperties(dto.properties),
+      levy.mosaicId === undefined ? undefined : AssetLevy.createFromMosaicLevyDTO(levy),
     );
   }
 
   /**
    * @internal
    * @param dto
-   * @returns {MosaicDefinition}
+   * @returns {AssetDefinition}
    */
-  public static createFromMosaicDefinitionMetaDataPairDTO(dto: MosaicDefinitionMetaDataPairDTO): MosaicDefinition {
+  public static createFromMosaicDefinitionMetaDataPairDTO(dto: MosaicDefinitionMetaDataPairDTO): AssetDefinition {
     const levy = dto.mosaic.levy as MosaicLevyDTO;
-    return new MosaicDefinition(
+    return new AssetDefinition(
       PublicAccount.createWithPublicKey(dto.mosaic.creator),
-      MosaicId.createFromMosaicIdDTO(dto.mosaic.id),
+      AssetId.createFromMosaicIdDTO(dto.mosaic.id),
       dto.mosaic.description,
-      MosaicProperties.createFromMosaicProperties(dto.mosaic.properties),
-      levy.mosaicId === undefined ? undefined : MosaicLevy.createFromMosaicLevyDTO(levy),
+      AssetProperties.createFromMosaicProperties(dto.mosaic.properties),
+      levy.mosaicId === undefined ? undefined : AssetLevy.createFromMosaicLevyDTO(levy),
       dto.meta.id,
     );
   }
 
   /**
    * @internal
-   * @returns {{description: string, id: MosaicId, levy: (MosaicLevyDTO|{}), properties: MosaicProperty[], creator: string}}
+   * @returns {{description: string, id: AssetId, levy: (MosaicLevyDTO|{}), properties: MosaicProperty[], creator: string}}
    */
   public toDTO(): MosaicDefinitionDTO {
     return {
@@ -140,37 +140,37 @@ export class MosaicDefinition {
 }
 
 /**
- * Each mosaic definition comes with a set of properties.
+ * Each asset definition comes with a set of properties.
  * Each property has a default value which will be applied in case it was not specified.
  * Future release may add additional properties to the set of available properties
  */
-export class MosaicProperties {
+export class AssetProperties {
 
   /**
-   * initialSupply: The creator can specify an initial supply of mosaics when creating the definition.
-   * The supply is given in entire units of the mosaic, not in smallest sub-units.
+   * initialSupply: The creator can specify an initial supply of assets when creating the definition.
+   * The supply is given in entire units of the asset, not in smallest sub-units.
    * The initial supply must be in the range of 0 and 9,000,000,000. The default value is "1000".
    */
   public readonly initialSupply: number;
 
   /**
-   * The creator can choose between a definition that allows a mosaic supply change at a later point or an immutable supply.
+   * The creator can choose between a definition that allows a asset supply change at a later point or an immutable supply.
    * Allowed values for the property are "true" and "false". The default value is "false".
    */
   public readonly supplyMutable: boolean;
 
   /**
-   * The creator can choose if the mosaic definition should allow for transfers of the mosaic among accounts other than the creator.
-   * If the property 'transferable' is set to "false", only transfer transactions having the creator as sender or as recipient can transfer mosaics of that type.
-   * If set to "true" the mosaics can be transferred to and from arbitrary accounts.
+   * The creator can choose if the asset definition should allow for transfers of the asset among accounts other than the creator.
+   * If the property 'transferable' is set to "false", only transfer transactions having the creator as sender or as recipient can transfer assets of that type.
+   * If set to "true" the assets can be transferred to and from arbitrary accounts.
    * Allowed values for the property are thus "true" and "false". The default value is "true".
    */
   public readonly transferable: boolean;
 
   /**
-   * The divisibility determines up to what decimal place the mosaic can be divided into.
-   * Thus a divisibility of 3 means that a mosaic can be divided into smallest parts of 0.001 mosaics, i.e. milli mosaics is the smallest sub-unit.
-   * When transferring mosaics via a transfer transaction the quantity transferred is given in multiples of those smallest parts.
+   * The divisibility determines up to what decimal place the asset can be divided into.
+   * Thus a divisibility of 3 means that a asset can be divided into smallest parts of 0.001 assets, i.e. milli assets is the smallest sub-unit.
+   * When transferring assets via a transfer transaction the quantity transferred is given in multiples of those smallest parts.
    * The divisibility must be in the range of 0 and 6. The default value is "0".
    */
   public readonly divisibility: number;
@@ -221,10 +221,10 @@ export class MosaicProperties {
   /**
    * @internal
    * @param dto
-   * @returns {MosaicProperty}
+   * @returns {AssetProperty}
    */
-  public static createFromMosaicProperties(mosaicProperties: MosaicPropertyDTO[]): MosaicProperties {
-    return new MosaicProperties(
+  public static createFromMosaicProperties(mosaicProperties: MosaicPropertyDTO[]): AssetProperties {
+    return new AssetProperties(
       Number(mosaicProperties[0].value),
       Number(mosaicProperties[1].value),
       (mosaicProperties[3].value == "true"),

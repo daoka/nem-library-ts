@@ -22,46 +22,14 @@
  * SOFTWARE.
  */
 
-import {MosaicDTO} from "../../infrastructure/mosaic/MosaicDTO";
-import {MosaicId} from "./MosaicId";
+import {expect} from "chai";
+import {XEM} from "../../../src/models/asset/XEM";
 
-/**
- * A mosaic describes an instance of a mosaic definition. Mosaics can be transferred by means of a transfer transaction.
- */
-export class Mosaic {
+describe("XEM", () => {
 
-  /**
-   * The mosaic id
-   */
-  public readonly mosaicId: MosaicId;
-
-  /**
-   * The mosaic quantity. The quantity is always given in smallest units for the mosaic, i.e. if it has a divisibility of 3 the quantity is given in millis.
-   */
-  public readonly quantity: number;
-
-  /**
-   * constructor
-   * @param mosaicId
-   * @param quantity
-   */
-  constructor(
-    mosaicId: MosaicId,
-    quantity: number,
-  ) {
-    this.mosaicId = mosaicId;
-    this.quantity = quantity;
-  }
-
-  /**
-   * @internal
-   * @param dto
-   * @returns {Mosaic}
-   */
-  public static createFromMosaicDTO(dto: MosaicDTO): Mosaic {
-    return new Mosaic(
-      MosaicId.createFromMosaicIdDTO(dto.mosaicId),
-      dto.quantity);
-  }
-
-}
+  it("should create a XEM", () => {
+    const amount = XEM.fromRelative(10);
+    expect(amount.relativeQuantity()).to.be.equal(10);
+    expect(amount.absoluteQuantity()).to.be.equals(10 * 1e6);
+  });
+});

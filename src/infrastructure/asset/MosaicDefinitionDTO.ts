@@ -28,35 +28,35 @@ import {MosaicPropertyDTO} from "./MosaicPropertyDTO";
 
 /**
  * @internal
- * A mosaic definition describes an asset class. Some fields are mandatory while others are optional.
- * The properties of a mosaic definition always have a default value and only need to be supplied if they differ from the default value.
+ * A asset definition describes an asset class. Some fields are mandatory while others are optional.
+ * The properties of a asset definition always have a default value and only need to be supplied if they differ from the default value.
  */
 export interface MosaicDefinitionDTO {
 
   /**
-   * 	The public key of the mosaic definition creator.
+   * 	The public key of the asset definition creator.
    */
   readonly creator: string;
 
   /**
-   * The mosaic id
+   * The asset id
    */
   readonly id: MosaicIdDTO;
 
   /**
-   * The mosaic description. The description may have a length of up to 512 characters and cannot be empty.
+   * The asset description. The description may have a length of up to 512 characters and cannot be empty.
    */
   readonly description: string;
 
   /**
-   * The mosaic properties. The properties may be an empty array in which case default values for all properties are applied.
+   * The asset properties. The properties may be an empty array in which case default values for all properties are applied.
    * Each property has a default value which will be applied in case it was not specified.
    * Future release may add additional properties to the set of available properties.
    */
   readonly properties: MosaicPropertyDTO[];
 
   /**
-   * The optional levy for the mosaic. A creator can demand that each mosaic transfer induces an additional fee
+   * The optional levy for the asset. A creator can demand that each asset transfer induces an additional fee
    */
   readonly levy: MosaicLevyDTO | null | {};
 

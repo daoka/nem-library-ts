@@ -22,36 +22,36 @@
  * SOFTWARE.
  */
 
-import {Mosaic} from "./Mosaic";
-import {MosaicDefinition, MosaicProperties} from "./MosaicDefinition";
-import {MosaicId} from "./MosaicId";
-import {MosaicLevy} from "./MosaicLevy";
+import {Asset} from "./Asset";
+import {AssetDefinition, AssetProperties} from "./AssetDefinition";
+import {AssetId} from "./AssetId";
+import {AssetLevy} from "./AssetLevy";
 
 /**
- * Mosaic transferable model
+ * Asset transferable model
  */
-export class MosaicTransferable {
+export class AssetTransferable {
   /**
-   * Create a MosaicTransferable object with mosaic definition
-   * @param mosaicDefinition
+   * Create a AssetTransferable object with mosaic definition
+   * @param assetDefinition
    * @param amount
-   * @returns {MosaicTransferable}
+   * @returns {AssetTransferable}
    */
-  public static createWithMosaicDefinition(mosaicDefinition: MosaicDefinition, amount: number) {
-    return new MosaicTransferable(mosaicDefinition.id, mosaicDefinition.properties, amount, mosaicDefinition.levy);
+  public static createWithAssetDefinition(assetDefinition: AssetDefinition, amount: number) {
+    return new AssetTransferable(assetDefinition.id, assetDefinition.properties, amount, assetDefinition.levy);
   }
 
   /**
-   * Create MosaicTransferable with an absolute quantity
-   * @param mosaicId
+   * Create AssetTransferable with an absolute quantity
+   * @param assetId
    * @param properties
    * @param quantity
    * @param levy
-   * @returns {MosaicTransferable}
+   * @returns {AssetTransferable}
    */
-  public static createAbsolute(mosaicId: MosaicId, properties: MosaicProperties, quantity: number, levy?: MosaicLevy) {
-    return new MosaicTransferable(
-      mosaicId,
+  public static createAbsolute(assetId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
+    return new AssetTransferable(
+      assetId,
       properties,
       quantity,
       levy,
@@ -59,16 +59,16 @@ export class MosaicTransferable {
   }
 
   /**
-   * Create MosaicTransferable with an relative quantity
-   * @param mosaicId
+   * Create AssetTransferable with an relative quantity
+   * @param assetId
    * @param properties
    * @param quantity
    * @param levy
-   * @returns {MosaicTransferable}
+   * @returns {AssetTransferable}
    */
-  public static createRelative(mosaicId: MosaicId, properties: MosaicProperties, quantity: number, levy?: MosaicLevy) {
-    return new MosaicTransferable(
-      mosaicId,
+  public static createRelative(assetId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
+    return new AssetTransferable(
+      assetId,
       properties,
       quantity * Math.pow(10, properties.divisibility),
       levy,
@@ -76,9 +76,9 @@ export class MosaicTransferable {
   }
 
   /**
-   * MosaicId
+   * AssetId
    */
-  public readonly mosaicId: MosaicId;
+  public readonly assetId: AssetId;
 
   /**
    * Amount
@@ -86,14 +86,14 @@ export class MosaicTransferable {
   public readonly quantity: number;
 
   /**
-   * Mosaic definition properties
+   * Asset definition properties
    */
-  public readonly properties: MosaicProperties;
+  public readonly properties: AssetProperties;
 
   /**
    * Levy
    */
-  public readonly levy?: MosaicLevy;
+  public readonly levy?: AssetLevy;
 
   /**
    * constructor
@@ -102,8 +102,8 @@ export class MosaicTransferable {
    * @param quantity
    * @param levy
    */
-  constructor(mosaicId: MosaicId, properties: MosaicProperties, quantity: number, levy?: MosaicLevy) {
-    this.mosaicId = mosaicId;
+  constructor(mosaicId: AssetId, properties: AssetProperties, quantity: number, levy?: AssetLevy) {
+    this.assetId = mosaicId;
     this.properties = properties;
     this.levy = levy;
     this.quantity = quantity;

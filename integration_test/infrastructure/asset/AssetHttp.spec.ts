@@ -23,12 +23,12 @@
  */
 
 import {expect} from "chai";
-import {MosaicHttp} from "../../../src/infrastructure/MosaicHttp";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
+import {AssetHttp} from "../../../src/infrastructure/AssetHttp";
+import {AssetId} from "../../../src/models/asset/AssetId";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
 import {TestVariables} from "../../config/TestVariables.spec";
-describe("MosaicHttp", () => {
+describe("AssetHttp", () => {
   before(() => {
     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
   });
@@ -38,10 +38,10 @@ describe("MosaicHttp", () => {
   });
 
   it("should get all root namespaces", (done) => {
-    const mosaicHttp = new MosaicHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
+    const mosaicHttp = new AssetHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const namespace = "ashter";
 
-    mosaicHttp.getAllMosaicsGivenNamespace(namespace)
+    mosaicHttp.getAllAssetsGivenNamespace(namespace)
       .subscribe((mosaicDefinitions) => {
         expect(mosaicDefinitions[0].creator).to.not.be.null;
         expect(mosaicDefinitions[0].id).to.not.be.null;
@@ -54,10 +54,10 @@ describe("MosaicHttp", () => {
   });
 
   it("should get all root namespaces filter with id", (done) => {
-    const mosaicHttp = new MosaicHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
+    const mosaicHttp = new AssetHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const namespace = "ashter";
 
-    mosaicHttp.getAllMosaicsGivenNamespace(namespace, 449)
+    mosaicHttp.getAllAssetsGivenNamespace(namespace, 449)
       .subscribe((mosaicDefinitions) => {
         expect(mosaicDefinitions[0].creator).to.not.be.null;
         expect(mosaicDefinitions[0].id).to.not.be.null;
@@ -69,10 +69,10 @@ describe("MosaicHttp", () => {
   });
 
   it("should get all root namespaces filter with pageSize", (done) => {
-    const mosaicHttp = new MosaicHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
+    const mosaicHttp = new AssetHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const namespace = "ashter";
 
-    mosaicHttp.getAllMosaicsGivenNamespace(namespace, undefined, 5)
+    mosaicHttp.getAllAssetsGivenNamespace(namespace, undefined, 5)
       .subscribe((mosaicDefinitions) => {
         expect(mosaicDefinitions[0].creator).to.not.be.null;
         expect(mosaicDefinitions[0].id).to.not.be.null;
@@ -85,17 +85,17 @@ describe("MosaicHttp", () => {
   });
 
   it("uses the default testnet server when no argument is passed in constructor", () => {
-    const mosaicHttp = new MosaicHttp();
+    const mosaicHttp = new AssetHttp();
     expect(mosaicHttp.nextNode()).to.be.equals("http://bigalice2.nem.ninja:7890/namespace/");
   });
 
   it("uses a specific domain when it is passed in constructor", () => {
-    const mosaicHttp = new MosaicHttp([{domain: "bob.nem.ninja"}]);
+    const mosaicHttp = new AssetHttp([{domain: "bob.nem.ninja"}]);
     expect(mosaicHttp.nextNode()).to.contain("bob.nem.ninja");
   });
 
   it("should look for an expecific mosaic", (done) => {
-    new MosaicHttp().getMosaicDefinition(new MosaicId("server", "mosaic"))
+    new AssetHttp().getAssetDefinition(new AssetId("server", "mosaic"))
       .subscribe((mosaic) =>  {
         expect(mosaic.id.name).to.be.equal("mosaic");
         done();

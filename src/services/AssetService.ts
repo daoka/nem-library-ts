@@ -23,61 +23,61 @@
  */
 
 import {Observable} from "rxjs/Observable";
-import {MosaicHttp} from "../infrastructure/MosaicHttp";
-import {MosaicProperties} from "../models/mosaic/MosaicDefinition";
-import {MosaicLevyType} from "../models/mosaic/MosaicLevy";
-import {MosaicTransferable} from "../models/mosaic/MosaicTransferable";
-import {XEM} from "../models/mosaic/XEM";
+import {AssetHttp} from "../infrastructure/AssetHttp";
+import {AssetProperties} from "../models/asset/AssetDefinition";
+import {AssetLevyType} from "../models/asset/AssetLevy";
+import {AssetTransferable} from "../models/asset/AssetTransferable";
+import {XEM} from "../models/asset/XEM";
 /**
  * Mosaic service
  */
-export class MosaicService {
+export class AssetService {
 
   /**
-   * mosaicHttp
+   * assetHttp
    */
-  private mosaicHttp: MosaicHttp;
+  private assetHttp: AssetHttp;
 
   /**
    * constructor
-   * @param mosaicHttp
+   * @param assetHttp
    */
-  constructor(mosaicHttp: MosaicHttp) {
-    this.mosaicHttp = mosaicHttp;
+  constructor(assetHttp: AssetHttp) {
+    this.assetHttp = assetHttp;
 
   }
 
   /**
-   * Calculate levy for a given mosaicTransferable
-   * @param mosaicTransferable
+   * Calculate levy for a given assetTransferable
+   * @param assetTransferable
    * @returns {any}
    */
-  public calculateLevy(mosaicTransferable: MosaicTransferable): Observable<number> {
-    if (mosaicTransferable.levy == undefined) return Observable.of(0);
-    if (mosaicTransferable.levy.mosaicId.equals(XEM.MOSAICID)) {
+  public calculateLevy(assetTransferable: AssetTransferable): Observable<number> {
+    if (assetTransferable.levy == undefined) return Observable.of(0);
+    if (assetTransferable.levy.assetId.equals(XEM.MOSAICID)) {
       return Observable.of(
-        this.levyFee(mosaicTransferable, new MosaicProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE)),
+        this.levyFee(assetTransferable, new AssetProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE)),
       );
     } else {
-      return this.mosaicHttp.getMosaicDefinition(mosaicTransferable.levy.mosaicId).map((levyMosaicDefinition) => {
-        return this.levyFee(mosaicTransferable, levyMosaicDefinition.properties);
+      return this.assetHttp.getAssetDefinition(assetTransferable.levy.assetId).map((levyMosaicDefinition) => {
+        return this.levyFee(assetTransferable, levyMosaicDefinition.properties);
       });
     }
   }
 
   /**
    * @internal
-   * @param mosaic
-   * @param levy
-   * @returns {any}
+   * @param assetTransferable
+   * @param levyProperties
+   * @returns number
    */
-  private levyFee(mosaicTransferable: MosaicTransferable, levyProperties: MosaicProperties): number {
+  private levyFee(assetTransferable: AssetTransferable, levyProperties: AssetProperties): number {
     let levyValue;
 
-    if (mosaicTransferable.levy!.type == MosaicLevyType.Absolute) {
-      levyValue = mosaicTransferable.levy!.fee;
+    if (assetTransferable.levy!.type == AssetLevyType.Absolute) {
+      levyValue = assetTransferable.levy!.fee;
     } else {
-      levyValue = mosaicTransferable.relativeQuantity() * mosaicTransferable.levy!.fee / 10000;
+      levyValue = assetTransferable.relativeQuantity() * assetTransferable.levy!.fee / 10000;
     }
 
     const o = parseInt(levyValue, 10);

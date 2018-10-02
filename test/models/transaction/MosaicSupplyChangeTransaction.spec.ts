@@ -24,49 +24,49 @@
 
 import {deepEqual} from "assert";
 import {expect} from "chai";
-import {MosaicId} from "../../../src/models/mosaic/MosaicId";
+import {AssetId} from "../../../src/models/asset/AssetId";
 import {
-  MosaicSupplyChangeTransaction,
-  MosaicSupplyType,
-} from "../../../src/models/transaction/MosaicSupplyChangeTransaction";
+  AssetSupplyChangeTransaction,
+  AssetSupplyType,
+} from "../../../src/models/transaction/AssetSupplyChangeTransaction";
 import {TimeWindow} from "../../../src/models/transaction/TimeWindow";
 
 describe("MosaicSupplyChangeTransaction", () => {
   const PUBLIC_KEY = "5d5d829644625eb6554273f70b1187d904761fab4c5c0e5f01666f6725e9278b";
-  const mosaicId = new MosaicId("nem-library", "coin");
+  const mosaicId = new AssetId("nem-library", "coin");
 
   it("should be created", () => {
-    const transaction = new MosaicSupplyChangeTransaction(
+    const transaction = new AssetSupplyChangeTransaction(
       TimeWindow.createWithDeadline(),
       -1744830462,
       mosaicId,
-      MosaicSupplyType.Increase,
+      AssetSupplyType.Increase,
       1000,
       454545,
     );
-    deepEqual(transaction.mosaicId, mosaicId);
+    deepEqual(transaction.assetId, mosaicId);
     expect(transaction.delta).to.be.equal(1000);
-    expect(transaction.supplyType).to.be.equal(MosaicSupplyType.Increase);
+    expect(transaction.supplyType).to.be.equal(AssetSupplyType.Increase);
     expect(transaction.fee).to.be.equal(454545);
   });
 
   it("should be created by named constructor", () => {
-    const transaction = MosaicSupplyChangeTransaction.create(
+    const transaction = AssetSupplyChangeTransaction.create(
       TimeWindow.createWithDeadline(),
       mosaicId,
-      MosaicSupplyType.Increase,
+      AssetSupplyType.Increase,
       1000);
 
-    deepEqual(transaction.mosaicId, mosaicId);
+    deepEqual(transaction.assetId, mosaicId);
     expect(transaction.delta).to.be.equal(1000);
-    expect(transaction.supplyType).to.be.equal(MosaicSupplyType.Increase);
+    expect(transaction.supplyType).to.be.equal(AssetSupplyType.Increase);
   });
 
   it("should have the fee calculated for TEST_NET", () => {
-    const transaction = MosaicSupplyChangeTransaction.create(
+    const transaction = AssetSupplyChangeTransaction.create(
       TimeWindow.createWithDeadline(),
       mosaicId,
-      MosaicSupplyType.Increase,
+      AssetSupplyType.Increase,
       1000);
     expect(transaction.fee).to.be.equal(Math.floor(3.0 * 0.05 * 1000000.0));
   });

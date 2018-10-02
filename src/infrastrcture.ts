@@ -27,7 +27,7 @@ export * from "./infrastructure/AccountHttp";
 export * from "./infrastructure/BlockHttp";
 export * from "./infrastructure/ChainHttp";
 export * from "./infrastructure/HttpEndpoint";
-export * from "./infrastructure/MosaicHttp";
+export * from "./infrastructure/AssetHttp";
 export * from "./infrastructure/NamespaceHttp";
 export * from "./infrastructure/NodeHttp";
 export * from "./infrastructure/TransactionHttp";

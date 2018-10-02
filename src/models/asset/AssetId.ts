@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-import {MosaicIdDTO} from "../../infrastructure/mosaic/MosaicIdDTO";
+import {MosaicIdDTO} from "../../infrastructure/asset/MosaicIdDTO";
 /**
  *
- * A mosaic id uniquely identifies an underlying mosaic definition.
+ * A asset id uniquely identifies an underlying asset definition.
  */
-export class MosaicId {
+export class AssetId {
 
   /**
    * The corresponding namespace id
@@ -70,10 +70,10 @@ export class MosaicId {
   /**
    * @internal
    * @param dto
-   * @returns {MosaicId}
+   * @returns {AssetId}
    */
-  public static createFromMosaicIdDTO(dto: MosaicIdDTO): MosaicId {
-    return new MosaicId(dto.namespaceId, dto.name);
+  public static createFromMosaicIdDTO(dto: MosaicIdDTO): AssetId {
+    return new AssetId(dto.namespaceId, dto.name);
   }
 
   /**
@@ -81,12 +81,12 @@ export class MosaicId {
    * @param mosaicId
    * @returns {boolean}
    */
-  public equals(mosaicId: MosaicId): boolean {
+  public equals(mosaicId: AssetId): boolean {
     return this.namespaceId == mosaicId.namespaceId && this.name == mosaicId.name;
   }
 
   /**
-   * Mosaic Id description in format namespaceId:name ex: nem:xem
+   * Asset Id description in format namespaceId:name ex: nem:xem
    */
   public description(): string {
     return this.namespaceId + ":" + this.name;

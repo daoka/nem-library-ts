@@ -26,11 +26,11 @@ import {TransactionDTO} from "../../infrastructure/transaction/TransactionDTO";
 import {TransferTransactionDTO} from "../../infrastructure/transaction/TransferTransactionDTO";
 import {Address} from "../account/Address";
 import {PublicAccount} from "../account/PublicAccount";
-import {Mosaic} from "../mosaic/Mosaic";
-import {MosaicDefinition} from "../mosaic/MosaicDefinition";
-import {MosaicId} from "../mosaic/MosaicId";
-import {MosaicTransferable} from "../mosaic/MosaicTransferable";
-import {XEM} from "../mosaic/XEM";
+import {Asset} from "../asset/Asset";
+import {AssetDefinition} from "../asset/AssetDefinition";
+import {AssetId} from "../asset/AssetId";
+import {AssetTransferable} from "../asset/AssetTransferable";
+import {XEM} from "../asset/XEM";
 import {EncryptedMessage} from "./EncryptedMessage";
 import {Message} from "./Message";
 import {PlainMessage} from "./PlainMessage";
@@ -40,7 +40,7 @@ import {TransactionInfo} from "./TransactionInfo";
 import {TransactionTypes} from "./TransactionTypes";
 
 /**
- * Transfer transactions contain data about transfers of XEM or mosaics to another account.
+ * Transfer transactions contain data about transfers of XEM or assets to another account.
  */
 export class TransferTransaction extends Transaction {
   /**
@@ -64,9 +64,9 @@ export class TransferTransaction extends Transaction {
   public readonly message: PlainMessage | EncryptedMessage;
 
   /**
-   * The array of Mosaic objects.
+   * The array of Asset objects.
    */
-  private readonly _mosaics?: Mosaic[];
+  private readonly _mosaics?: Asset[];
 
   /**
    * @internal
@@ -77,7 +77,7 @@ export class TransferTransaction extends Transaction {
    * @param fee
    * @param message
    * @param signature
-   * @param mosaic
+   * @param asset
    * @param sender
    * @param transactionInfo
    */
@@ -88,7 +88,7 @@ export class TransferTransaction extends Transaction {
               fee: number,
               message: PlainMessage | EncryptedMessage,
               signature?: string,
-              mosaic?: Mosaic[],
+              mosaic?: Asset[],
               sender?: PublicAccount,
               transactionInfo?: TransactionInfo) {
     super(TransactionTypes.TRANSFER, version, timeWindow, signature, sender, transactionInfo);
@@ -100,24 +100,24 @@ export class TransferTransaction extends Transaction {
   }
 
   /**
-   * in case that the transfer transaction contains mosaics, it throws an error
+   * in case that the transfer transaction contains assets, it throws an error
    * @returns {XEM}
    */
   public xem(): XEM {
-    if (this.containsMosaics()) { throw new Error("contain mosaics"); }
+    if (this.containsMosaics()) { throw new Error("contain assets"); }
     return this._xem;
   }
 
   /**
-   * in case that the transfer transaction does not contain mosaics, it throws an error
-   * @returns {Mosaic[]}
+   * in case that the transfer transaction does not contain assets, it throws an error
+   * @returns {Asset[]}
    */
-  public mosaics(): Mosaic[] {
+  public mosaics(): Asset[] {
     if (this.containsMosaics()) {
       return this._mosaics!.map((mosaic) =>
-        new Mosaic(mosaic.mosaicId, (mosaic.quantity * (this._xem.relativeQuantity()))));
+        new Asset(mosaic.assetId, (mosaic.quantity * (this._xem.relativeQuantity()))));
     }
-    throw new Error("Does not contain mosaics");
+    throw new Error("Does not contain assets");
   }
 
   /**
@@ -129,12 +129,12 @@ export class TransferTransaction extends Transaction {
   }
 
   /**
-   * all the Mosaic Identifiers of the attached mosaics
-   * @returns {MosaicId[]}
+   * all the Asset Identifiers of the attached assets
+   * @returns {AssetId[]}
    */
-  public mosaicIds(): MosaicId[] {
-    if (!this.containsMosaics()) { throw new Error("does not contain mosaics"); }
-    return this._mosaics!.map((_) => _.mosaicId);
+  public mosaicIds(): AssetId[] {
+    if (!this.containsMosaics()) { throw new Error("does not contain assets"); }
+    return this._mosaics!.map((_) => _.assetId);
   }
 
   /**
@@ -150,7 +150,7 @@ export class TransferTransaction extends Transaction {
       signature: this.signature,
       type: this.type,
       version,
-      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Mosaic(mosaic.mosaicId, mosaic.quantity)),
+      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Asset(mosaic.assetId, mosaic.quantity).toDTO()),
       fee: this.fee,
       recipient: this.recipient.plain(),
       amount: this._xem.absoluteQuantity(),
@@ -192,14 +192,14 @@ export class TransferTransaction extends Transaction {
    * Create a TransferTransaction object
    * @param timeWindow
    * @param recipient
-   * @param mosaics
+   * @param assets
    * @param message
    * @returns {TransferTransaction}
    */
   // tslint:disable-next-line:member-ordering
   public static createWithMosaics(timeWindow: TimeWindow,
                                   recipient: Address,
-                                  mosaics: MosaicTransferable[],
+                                  mosaics: AssetTransferable[],
                                   message: PlainMessage | EncryptedMessage): TransferTransaction {
     if (message instanceof EncryptedMessage && recipient.plain() !== message.recipientPublicAccount!.address.plain()) { throw new Error("Recipient address and recipientPublicAccount don't match"); }
     const multiplier = new XEM(1);
@@ -231,7 +231,7 @@ export class TransferTransaction extends Transaction {
       fee,
       message,
       undefined,
-      mosaics.map((_) => new Mosaic(_.mosaicId, _.absoluteQuantity())));
+      mosaics.map((_) => new Asset(_.assetId, _.absoluteQuantity())));
   }
 
 }

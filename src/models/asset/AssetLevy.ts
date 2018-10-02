@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-import {MosaicLevyDTO} from "../../infrastructure/mosaic/MosaicLevyDTO";
+import {MosaicLevyDTO} from "../../infrastructure/asset/MosaicLevyDTO";
 import {Address} from "../account/Address";
-import {MosaicId} from "./MosaicId";
+import {AssetId} from "./AssetId";
 
 /**
  * 1: The levy is an absolute fee. The field 'fee' states how many sub-units of the specified mosaic will be transferred to the recipient.
  * 2: The levy is calculated from the transferred xem. The field 'fee' states how many percentiles of the transferred quantity will transferred to the recipient.
  */
-export enum MosaicLevyType {
+export enum AssetLevyType {
   Absolute = 1,
   Percentil = 2,
 }
@@ -39,12 +39,12 @@ export enum MosaicLevyType {
  *
  * A mosaic definition can optionally specify a levy for transferring those mosaics. This might be needed by legal entities needing to collect some taxes for transfers.
  */
-export class MosaicLevy {
+export class AssetLevy {
 
   /**
    * 	The levy type
    */
-  public readonly type: MosaicLevyType;
+  public readonly type: AssetLevyType;
 
   /**
    * The recipient of the levy.
@@ -54,7 +54,7 @@ export class MosaicLevy {
   /**
    * The mosaic in which the levy is paid.
    */
-  public readonly mosaicId: MosaicId;
+  public readonly assetId: AssetId;
 
   /**
    * The fee. The interpretation is dependent on the type of the levy
@@ -65,18 +65,18 @@ export class MosaicLevy {
    * constructor
    * @param type
    * @param recipient
-   * @param mosaicId
+   * @param assetId
    * @param fee
    */
   constructor(
-    type: MosaicLevyType,
+    type: AssetLevyType,
     recipient: Address,
-    mosaicId: MosaicId,
+    assetId: AssetId,
     fee: number,
   ) {
     this.type = type;
     this.recipient = recipient;
-    this.mosaicId = mosaicId;
+    this.assetId = assetId;
     this.fee = fee;
   }
 
@@ -85,7 +85,7 @@ export class MosaicLevy {
    */
   public toDTO(): MosaicLevyDTO {
     return {
-      mosaicId: this.mosaicId,
+      mosaicId: this.assetId,
       recipient: this.recipient.plain(),
       type: this.type,
       fee: this.fee,
@@ -95,13 +95,13 @@ export class MosaicLevy {
   /**
    * @internal
    * @param dto
-   * @returns {MosaicLevy}
+   * @returns {AssetLevy}
    */
-  public static createFromMosaicLevyDTO(dto: MosaicLevyDTO): MosaicLevy {
-    return new MosaicLevy(
+  public static createFromMosaicLevyDTO(dto: MosaicLevyDTO): AssetLevy {
+    return new AssetLevy(
       dto.type,
       new Address(dto.recipient),
-      MosaicId.createFromMosaicIdDTO(dto.mosaicId),
+      AssetId.createFromMosaicIdDTO(dto.mosaicId),
       dto.fee);
   }
 

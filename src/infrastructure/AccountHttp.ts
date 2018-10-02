@@ -31,8 +31,8 @@ import {AccountImportanceInfo} from "../models/account/AccountImportanceInfo";
 import {AccountInfoWithMetaData} from "../models/account/AccountInfo";
 import {Address} from "../models/account/Address";
 import {NodeHarvestInfo} from "../models/account/NodeHarvestInfo";
-import {Mosaic} from "../models/mosaic/Mosaic";
-import {MosaicDefinition} from "../models/mosaic/MosaicDefinition";
+import {Asset} from "../models/asset/Asset";
+import {AssetDefinition} from "../models/asset/AssetDefinition";
 import {Namespace} from "../models/namespace/Namespace";
 import {Transaction} from "../models/transaction/Transaction";
 import {AccountHistoricalDataViewModelDTO} from "./account/AccountHistoricalDataViewModelDTO";
@@ -44,8 +44,8 @@ import {AllTransactionsPageable} from "./AllTransactionsPageable";
 import {HarvestInfoPageable} from "./HarvestInfoPageable";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
 import {IncomingTransactionsPageable} from "./IncomingTransactionsPageable";
-import {MosaicDefinitionDTO} from "./mosaic/MosaicDefinitionDTO";
-import {MosaicDTO} from "./mosaic/MosaicDTO";
+import {MosaicDefinitionDTO} from "./asset/MosaicDefinitionDTO";
+import {MosaicDTO} from "./asset/MosaicDTO";
 import {NamespaceDTO} from "./namespace/NamespaceDTO";
 import {OutgoingTransactionsPageable} from "./OutgoingTransactionsPageable";
 import {Pageable} from "./Pageable";
@@ -327,15 +327,15 @@ export class AccountHttp extends HttpEndpoint {
   }
 
   /**
-   * Gets an array of mosaic definition objects for a given account address. The parent parameter is optional.
-   * If supplied, only mosaic definitions for the given parent namespace are returned.
-   * The id parameter is optional and allows retrieving mosaic definitions in batches of 25 mosaic definitions.
+   * Gets an array of asset definition objects for a given account address. The parent parameter is optional.
+   * If supplied, only asset definitions for the given parent namespace are returned.
+   * The id parameter is optional and allows retrieving asset definitions in batches of 25 asset definitions.
    * @param address - The address of the account.
    * @param parent - The optional parent namespace id.
-   * @param id - The optional mosaic definition database id up to which mosaic definitions are returned.
-   * @return Observable<MosaicDefinition[]>
+   * @param id - The optional asset definition database id up to which asset definitions are returned.
+   * @return Observable<AssetDefinition[]>
    */
-  public getMosaicCreatedByAddress(address: Address, parent?: string, id?: string): Observable<MosaicDefinition[]> {
+  public getAssetsCreatedByAddress(address: Address, parent?: string, id?: string): Observable<AssetDefinition[]> {
     const url = "mosaic/definition/page?address=" + address.plain() +
       (parent === undefined ? "" : "&parent=" + parent) +
       (id === undefined ? "" : "&id=" + id);
@@ -345,23 +345,23 @@ export class AccountHttp extends HttpEndpoint {
       .retryWhen(this.replyWhenRequestError)
       .map((mosaicsData) => {
         return mosaicsData.data.map((mosaicDefinitionDTO: MosaicDefinitionDTO) => {
-          return MosaicDefinition.createFromMosaicDefinitionDTO(mosaicDefinitionDTO);
+          return AssetDefinition.createFromMosaicDefinitionDTO(mosaicDefinitionDTO);
         });
       });
   }
 
   /**
-   * Gets an array of mosaic objects for a given account address.
+   * Gets an array of asset objects for a given account address.
    * @param address - Address
-   * @return Observable<Mosaic[]>
+   * @return Observable<Asset[]>
    */
-  public getMosaicOwnedByAddress(address: Address): Observable<Mosaic[]> {
+  public getAssetsOwnedByAddress(address: Address): Observable<Asset[]> {
     return Observable.of("mosaic/owned?address=" + address.plain())
       .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
       .retryWhen(this.replyWhenRequestError)
       .map((mosaicsData) => {
         return mosaicsData.data.map((mosaicDTO: MosaicDTO) => {
-          return Mosaic.createFromMosaicDTO(mosaicDTO);
+          return Asset.createFromMosaicDTO(mosaicDTO);
         });
       });
   }

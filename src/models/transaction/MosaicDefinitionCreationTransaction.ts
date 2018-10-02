@@ -27,7 +27,7 @@ import {TransactionDTO} from "../../infrastructure/transaction/TransactionDTO";
 import {NEMLibrary} from "../../NEMLibrary";
 import {Address} from "../account/Address";
 import {PublicAccount} from "../account/PublicAccount";
-import {MosaicDefinition} from "../mosaic/MosaicDefinition";
+import {AssetDefinition} from "../asset/AssetDefinition";
 import {NetworkTypes} from "../node/NetworkTypes";
 import {TimeWindow} from "./TimeWindow";
 import {Transaction} from "./Transaction";
@@ -35,8 +35,8 @@ import {TransactionInfo} from "./TransactionInfo";
 import {TransactionTypes} from "./TransactionTypes";
 
 /**
- * Before a mosaic can be created or transferred, a corresponding definition of the mosaic has to be created and published to the network.
- * This is done via a mosaic definition creation transaction.
+ * Before a asset can be created or transferred, a corresponding definition of the asset has to be created and published to the network.
+ * This is done via a asset definition creation transaction.
  */
 export class MosaicDefinitionCreationTransaction extends Transaction {
   /**
@@ -45,7 +45,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   public readonly fee: number;
 
   /**
-   * The fee for the creation of the mosaic.
+   * The fee for the creation of the asset.
    */
   public readonly creationFee: number;
 
@@ -55,9 +55,9 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   public readonly creationFeeSink: Address;
 
   /**
-   * The actual mosaic definition.
+   * The actual asset definition.
    */
-  public readonly mosaicDefinition: MosaicDefinition;
+  public readonly mosaicDefinition: AssetDefinition;
 
   /**
    * @internal
@@ -65,7 +65,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
    * @param version
    * @param creationFee
    * @param creationFeeSink
-   * @param mosaicDefinition
+   * @param assetDefinition
    * @param fee
    * @param signature
    * @param sender
@@ -75,7 +75,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
               version: number,
               creationFee: number,
               creationFeeSink: Address,
-              mosaicDefinition: MosaicDefinition,
+              mosaicDefinition: AssetDefinition,
               fee: number,
               signature?: string,
               sender?: PublicAccount,
@@ -88,8 +88,8 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   }
 
   /**
-   * Create DTO of MosaicDefinitionCreationTransaction
-   * @returns {MosaicDefinitionCreationTransactionDTO}
+   * Create DTO of AssetDefinitionCreationTransaction
+   * @returns {AssetDefinitionCreationTransactionDTO}
    */
   public toDTO(): TransactionDTO {
     const version = this.networkVersion ? this.networkVersion : this.version;
@@ -108,13 +108,13 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
   }
 
   /**
-   * Create a MosaicDefinitionCreationTransaction object
+   * Create a AssetDefinitionCreationTransaction object
    * @param timeWindow
-   * @param mosaicDefinition
-   * @returns {MosaicDefinitionCreationTransaction}
+   * @param assetDefinition
+   * @returns {AssetDefinitionCreationTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                       mosaicDefinition: MosaicDefinition): MosaicDefinitionCreationTransaction {
+                       mosaicDefinition: AssetDefinition): MosaicDefinitionCreationTransaction {
     const fee = Math.floor(3 * 0.05 * 1000000);
     let creationFeeSink;
     if (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) {

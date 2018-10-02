@@ -22,14 +22,55 @@
  * SOFTWARE.
  */
 
-import {expect} from "chai";
-import {XEM} from "../../../src/models/mosaic/XEM";
+import {MosaicDTO} from "../../infrastructure/asset/MosaicDTO";
+import {AssetId} from "./AssetId";
 
-describe("XEM", () => {
+/**
+ * A asset describes an instance of a asset definition. Assets can be transferred by means of a transfer transaction.
+ */
+export class Asset {
 
-  it("should create a XEM", () => {
-    const amount = XEM.fromRelative(10);
-    expect(amount.relativeQuantity()).to.be.equal(10);
-    expect(amount.absoluteQuantity()).to.be.equals(10 * 1e6);
-  });
-});
+  /**
+   * The asset id
+   */
+  public readonly assetId: AssetId;
+
+  /**
+   * The asset quantity. The quantity is always given in smallest units for the asset, i.e. if it has a divisibility of 3 the quantity is given in millis.
+   */
+  public readonly quantity: number;
+
+  /**
+   * constructor
+   * @param assetId
+   * @param quantity
+   */
+  constructor(
+    assetId: AssetId,
+    quantity: number,
+  ) {
+    this.assetId = assetId;
+    this.quantity = quantity;
+  }
+
+  /**
+   * @internal
+   * @param dto
+   * @returns {Asset}
+   */
+  public static createFromMosaicDTO(dto: MosaicDTO): Asset {
+    return new Asset(
+      AssetId.createFromMosaicIdDTO(dto.mosaicId),
+      dto.quantity);
+  }
+
+  /**
+   * @internal
+   */
+  public toDTO() {
+    return {
+      mosaicId: this.assetId,
+      quantity: this.quantity
+    }
+  }
+}

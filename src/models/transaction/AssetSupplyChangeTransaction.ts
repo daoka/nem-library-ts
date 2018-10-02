@@ -25,7 +25,7 @@
 import {MosaicSupplyChangeTransactionDTO} from "../../infrastructure/transaction/MosaicSupplyChangeTransactionDTO";
 import {TransactionDTO} from "../../infrastructure/transaction/TransactionDTO";
 import {PublicAccount} from "../account/PublicAccount";
-import {MosaicId} from "../mosaic/MosaicId";
+import {AssetId} from "../asset/AssetId";
 import {TimeWindow} from "./TimeWindow";
 import {Transaction} from "./Transaction";
 import {TransactionInfo} from "./TransactionInfo";
@@ -36,32 +36,32 @@ import {TransactionTypes} from "./TransactionTypes";
  * 1: Increase in supply.
  * 2: Decrease in supply.
  */
-export enum MosaicSupplyType {
+export enum AssetSupplyType {
   Increase = 1,
   Decrease = 2,
 }
 
 /**
- * In case a mosaic definition has the property 'supplyMutable' set to true, the creator of the mosaic definition can change the supply, i.e. increase or decrease the supply.
+ * In case a asset definition has the property 'supplyMutable' set to true, the creator of the asset definition can change the supply, i.e. increase or decrease the supply.
  */
-export class MosaicSupplyChangeTransaction extends Transaction {
+export class AssetSupplyChangeTransaction extends Transaction {
   /**
    * The fee for the transaction. The higher the fee, the higher the priority of the transaction. Transactions with high priority get included in a block before transactions with lower priority.
    */
   public readonly fee: number;
 
   /**
-   * The mosaic id.
+   * The asset id.
    */
-  public readonly mosaicId: MosaicId;
+  public readonly assetId: AssetId;
 
   /**
    * The supply type.
    */
-  public readonly supplyType: MosaicSupplyType;
+  public readonly supplyType: AssetSupplyType;
 
   /**
-   * The supply change in units for the mosaic.
+   * The supply change in units for the asset.
    */
   public readonly delta: number;
 
@@ -69,7 +69,7 @@ export class MosaicSupplyChangeTransaction extends Transaction {
    * @internal
    * @param timeWindow
    * @param version
-   * @param mosaicId
+   * @param assetId
    * @param supplyType
    * @param delta
    * @param fee
@@ -79,22 +79,22 @@ export class MosaicSupplyChangeTransaction extends Transaction {
    */
   constructor(timeWindow: TimeWindow,
               version: number,
-              mosaicId: MosaicId,
-              supplyType: MosaicSupplyType,
+              assetId: AssetId,
+              supplyType: AssetSupplyType,
               delta: number,
               fee: number,
               signature?: string,
               sender?: PublicAccount,
               transactionInfo?: TransactionInfo) {
     super(TransactionTypes.MOSAIC_SUPPLY_CHANGE, version, timeWindow, signature, sender, transactionInfo);
-    this.mosaicId = mosaicId;
+    this.assetId = assetId;
     this.supplyType = supplyType;
     this.delta = delta;
     this.fee = fee;
   }
 
   /**
-   * Create DTO of MosaicSupplychangeTransaction
+   * Create DTO of AssetSupplychangeTransaction
    * @returns TransactionDTO
    */
   public toDTO(): TransactionDTO {
@@ -107,25 +107,25 @@ export class MosaicSupplyChangeTransaction extends Transaction {
       version,
       signature: this.signature,
       fee: this.fee,
-      mosaicId: this.mosaicId.toDTO(),
+      mosaicId: this.assetId.toDTO(),
       delta: this.delta,
       supplyType: this.supplyType,
     } as MosaicSupplyChangeTransactionDTO);
   }
 
   /**
-   * Create a MosaicSupplyChangeTransaction object
+   * Create a AssetSupplyChangeTransaction object
    * @param timeWindow
-   * @param mosaicId
+   * @param assetId
    * @param supplyType
    * @param delta
-   * @returns {MosaicSupplyChangeTransaction}
+   * @returns {AssetSupplyChangeTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                       mosaicId: MosaicId,
-                       supplyType: MosaicSupplyType,
-                       delta: number): MosaicSupplyChangeTransaction {
+                       assetId: AssetId,
+                       supplyType: AssetSupplyType,
+                       delta: number): AssetSupplyChangeTransaction {
     const fee = Math.floor(3.0 * 0.05 * 1000000);
-    return new MosaicSupplyChangeTransaction(timeWindow, 1, mosaicId, supplyType, delta, fee);
+    return new AssetSupplyChangeTransaction(timeWindow, 1, assetId, supplyType, delta, fee);
   }
 }
