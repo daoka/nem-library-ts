@@ -22,8 +22,7 @@
  * SOFTWARE.
  */
 
-import {Observable} from "rxjs";
-import {Observer} from "rxjs/Observer";
+import {Observable, Observer} from "rxjs";
 import {Block} from "../models";
 import {BlockHeight} from "./BlockHttp";
 import {Listener, WebSocketConfig} from "./Listener";

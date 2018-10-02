@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 
-import {Subject} from "rxjs/Subject";
-import {Subscriber} from "rxjs/Subscriber";
-import {Subscription} from "rxjs/Subscription";
+import {Subject, Subscriber, Subscription} from "rxjs";
 
 /**
  * Pageable class
@@ -51,7 +49,7 @@ export class Pageable<T> extends Subject<T>{
    * @returns {Subscription}
    * @private
    */
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  public _subscribe(subscriber: Subscriber<T>): Subscription {
     this.nextPage();
     return super._subscribe(subscriber);
   }

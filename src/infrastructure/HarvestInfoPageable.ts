@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {AccountHarvestInfo} from "../models/account/AccountHarvestInfo";
 import {Address} from "../models/account/Address";
 import {AccountHttp} from "./AccountHttp";

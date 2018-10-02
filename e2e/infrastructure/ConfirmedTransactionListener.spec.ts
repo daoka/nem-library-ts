@@ -32,7 +32,8 @@ import {EmptyMessage} from "../../src/models/transaction/PlainMessage";
 import {TimeWindow} from "../../src/models/transaction/TimeWindow";
 import {TransferTransaction} from "../../src/models/transaction/TransferTransaction";
 import {NEMLibrary} from "../../src/NEMLibrary";
-import {Observable} from "rxjs/Observable";
+import {delay, flatMap} from "rxjs/operators";
+import {of} from "rxjs";
 
 declare let process: any;
 
@@ -73,9 +74,11 @@ describe("ConfirmedTransactionListener", () => {
 
     const transaction = account.signTransaction(transferTransaction);
 
-    Observable.of(1)
-      .delay(3000)
-      .flatMap((ignored) => transactionHttp.announceTransaction(transaction))
+    of(1)
+      .pipe(
+        delay(3000),
+        flatMap((ignored) => transactionHttp.announceTransaction(transaction))
+      )
       .subscribe((x) => {
         console.log(x);
       });

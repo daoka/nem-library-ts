@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 import {expect} from "chai";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {AssetHttp} from "../../../src/infrastructure/AssetHttp";
 import {TransactionHttp} from "../../../src/infrastructure/TransactionHttp";
 import {Account} from "../../../src/models/account/Account";

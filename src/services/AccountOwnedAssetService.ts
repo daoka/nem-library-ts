@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {AccountHttp} from "../infrastructure/AccountHttp";
 import {AssetHttp} from "../infrastructure/AssetHttp";
 import {Address} from "../models/account/Address";
@@ -30,6 +30,7 @@ import {Asset} from "../models/asset/Asset";
 import {AssetDefinition} from "../models/asset/AssetDefinition";
 import {AssetTransferable} from "../models/asset/AssetTransferable";
 import {XEM} from "../models/asset/XEM";
+import {flatMap, map, toArray} from "rxjs/operators";
 
 /**
  * Service to get account owned mosaics
@@ -62,16 +63,20 @@ export class AccountOwnedAssetService {
    */
   public fromAddress(address: Address): Observable<AssetTransferable[]> {
     return this.accountHttp.getAssetsOwnedByAddress(address)
-      .flatMap((_) => _)
-      .flatMap((mosaic: Asset) => {
-        if (XEM.MOSAICID.equals(mosaic.assetId)) return Observable.of(new XEM(mosaic.quantity / Math.pow(10, 6)));
-        else {
-          return this.assetHttp.getAssetDefinition(mosaic.assetId)
-            .map((assetDefinition) => {
-              return AssetTransferable.createWithAssetDefinition(assetDefinition, mosaic.quantity / Math.pow(10, assetDefinition.properties.divisibility));
-            });
-        }
-      })
-      .toArray();
+      .pipe(
+        flatMap((_) => _),
+        flatMap((mosaic: Asset) => {
+          if (XEM.MOSAICID.equals(mosaic.assetId)) return of(new XEM(mosaic.quantity / Math.pow(10, 6)));
+          else {
+            return this.assetHttp.getAssetDefinition(mosaic.assetId)
+              .pipe(
+                map((assetDefinition) => {
+                  return AssetTransferable.createWithAssetDefinition(assetDefinition, mosaic.quantity / Math.pow(10, assetDefinition.properties.divisibility));
+                })
+              );
+          }
+        }),
+        toArray()
+      )
   }
 }

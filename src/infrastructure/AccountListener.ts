@@ -22,8 +22,7 @@
  * SOFTWARE.
  */
 
-import {Observable} from "rxjs/Observable";
-import {Observer} from "rxjs/Observer";
+import {Observable, Observer} from "rxjs";
 import {AccountInfoWithMetaData} from "../models/account/AccountInfo";
 import {Address} from "../models/account/Address";
 import {Listener, WebSocketConfig} from "./Listener";

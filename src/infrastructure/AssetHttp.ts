@@ -23,12 +23,13 @@
  */
 
 import * as requestPromise from "request-promise-native";
-import {Observable} from "rxjs";
-import {AssetDefinition, AssetProperties} from "../models/asset/AssetDefinition";
+import {Observable, of} from "rxjs";
+import {AssetDefinition} from "../models/asset/AssetDefinition";
 import {AssetId} from "../models/asset/AssetId";
 import {AssetTransferable} from "../models/asset/AssetTransferable";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
 import {MosaicDefinitionMetaDataPairDTO} from "./asset/MosaicDefinitionMetaDataPairDTO";
+import {filter, flatMap, last, map, retryWhen} from "rxjs/operators";
 
 export class AssetHttp extends HttpEndpoint {
 
@@ -48,14 +49,16 @@ export class AssetHttp extends HttpEndpoint {
       (id === undefined ? "" : "&id=" + id) +
       (pageSize === undefined ? "" : "&pageSize=" + pageSize);
 
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((mosaicDefinitionsData) => {
-        return mosaicDefinitionsData.data.map((mosaicDefinitionMetaDataPairDTO: MosaicDefinitionMetaDataPairDTO) => {
-          return AssetDefinition.createFromMosaicDefinitionMetaDataPairDTO(mosaicDefinitionMetaDataPairDTO);
-        });
-      });
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((mosaicDefinitionsData) => {
+          return mosaicDefinitionsData.data.map((mosaicDefinitionMetaDataPairDTO: MosaicDefinitionMetaDataPairDTO) => {
+            return AssetDefinition.createFromMosaicDefinitionMetaDataPairDTO(mosaicDefinitionMetaDataPairDTO);
+          });
+        })
+      )
   }
 
   /**
@@ -65,9 +68,11 @@ export class AssetHttp extends HttpEndpoint {
    */
   public getAssetDefinition(assetId: AssetId): Observable<AssetDefinition> {
     return this.getAllAssetsGivenNamespace(assetId.namespaceId, undefined, 100)
-      .flatMap((_) => _)
-      .filter((assetDefinition) => assetDefinition.id.equals(assetId))
-      .last();
+      .pipe(
+        flatMap((_) => _),
+        filter((assetDefinition) => assetDefinition.id.equals(assetId)),
+        last()
+      )
   }
 
   /**
@@ -78,7 +83,9 @@ export class AssetHttp extends HttpEndpoint {
    */
   public getAssetTransferableWithAbsoluteAmount(assetId: AssetId, quantity: number): Observable<AssetTransferable> {
     return this.getAssetDefinition(assetId)
-      .map((assetDefinition) => AssetTransferable.createAbsolute(assetDefinition.id, assetDefinition.properties, quantity, assetDefinition.levy));
+      .pipe(
+        map((assetDefinition) => AssetTransferable.createAbsolute(assetDefinition.id, assetDefinition.properties, quantity, assetDefinition.levy))
+      );
   }
 
   /**
@@ -89,6 +96,8 @@ export class AssetHttp extends HttpEndpoint {
    */
   public getAssetTransferableWithRelativeAmount(assetId: AssetId, quantity: number): Observable<AssetTransferable> {
     return this.getAssetDefinition(assetId)
-      .map((assetDefinition) => AssetTransferable.createRelative(assetDefinition.id, assetDefinition.properties, quantity, assetDefinition.levy));
+      .pipe(
+        map((assetDefinition) => AssetTransferable.createRelative(assetDefinition.id, assetDefinition.properties, quantity, assetDefinition.levy))
+      )
   }
 }

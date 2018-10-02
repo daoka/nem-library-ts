@@ -23,13 +23,14 @@
  */
 
 import * as requestPromise from "request-promise-native";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {NemAnnounceResult} from "../models/transaction/NemAnnounceResult";
 import {SignedTransaction} from "../models/transaction/SignedTransaction";
 import {Transaction} from "../models/transaction/Transaction";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
 import {CreateTransactionFromDTO} from "./transaction/CreateTransactionFromDTO";
 import {NemAnnounceResultDTO} from "./transaction/NemAnnounceResultDTO";
+import {flatMap, map, retryWhen} from "rxjs/operators";
 
 export class TransactionHttp extends HttpEndpoint {
 
@@ -43,19 +44,21 @@ export class TransactionHttp extends HttpEndpoint {
    * @returns Observable<NemAnnounceSuccessResult>
    */
   public announceTransaction(transaction: SignedTransaction): Observable<NemAnnounceResult> {
-    return Observable.of("announce")
-      .flatMap((url) => requestPromise.post({
-        uri: this.nextNode() + url,
-        body: transaction,
-        json: true,
-      }))
-      .retryWhen(this.replyWhenRequestError)
-      .map((nemAnnonceResultDTO: NemAnnounceResultDTO) => {
-        if (nemAnnonceResultDTO.message != "SUCCESS") {
-          throw new Error(nemAnnonceResultDTO.message);
-        }
-        return NemAnnounceResult.createFromNemAnnounceResultDTO(nemAnnonceResultDTO);
-      });
+    return of("announce")
+      .pipe(
+        flatMap((url) => requestPromise.post({
+          uri: this.nextNode() + url,
+          body: transaction,
+          json: true,
+        })),
+        retryWhen(this.replyWhenRequestError),
+        map((nemAnnonceResultDTO: NemAnnounceResultDTO) => {
+          if (nemAnnonceResultDTO.message != "SUCCESS") {
+            throw new Error(nemAnnonceResultDTO.message);
+          }
+          return NemAnnounceResult.createFromNemAnnounceResultDTO(nemAnnonceResultDTO);
+        })
+      )
   }
 
   /**
@@ -64,12 +67,14 @@ export class TransactionHttp extends HttpEndpoint {
    * @returns Observable<Transaction>
    */
   public getByHash(hash: string): Observable<Transaction> {
-    return Observable.of("get?hash=" + hash)
-      .flatMap((url) => requestPromise.get({
-        uri: this.nextNode() + url,
-        json: true,
-      }))
-      .retryWhen(this.replyWhenRequestError)
-      .map((transactionDTO) => CreateTransactionFromDTO(transactionDTO));
+    return of("get?hash=" + hash)
+      .pipe(
+        flatMap((url) => requestPromise.get({
+          uri: this.nextNode() + url,
+          json: true,
+        })),
+        retryWhen(this.replyWhenRequestError),
+        map((transactionDTO) => CreateTransactionFromDTO(transactionDTO))
+      )
   }
 }

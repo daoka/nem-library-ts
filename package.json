@@ -68,7 +68,7 @@
     "request": "^2.88.0",
     "request-promise-core": "^1.1.1",
     "request-promise-native": "^1.0.5",
-    "rxjs": "5.5.2",
+    "rxjs": "^6.3.3",
     "sockjs-client": "^1.1.5",
     "tweetnacl": "^1.0.0",
     "typedocs": "^0.6.5",

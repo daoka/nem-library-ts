@@ -23,7 +23,7 @@
  */
 
 import * as requestPromise from "request-promise-native";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {QueryParams} from "./AccountHttp";
 import {Namespace} from "../models/namespace/Namespace";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
@@ -31,6 +31,7 @@ import {NamespaceDTO} from "./namespace/NamespaceDTO";
 import {NamespaceMetaDataPairDTO} from "./namespace/NamespaceMetaDataPairDTO";
 import {Pageable} from "./Pageable";
 import {NamespacesPageable} from "./NamespacesPageable";
+import {flatMap, map, retryWhen} from "rxjs/operators";
 
 export class NamespaceHttp extends HttpEndpoint {
 
@@ -60,14 +61,16 @@ export class NamespaceHttp extends HttpEndpoint {
       pageSize ? "pageSize=" + pageSize : null
     ].filter(_ => _).join("&")
     const url = "root/page" + (query.length > 0 ? "?" + query : "")
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((namespacesData) => {
-        return namespacesData.data.map((namespace: NamespaceMetaDataPairDTO) => {
-          return Namespace.createFromNamespaceMetaDataPairDTO(namespace);
-        });
-      });
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((namespacesData) => {
+          return namespacesData.data.map((namespace: NamespaceMetaDataPairDTO) => {
+            return Namespace.createFromNamespaceMetaDataPairDTO(namespace);
+          });
+        })
+      )
   }
 
   /**
@@ -76,12 +79,14 @@ export class NamespaceHttp extends HttpEndpoint {
    * @returns Observable<Namespace>
    */
   public getNamespace(namespace: string): Observable<Namespace> {
-    return Observable.of("?namespace=" + namespace)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((namespace: NamespaceDTO) => {
-         return Namespace.createFromNamespaceDTO(namespace);
-      });
+    return of("?namespace=" + namespace)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((namespace: NamespaceDTO) => {
+          return Namespace.createFromNamespaceDTO(namespace);
+        })
+      )
   }
 
 }

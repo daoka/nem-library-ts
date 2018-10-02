@@ -22,12 +22,14 @@
  * SOFTWARE.
  */
 
-import {Observable} from "rxjs/Observable";
+import {Observable, of} from "rxjs";
 import {AssetHttp} from "../infrastructure/AssetHttp";
 import {AssetProperties} from "../models/asset/AssetDefinition";
 import {AssetLevyType} from "../models/asset/AssetLevy";
 import {AssetTransferable} from "../models/asset/AssetTransferable";
 import {XEM} from "../models/asset/XEM";
+import {map} from "rxjs/operators";
+
 /**
  * Mosaic service
  */
@@ -53,15 +55,16 @@ export class AssetService {
    * @returns {any}
    */
   public calculateLevy(assetTransferable: AssetTransferable): Observable<number> {
-    if (assetTransferable.levy == undefined) return Observable.of(0);
+    if (assetTransferable.levy == undefined) return of(0);
     if (assetTransferable.levy.assetId.equals(XEM.MOSAICID)) {
-      return Observable.of(
+      return of(
         this.levyFee(assetTransferable, new AssetProperties(XEM.DIVISIBILITY, XEM.INITIALSUPPLY, XEM.TRANSFERABLE, XEM.SUPPLYMUTABLE)),
       );
     } else {
-      return this.assetHttp.getAssetDefinition(assetTransferable.levy.assetId).map((levyMosaicDefinition) => {
-        return this.levyFee(assetTransferable, levyMosaicDefinition.properties);
-      });
+      return this.assetHttp.getAssetDefinition(assetTransferable.levy.assetId)
+        .pipe(map((levyMosaicDefinition) => {
+          return this.levyFee(assetTransferable, levyMosaicDefinition.properties);
+        }))
     }
   }
 

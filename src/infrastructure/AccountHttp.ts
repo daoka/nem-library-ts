@@ -23,7 +23,7 @@
  */
 
 import * as requestPromise from "request-promise-native";
-import {Observable} from "rxjs";
+import {from, Observable, of} from "rxjs";
 import {AccountStatus} from "../models";
 import {AccountHarvestInfo} from "../models/account/AccountHarvestInfo";
 import {AccountHistoricalInfo} from "../models/account/AccountHistoricalInfo";
@@ -53,6 +53,7 @@ import {CreateTransactionFromDTO} from "./transaction/CreateTransactionFromDTO";
 import {CreateUnconfirmedTransactionFromDTO} from "./transaction/CreateUnconfirmedTransactionFromDTO";
 import {TransactionMetaDataPairDTO} from "./transaction/TransactionMetaDataPairDTO";
 import {UnconfirmedTransactionsDTO} from "./transaction/UnconfirmedTransactionsDTO";
+import {flatMap, map, retryWhen} from "rxjs/operators";
 
 export interface QueryParams {
   /**
@@ -84,12 +85,14 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountInfoWithMetaData>
    */
   public getFromAddress(address: Address): Observable<AccountInfoWithMetaData> {
-    return Observable.of("get?address=" + address.plain())
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
-        return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
-      });
+    return of("get?address=" + address.plain())
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
+          return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
+        })
+      );
   }
 
   /**
@@ -98,12 +101,14 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountInfoWithMetaData>
    */
   public getFromPublicKey(publicKey: string): Observable<AccountInfoWithMetaData> {
-    return Observable.of("get/from-public-key?publicKey=" + publicKey)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
-        return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
-      });
+    return of("get/from-public-key?publicKey=" + publicKey)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
+          return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
+        })
+      );
   }
 
   /**
@@ -113,12 +118,14 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountInfoWithMetaData>
    */
   public getOriginalAccountDataFromDelegatedAccountAddress(address: Address): Observable<AccountInfoWithMetaData> {
-    return Observable.of("get/forwarded?address=" + address.plain())
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
-        return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
-      });
+    return of("get/forwarded?address=" + address.plain())
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
+          return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
+        })
+      );
   }
 
   /**
@@ -127,12 +134,14 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountInfoWithMetaData>
    */
   public getOriginalAccountDataFromDelegatedAccountPublicKey(publicKey: string): Observable<AccountInfoWithMetaData> {
-    return Observable.of("get/forwarded/from-public-key?publicKey=" + publicKey)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
-        return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
-      });
+    return of("get/forwarded/from-public-key?publicKey=" + publicKey)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
+          return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
+        })
+      );
   }
 
   /**
@@ -141,10 +150,12 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountStatus>
    */
   public status(address: Address): Observable<AccountStatus> {
-    return Observable.of("status?address=" + address.plain())
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((result: AccountMetaDataDTO) => AccountStatus.createFromAccountMetaDataDTO(result));
+    return of("status?address=" + address.plain())
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((result: AccountMetaDataDTO) => AccountStatus.createFromAccountMetaDataDTO(result))
+      );
   }
 
   /**
@@ -162,10 +173,12 @@ export class AccountHttp extends HttpEndpoint {
       (params.hash === undefined ? "" : "&hash=" + params.hash) +
       (params.id === undefined ? "" : "&id=" + params.id) +
       (params.pageSize === undefined ? "" : "&pageSize=" + params.pageSize);
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((transactions) => transactions.data.map((dto: TransactionMetaDataPairDTO) => CreateTransactionFromDTO(dto)));
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((transactions) => transactions.data.map((dto: TransactionMetaDataPairDTO) => CreateTransactionFromDTO(dto)))
+      );
   }
 
   /**
@@ -192,10 +205,12 @@ export class AccountHttp extends HttpEndpoint {
       (params.id === undefined ? "" : "&id=" + params.id) +
       (params.pageSize === undefined ? "" : "&pageSize=" + params.pageSize);
 
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((transactions) => transactions.data.map((dto: TransactionMetaDataPairDTO) => CreateTransactionFromDTO(dto)));
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((transactions) => transactions.data.map((dto: TransactionMetaDataPairDTO) => CreateTransactionFromDTO(dto)))
+      );
   }
 
   /**
@@ -224,10 +239,12 @@ export class AccountHttp extends HttpEndpoint {
       (params.id === undefined ? "" : "&id=" + params.id) +
       (params.pageSize === undefined ? "" : "&pageSize=" + params.pageSize);
 
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((transactions) => transactions.data.map((dto: TransactionMetaDataPairDTO) => CreateTransactionFromDTO(dto)));
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((transactions) => transactions.data.map((dto: TransactionMetaDataPairDTO) => CreateTransactionFromDTO(dto)))
+      );
   }
 
   /**
@@ -246,14 +263,16 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<Transaction[]>
    */
   public unconfirmedTransactions(address: Address): Observable<Transaction[]> {
-    return Observable.of("unconfirmedTransactions?address=" + address.plain())
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((unconfirmedTransactions: UnconfirmedTransactionsDTO) => {
-        return unconfirmedTransactions.data.map((unconfirmedTransaction) => {
-          return CreateUnconfirmedTransactionFromDTO(unconfirmedTransaction);
-        });
-      });
+    return of("unconfirmedTransactions?address=" + address.plain())
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((unconfirmedTransactions: UnconfirmedTransactionsDTO) => {
+          return unconfirmedTransactions.data.map((unconfirmedTransaction) => {
+            return CreateUnconfirmedTransactionFromDTO(unconfirmedTransaction);
+          });
+        })
+      );
   }
 
   /**
@@ -266,14 +285,16 @@ export class AccountHttp extends HttpEndpoint {
     const url = "harvests?address=" + address.plain() +
       (id === undefined ? "" : "&id=" + id);
 
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((harvestInfoData) => {
-        return harvestInfoData.data.map((harvestInfoDTO: HarvestInfoDTO) => {
-          return AccountHarvestInfo.createFromHarvestInfoDTO(harvestInfoDTO);
-        });
-      });
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((harvestInfoData) => {
+          return harvestInfoData.data.map((harvestInfoDTO: HarvestInfoDTO) => {
+            return AccountHarvestInfo.createFromHarvestInfoDTO(harvestInfoDTO);
+          });
+        })
+      );
   }
 
   /**
@@ -291,14 +312,16 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountImportanceInfo[]>
    */
   public getAccountImportances(): Observable<AccountImportanceInfo[]> {
-    return Observable.of("importances")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((importanceData) => {
-        return importanceData.data.map((accountImportanceViewModel: AccountImportanceViewModelDTO) => {
-          return AccountImportanceInfo.createFromAccountImportanceViewModelDTO(accountImportanceViewModel);
-        });
-      });
+    return of("importances")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((importanceData) => {
+          return importanceData.data.map((accountImportanceViewModel: AccountImportanceViewModelDTO) => {
+            return AccountImportanceInfo.createFromAccountImportanceViewModelDTO(accountImportanceViewModel);
+          });
+        })
+      );
   }
 
   /**
@@ -316,14 +339,16 @@ export class AccountHttp extends HttpEndpoint {
       (id === undefined ? "" : "&id=" + id) +
       (pageSize === undefined ? "" : "&pageSize=" + pageSize);
 
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((namespacesData) => {
-        return namespacesData.data.map((namespaceDTO: NamespaceDTO) => {
-          return Namespace.createFromNamespaceDTO(namespaceDTO);
-        });
-      });
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((namespacesData) => {
+          return namespacesData.data.map((namespaceDTO: NamespaceDTO) => {
+            return Namespace.createFromNamespaceDTO(namespaceDTO);
+          });
+        })
+      );
   }
 
   /**
@@ -340,14 +365,16 @@ export class AccountHttp extends HttpEndpoint {
       (parent === undefined ? "" : "&parent=" + parent) +
       (id === undefined ? "" : "&id=" + id);
 
-    return Observable.of(url)
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((mosaicsData) => {
-        return mosaicsData.data.map((mosaicDefinitionDTO: MosaicDefinitionDTO) => {
-          return AssetDefinition.createFromMosaicDefinitionDTO(mosaicDefinitionDTO);
-        });
-      });
+    return of(url)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((mosaicsData) => {
+          return mosaicsData.data.map((mosaicDefinitionDTO: MosaicDefinitionDTO) => {
+            return AssetDefinition.createFromMosaicDefinitionDTO(mosaicDefinitionDTO);
+          });
+        })
+      )
   }
 
   /**
@@ -356,14 +383,16 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<Asset[]>
    */
   public getAssetsOwnedByAddress(address: Address): Observable<Asset[]> {
-    return Observable.of("mosaic/owned?address=" + address.plain())
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((mosaicsData) => {
-        return mosaicsData.data.map((mosaicDTO: MosaicDTO) => {
-          return Asset.createFromMosaicDTO(mosaicDTO);
-        });
-      });
+    return of("mosaic/owned?address=" + address.plain())
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((mosaicsData) => {
+          return mosaicsData.data.map((mosaicDTO: MosaicDTO) => {
+            return Asset.createFromMosaicDTO(mosaicDTO);
+          });
+        })
+      );
   }
 
   /**
@@ -373,7 +402,7 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<boolean>
    */
   public unlockHarvesting(host: string, privateKey: string): Observable<boolean> {
-    return Observable.fromPromise(
+    return from(
       requestPromise.post({
         uri: "http://" + host + ":7890/account/unlock",
         body: {
@@ -381,7 +410,7 @@ export class AccountHttp extends HttpEndpoint {
         },
         json: true,
       }).promise())
-      .map((x) => true);
+      .pipe(map((x) => true))
   }
 
   /**
@@ -391,7 +420,7 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<boolean>
    */
   public lockHarvesting(host: string, privateKey: string): Observable<boolean> {
-    return Observable.fromPromise(
+    return from(
       requestPromise.post({
         uri: "http://" + host + ":7890/account/lock",
         body: {
@@ -399,7 +428,9 @@ export class AccountHttp extends HttpEndpoint {
         },
         json: true,
       }).promise())
-      .map((x) => true);
+      .pipe(
+        map((x) => true)
+      )
   }
 
   /**
@@ -409,15 +440,16 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<NodeHarvestInfo>
    */
   public unlockInfo(): Observable<NodeHarvestInfo> {
-    return Observable.of("unlocked/info")
-      .flatMap((url) => requestPromise.post({
-        uri: this.nextNode() + url,
-        json: true,
-      }))
-      .retryWhen(this.replyWhenRequestError)
-      .map((nodeHarvestInfo) => {
-        return new NodeHarvestInfo(nodeHarvestInfo["max-unlocked"], nodeHarvestInfo["num-unlocked"]);
-      });
+    return of("unlocked/info")
+      .pipe(
+        flatMap((url) => requestPromise.post({
+          uri: this.nextNode() + url,
+          json: true,
+        })),
+        retryWhen(this.replyWhenRequestError),
+        map((nodeHarvestInfo) => {
+          return new NodeHarvestInfo(nodeHarvestInfo["max-unlocked"], nodeHarvestInfo["num-unlocked"]);
+        }))
   }
 
   /**
@@ -429,14 +461,16 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountHistoricalInfo[]>
    */
   public getHistoricalAccountData(address: Address, startHeight: number, endHeight: number, increment: number): Observable<AccountHistoricalInfo[]> {
-    return Observable.of("historical/get?address=" + address.plain() + "&startHeight=" + startHeight + "&endHeight=" + endHeight + "&increment=" + increment)
-      .flatMap((url) => requestPromise.get(this.nextHistoricalNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((historicalAccountData) => {
-        return historicalAccountData.data.map((accountHistoricalDataViewModelDTO: AccountHistoricalDataViewModelDTO) => {
-          return AccountHistoricalInfo.createFromAccountHistoricalDataViewModelDTO(accountHistoricalDataViewModelDTO);
-        });
-      });
+    return of("historical/get?address=" + address.plain() + "&startHeight=" + startHeight + "&endHeight=" + endHeight + "&increment=" + increment)
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextHistoricalNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((historicalAccountData) => {
+          return historicalAccountData.data.map((accountHistoricalDataViewModelDTO: AccountHistoricalDataViewModelDTO) => {
+            return AccountHistoricalInfo.createFromAccountHistoricalDataViewModelDTO(accountHistoricalDataViewModelDTO);
+          });
+        })
+      )
   }
 
   /**
@@ -448,29 +482,31 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountHistoricalInfo[][]>
    */
   public getBatchHistoricalAccountData(addresses: Address[], startHeight: number, endHeight: number, increment: number): Observable<AccountHistoricalInfo[][]> {
-    return Observable.of("historical/get/batch")
-      .flatMap((url) => {
-        return requestPromise.post({
-        uri: this.nextHistoricalNode() + url,
-          body: {
-            accounts: addresses.map((a) => {
-              return {account: a.plain()};
-            }),
-            startHeight: (startHeight),
-            endHeight: (endHeight),
-            incrementBy: increment,
-          },
-          json: true,
-        });
-      })
-      .retryWhen(this.replyWhenRequestError)
-      .map((batchHistoricalAccountData) => {
-        return batchHistoricalAccountData.data.map((historicalAccountData) => {
-          return historicalAccountData.data.map((accountHistoricalDataViewModelDTO: AccountHistoricalDataViewModelDTO) => {
-            return AccountHistoricalInfo.createFromAccountHistoricalDataViewModelDTO(accountHistoricalDataViewModelDTO);
+    return of("historical/get/batch")
+      .pipe(
+        flatMap((url) => {
+          return requestPromise.post({
+            uri: this.nextHistoricalNode() + url,
+            body: {
+              accounts: addresses.map((a) => {
+                return {account: a.plain()};
+              }),
+              startHeight: (startHeight),
+              endHeight: (endHeight),
+              incrementBy: increment,
+            },
+            json: true,
           });
-        });
-      });
+        }),
+        retryWhen(this.replyWhenRequestError),
+        map((batchHistoricalAccountData) => {
+          return batchHistoricalAccountData.data.map((historicalAccountData) => {
+            return historicalAccountData.data.map((accountHistoricalDataViewModelDTO: AccountHistoricalDataViewModelDTO) => {
+              return AccountHistoricalInfo.createFromAccountHistoricalDataViewModelDTO(accountHistoricalDataViewModelDTO);
+            });
+          });
+        })
+      )
   }
 
   /**
@@ -479,25 +515,27 @@ export class AccountHttp extends HttpEndpoint {
    * @return Observable<AccountInfoWithMetadata[]>
    */
   public getBatchAccountData(addresses: Address[]): Observable<AccountInfoWithMetaData[]> {
-    return Observable.of("get/batch")
-      .flatMap((url) => {
-        const options = {
-          uri: this.nextNode() + url,
-          body: {
-            data: addresses.map((a) => {
-              return {account: a.plain()};
-            }),
-          },
-          json: true,
-        };
-        return requestPromise.post(options);
-      })
-      .retryWhen(this.replyWhenRequestError)
-      .map((batchAccountData) => {
-        return batchAccountData.data.map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
-          return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
-        });
-      });
+    return of("get/batch")
+      .pipe(
+        flatMap((url) => {
+          const options = {
+            uri: this.nextNode() + url,
+            body: {
+              data: addresses.map((a) => {
+                return {account: a.plain()};
+              }),
+            },
+            json: true,
+          };
+          return requestPromise.post(options);
+        }),
+        retryWhen(this.replyWhenRequestError),
+        map((batchAccountData) => {
+          return batchAccountData.data.map((accountMetaDataPairDTO: AccountMetaDataPairDTO) => {
+            return AccountInfoWithMetaData.createFromAccountMetaDataPairDTO(accountMetaDataPairDTO);
+          });
+        })
+      )
   }
 
 }

@@ -23,13 +23,14 @@
  */
 
 import {expect} from "chai";
-import {Observable} from "rxjs/Observable";
+import {from} from "rxjs";
 import {AssetHttp} from "../../../src/infrastructure/AssetHttp";
 import {AssetId} from "../../../src/models/asset/AssetId";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
+import {flatMap, toArray} from "rxjs/operators";
 
-describe("TransactionWithMosaics", () => {
+describe("TransactionWithAssets", () => {
   let mosaicHttp: AssetHttp;
 
   before(() => {
@@ -41,30 +42,33 @@ describe("TransactionWithMosaics", () => {
     NEMLibrary.reset();
   });
 
-  it("Create runtime MosaicTransferable with a server:mosaic", (done) => {
+  it("Create runtime AssetTransferable with a server:mosaic", (done) => {
     mosaicHttp.getAssetTransferableWithAbsoluteAmount(new AssetId("server", "mosaic"), 1)
-      .subscribe((mosaicTransferable) => {
-        expect(mosaicTransferable.relativeQuantity()).to.be.equal(1);
-        expect(mosaicTransferable.absoluteQuantity()).to.be.equal(1);
+      .subscribe((assetTransferable) => {
+        expect(assetTransferable.relativeQuantity()).to.be.equal(1);
+        expect(assetTransferable.absoluteQuantity()).to.be.equal(1);
         done();
       });
   });
 
-  it("Create runtime MosaicTransferable with a server:other", (done) => {
+  it("Create runtime AssetTransferable with a server:other", (done) => {
     mosaicHttp.getAssetTransferableWithRelativeAmount(new AssetId("server", "other"), 1)
-      .subscribe((mosaicTransferable) => {
-        expect(mosaicTransferable.absoluteQuantity()).to.be.equal(1000000);
-        expect(mosaicTransferable.relativeQuantity()).to.be.equal(1);
+      .subscribe((assetTransferable) => {
+        expect(assetTransferable.absoluteQuantity()).to.be.equal(1000000);
+        expect(assetTransferable.relativeQuantity()).to.be.equal(1);
         done();
       });
   });
 
-  it("Fetch different mosaics and add the xem", (done) => {
-    Observable.from([
+  it("Fetch different asset and add the xem", (done) => {
+    from([
       {namespace: "server", mosaic: "mosaic", amount: 1},
       {namespace: "server", mosaic: "other", amount: 1},
-    ]).flatMap((_) => mosaicHttp.getAssetTransferableWithAbsoluteAmount(new AssetId(_.namespace, _.mosaic), _.amount))
-      .toArray()
+    ])
+      .pipe(
+        flatMap((_) => mosaicHttp.getAssetTransferableWithAbsoluteAmount(new AssetId(_.namespace, _.mosaic), _.amount)),
+        toArray()
+      )
       .subscribe((x) => {
         expect(x).to.have.length(2);
         done();

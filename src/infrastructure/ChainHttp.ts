@@ -23,10 +23,11 @@
  */
 
 import * as requestPromise from "request-promise-native";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {Block} from "../models/blockchain/Block";
 import {BlockChainScore, BlockHeight} from "./BlockHttp";
 import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
+import {flatMap, map, retryWhen} from "rxjs/operators";
 
 export class ChainHttp extends HttpEndpoint {
 
@@ -39,12 +40,14 @@ export class ChainHttp extends HttpEndpoint {
    * @returns Observable<BlockHeight>
    */
   public getBlockchainHeight(): Observable<BlockHeight> {
-    return Observable.of("height")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((result) => {
-        return result.height;
-      });
+    return of("height")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((result) => {
+          return result.height;
+        })
+      );
   }
 
   /**
@@ -53,12 +56,14 @@ export class ChainHttp extends HttpEndpoint {
    * @returns Observable<BlockChainScore>
    */
   public getBlockchainScore(): Observable<BlockChainScore> {
-    return Observable.of("score")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((result) => {
-        return result.score;
-      });
+    return of("score")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((result) => {
+          return result.score;
+        })
+      );
   }
 
   /**
@@ -66,11 +71,13 @@ export class ChainHttp extends HttpEndpoint {
    * @returns Observable<Block>
    */
   public getBlockchainLastBlock(): Observable<Block> {
-    return Observable.of("last-block")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((result) => {
-        return Block.createFromBlockDTO(result);
-      });
+    return of("last-block")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((result) => {
+          return Block.createFromBlockDTO(result);
+        })
+      )
   }
 }

@@ -23,7 +23,7 @@
  */
 
 import * as requestPromise from "request-promise-native";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {ExtendedNodeExperience} from "../models/node/ExtendedNodeExperience";
 import {NisNodeInfo} from "../models/node/NisNodeInfo";
 import {Node} from "../models/node/Node";
@@ -34,6 +34,7 @@ import {HttpEndpoint, ServerConfig} from "./HttpEndpoint";
 import {ExtendedNodeExperiencePairDTO} from "./node/ExtendedNodeExperiencePairDTO";
 import {NodeCollectionDTO} from "./node/NodeCollectionDTO";
 import {NodeDTO} from "./node/NodeDTO";
+import {flatMap, map, retryWhen} from "rxjs/operators";
 
 export class NodeHttp extends HttpEndpoint {
 
@@ -46,12 +47,14 @@ export class NodeHttp extends HttpEndpoint {
    * @returns Observable<Node>
    */
   public getNodeInfo(): Observable<Node> {
-    return Observable.of("info")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((nodeDTO: NodeDTO) => {
-        return Node.createFromNodeDTO(nodeDTO);
-      });
+    return of("info")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((nodeDTO: NodeDTO) => {
+          return Node.createFromNodeDTO(nodeDTO);
+        })
+      )
   }
 
   /**
@@ -59,12 +62,14 @@ export class NodeHttp extends HttpEndpoint {
    * @returns Observable<NisNodeInfo>
    */
   public getNisNodeInfo(): Observable<NisNodeInfo> {
-    return Observable.of("extended-info")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((nisNodeInfoDTO: NisNodeInfoDTO) => {
-        return NisNodeInfo.createFromNisNodeInfoDTO(nisNodeInfoDTO);
-      });
+    return of("extended-info")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((nisNodeInfoDTO: NisNodeInfoDTO) => {
+          return NisNodeInfo.createFromNisNodeInfoDTO(nisNodeInfoDTO);
+        })
+      )
   }
 
   /**
@@ -72,12 +77,14 @@ export class NodeHttp extends HttpEndpoint {
    * @returns Observable<NodeCollection>
    */
   public getAllNodes(): Observable<NodeCollection> {
-    return Observable.of("peer-list/all")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((nodeCollectionDTO: NodeCollectionDTO) => {
-        return NodeCollection.createFromNodeCollectionDTO(nodeCollectionDTO);
-      });
+    return of("peer-list/all")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((nodeCollectionDTO: NodeCollectionDTO) => {
+          return NodeCollection.createFromNodeCollectionDTO(nodeCollectionDTO);
+        })
+      )
   }
 
   /**
@@ -85,14 +92,16 @@ export class NodeHttp extends HttpEndpoint {
    * @returns Observable<Node[]>
    */
   public getActiveNodes(): Observable<Node[]> {
-    return Observable.of("peer-list/reachable")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((nodeCollectionData) => {
-        return nodeCollectionData.data.map((nodeDTO: NodeDTO) => {
-          return Node.createFromNodeDTO(nodeDTO);
-        });
-      });
+    return of("peer-list/reachable")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((nodeCollectionData) => {
+          return nodeCollectionData.data.map((nodeDTO: NodeDTO) => {
+            return Node.createFromNodeDTO(nodeDTO);
+          });
+        })
+      )
   }
 
   /**
@@ -100,14 +109,16 @@ export class NodeHttp extends HttpEndpoint {
    * @returns Observable<Node[]>
    */
   public getActiveNeighbourNodes(): Observable<Node[]> {
-    return Observable.of("peer-list/active")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((nodeCollectionData) => {
-        return nodeCollectionData.data.map((nodeDTO: NodeDTO) => {
-          return Node.createFromNodeDTO(nodeDTO);
-        });
-      });
+    return of("peer-list/active")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((nodeCollectionData) => {
+          return nodeCollectionData.data.map((nodeDTO: NodeDTO) => {
+            return Node.createFromNodeDTO(nodeDTO);
+          });
+        })
+      )
   }
 
   /**
@@ -115,12 +126,14 @@ export class NodeHttp extends HttpEndpoint {
    * @returns Observable<BlockHeight>
    */
   public getMaximumChainHeightInActiveNeighborhood(): Observable<BlockHeight> {
-    return Observable.of("active-peers/max-chain-height")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((blockHeight) => {
-        return blockHeight.height;
-      });
+    return of("active-peers/max-chain-height")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((blockHeight) => {
+          return blockHeight.height;
+        })
+      )
   }
 
   /**
@@ -128,13 +141,15 @@ export class NodeHttp extends HttpEndpoint {
    * @returns Observable<ExtendedNodeExperience[]>
    */
   public getNodeExperiences(): Observable<ExtendedNodeExperience[]> {
-    return Observable.of("experiences")
-      .flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true}))
-      .retryWhen(this.replyWhenRequestError)
-      .map((extendedNodeExperiencePairData) => {
-        return extendedNodeExperiencePairData.data.map((extendedNodeExperiencePairDTO: ExtendedNodeExperiencePairDTO) => {
-          return ExtendedNodeExperience.createFromExtendedNodeExperiencePairDTO(extendedNodeExperiencePairDTO);
-        });
-      });
+    return of("experiences")
+      .pipe(
+        flatMap((url) => requestPromise.get(this.nextNode() + url, {json: true})),
+        retryWhen(this.replyWhenRequestError),
+        map((extendedNodeExperiencePairData) => {
+          return extendedNodeExperiencePairData.data.map((extendedNodeExperiencePairDTO: ExtendedNodeExperiencePairDTO) => {
+            return ExtendedNodeExperience.createFromExtendedNodeExperiencePairDTO(extendedNodeExperiencePairDTO);
+          });
+        })
+      )
   }
 }
