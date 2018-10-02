@@ -26,11 +26,10 @@ import {expect} from "chai";
 import {AccountHttp} from "../../src/infrastructure/AccountHttp";
 import {AssetHttp} from "../../src/infrastructure/AssetHttp";
 import {Address} from "../../src/models/account/Address";
-import {AssetDefinition} from "../../src/models/asset/AssetDefinition";
 import {AssetTransferable} from "../../src/models/asset/AssetTransferable";
 import {NetworkTypes} from "../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../src/NEMLibrary";
-import {AccountOwnedMosaicsService} from "../../src/services/AccountOwnedMosaicsService";
+import {AccountOwnedAssetService} from "../../src/services/AccountOwnedAssetService";
 
 describe("AccountOwnedMosaicsService", () => {
 
@@ -43,7 +42,7 @@ describe("AccountOwnedMosaicsService", () => {
   });
 
   it("should return all mosaic definitions", (done) => {
-    const accountOwnedMosaics = new AccountOwnedMosaicsService(new AccountHttp(), new AssetHttp());
+    const accountOwnedMosaics = new AccountOwnedAssetService(new AccountHttp(), new AssetHttp());
     accountOwnedMosaics.fromAddress(new Address("TANLDM5VDKSZJQX4GFLOEC4V5OVHIJZFACRHUWI5")).subscribe((mosaics) => {
       expect(mosaics).to.have.length.greaterThan(0);
       expect(mosaics[0]).to.be.instanceof(AssetTransferable);
