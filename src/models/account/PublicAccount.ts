@@ -73,4 +73,14 @@ export class PublicAccount {
     const address: string = nemSdk.default.model.address.toAddress(publicKey, network);
     return new PublicAccount(new Address(address), publicKey);
   }
+
+  /**
+   * verify message
+   * @param signedMessage 
+   * @param signature 
+   * @returns true/false
+   */
+  public verifySignedMessage(signedMessage:string, signature:string) {
+    return nemSdk.default.crypto.verifySignature(this.publicKey, signedMessage, signature);
+  }
 }

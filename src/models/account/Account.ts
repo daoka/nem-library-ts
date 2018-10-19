@@ -79,16 +79,6 @@ export class Account extends PublicAccount {
   }
 
   /**
-   * verify message
-   * @param signedMessage
-   * @param signature
-   * @returns true/false
-   */
-  public verifySignedMessage(signedMessage:string, signature:string){
-    return nemSdk.default.crypto.verifySignature(this.publicKey,signedMessage,signature);
-  }
-
-  /**
    * constructor with private key
    * @param privateKey
    * @returns {Account}
