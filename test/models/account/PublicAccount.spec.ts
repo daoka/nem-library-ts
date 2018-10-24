@@ -26,13 +26,25 @@ import {expect} from "chai";
 import {PublicAccount} from "../../../src/models/account/PublicAccount";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
 import {NEMLibrary} from "../../../src/NEMLibrary";
+import { Address, Account } from "../../../src/models";
+import { TestVariables } from "../../config/TestVariables.spec";
 
 describe("PublicAccount", () => {
   const recipientAccount: string = "TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA";
   const publicKey: string = "a4f9d42cf8e1f7c6c3216ede81896c4fa9f49071ee4aee2a4843e2711899b23a";
+  const signedMessageRecipientAccount = new Address(TestVariables.TEST_ADDRESS);
+  const signedMessagePrivateKey = TestVariables.TEST_PRIVATE_KEY;
+  const signedMessagePublicKey = TestVariables.TEST_PUBLIC_KEY;
+  let message;
+  let signatureMessage;
+  let signedMessagePublicAccount;
 
   before(() => {
     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+    const account = Account.createWithPrivateKey(signedMessagePrivateKey)
+    message = "Nem is Awesome";
+    signatureMessage = account.signMessage(message).toString();
+    signedMessagePublicAccount = new PublicAccount(signedMessageRecipientAccount, signedMessagePublicKey);
   });
 
   after(() => {
@@ -52,5 +64,14 @@ describe("PublicAccount", () => {
     expect(receiverAccount.address.plain()).to.be.equal("NCJZJHAV63RE2JSKN27DFIHZRXIHAI736U4HGCZW");
     expect(receiverAccount.publicKey).to.be.equals(publicKey);
     NEMLibrary.reset();
+  });
+
+  it("should return true when signedMessage is signed with correct privateKey",()=> {
+    expect(signedMessagePublicAccount.verifySignedMessage(message,signatureMessage)).to.be.true;
+  });
+
+  it("should return false when signedMessage is signed with other privateKey",()=> {
+    const failureSignatureMessage = "e2be0d43c6b09f37ddce4807cad2c2fbf0fc6a3483f5de7bbd8c026d59c5e4e569380e459c6d6562630abbc12984d5fb9598d807561967e9094cd3a9bd2false";
+    expect(signedMessagePublicAccount.verifySignedMessage(message,failureSignatureMessage)).to.be.false;
   });
 });
