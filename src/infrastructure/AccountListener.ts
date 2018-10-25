@@ -23,6 +23,7 @@
  */
 
 import {Observable, Observer} from "rxjs";
+import {retry} from "rxjs/operators";
 import {AccountInfoWithMetaData} from "../models/account/AccountInfo";
 import {Address} from "../models/account/Address";
 import {Listener, WebSocketConfig} from "./Listener";
@@ -65,6 +66,8 @@ export class AccountListener extends Listener {
       return () => {
         client.unsubscribe();
       };
-    }).retry(10);
+    }).pipe(
+      retry(10)
+    );
   }
 }
