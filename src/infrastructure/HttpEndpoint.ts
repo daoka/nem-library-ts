@@ -25,6 +25,7 @@
 import {RequestError} from "request-promise-native/errors";
 import {NetworkTypes} from "../models/node/NetworkTypes";
 import {NEMLibrary} from "../NEMLibrary";
+import {tap} from "rxjs/operators";
 
 export type Protocol = "http" | "https";
 
@@ -126,10 +127,12 @@ export abstract class HttpEndpoint {
   }
 
   protected replyWhenRequestError = (errors) => {
-    return errors.do((x) => {
-      if (!(x instanceof RequestError)) {
-        throw (x);
-      }
-    });
+    return errors.pipe(
+      tap((x) => {
+        if (!(x instanceof RequestError)) {
+          throw (x);
+        }
+      })
+    );
   }
 }

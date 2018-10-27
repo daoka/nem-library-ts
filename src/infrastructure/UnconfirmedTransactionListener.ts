@@ -24,6 +24,7 @@
 
 import * as _ from "lodash";
 import {Observable, Observer} from "rxjs";
+import {retry} from "rxjs/operators";
 import {Address} from "../models/account/Address";
 import {Transaction} from "../models/transaction/Transaction";
 import {Listener, WebSocketConfig} from "./Listener";
@@ -72,6 +73,8 @@ export class UnconfirmedTransactionListener extends Listener {
       return () => {
         client.unsubscribe();
       };
-    }).retry(10);
+    }).pipe(
+      retry(10)
+    );
   }
 }

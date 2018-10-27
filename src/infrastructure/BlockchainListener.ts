@@ -23,6 +23,7 @@
  */
 
 import {Observable, Observer} from "rxjs";
+import {retry} from "rxjs/operators";
 import {Block} from "../models";
 import {BlockHeight} from "./BlockHttp";
 import {Listener, WebSocketConfig} from "./Listener";
@@ -62,7 +63,9 @@ export class BlockchainListener extends Listener {
       return () => {
         client.unsubscribe();
       };
-    }).retry(10);
+    }).pipe(
+      retry(10)
+    );
   }
 
   /**
@@ -87,6 +90,8 @@ export class BlockchainListener extends Listener {
       return () => {
         client.unsubscribe();
       };
-    }).retry(10);
+    }).pipe(
+      retry(10)
+    );
   }
 }
