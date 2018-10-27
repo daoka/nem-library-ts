@@ -38,7 +38,7 @@ import {TransactionTypes} from "./TransactionTypes";
  * Before a asset can be created or transferred, a corresponding definition of the asset has to be created and published to the network.
  * This is done via a asset definition creation transaction.
  */
-export class MosaicDefinitionCreationTransaction extends Transaction {
+export class AssetDefinitionCreationTransaction extends Transaction {
   /**
    * The fee for the transaction. The higher the fee, the higher the priority of the transaction. Transactions with high priority get included in a block before transactions with lower priority.
    */
@@ -75,7 +75,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
               version: number,
               creationFee: number,
               creationFeeSink: Address,
-              mosaicDefinition: AssetDefinition,
+              assetDefinition: AssetDefinition,
               fee: number,
               signature?: string,
               sender?: PublicAccount,
@@ -83,13 +83,13 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
     super(TransactionTypes.MOSAIC_DEFINITION_CREATION, version, timeWindow, signature, sender, transactionInfo);
     this.creationFeeSink = creationFeeSink;
     this.creationFee = creationFee;
-    this.mosaicDefinition = mosaicDefinition;
+    this.mosaicDefinition = assetDefinition;
     this.fee = fee;
   }
 
   /**
    * Create DTO of AssetDefinitionCreationTransaction
-   * @returns {AssetDefinitionCreationTransactionDTO}
+   * @returns {MosaicDefinitionCreationTransactionDTO}
    */
   public toDTO(): TransactionDTO {
     const version = this.networkVersion ? this.networkVersion : this.version;
@@ -114,7 +114,7 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
    * @returns {AssetDefinitionCreationTransaction}
    */
   public static create(timeWindow: TimeWindow,
-                       mosaicDefinition: AssetDefinition): MosaicDefinitionCreationTransaction {
+                       assetDefinition: AssetDefinition): AssetDefinitionCreationTransaction {
     const fee = Math.floor(3 * 0.05 * 1000000);
     let creationFeeSink;
     if (NEMLibrary.getNetworkType() === NetworkTypes.TEST_NET) {
@@ -123,8 +123,8 @@ export class MosaicDefinitionCreationTransaction extends Transaction {
       creationFeeSink = new Address("NBMOSA-ICOD4F-54EE5C-DMR23C-CBGOAM-2XSIUX-6TRS");
     }
     const creationFee = Math.floor(10 * 1000000);
-    return new MosaicDefinitionCreationTransaction(
-      timeWindow, 1, creationFee, creationFeeSink, mosaicDefinition, fee,
+    return new AssetDefinitionCreationTransaction(
+      timeWindow, 1, creationFee, creationFeeSink, assetDefinition, fee,
     );
   }
 }

@@ -28,7 +28,7 @@ import {PublicAccount} from "../../../src/models/account/PublicAccount";
 import {AssetDefinition, AssetProperties} from "../../../src/models/asset/AssetDefinition";
 import {AssetId} from "../../../src/models/asset/AssetId";
 import {NetworkTypes} from "../../../src/models/node/NetworkTypes";
-import {MosaicDefinitionCreationTransaction} from "../../../src/models/transaction/MosaicDefinitionCreationTransaction";
+import {AssetDefinitionCreationTransaction} from "../../../src/models/transaction/AssetDefinitionCreationTransaction";
 import {TimeWindow} from "../../../src/models/transaction/TimeWindow";
 import {NEMLibrary} from "../../../src/NEMLibrary";
 
@@ -46,7 +46,7 @@ describe("MosaicDefinitionCreationTransaction", () => {
   it("should be created", () => {
     const publicAccount = PublicAccount.createWithPublicKey(PUBLIC_KEY);
     const mosaicDefinition = new AssetDefinition(publicAccount, new AssetId("nem-library", "nem-library"), "my definition", new AssetProperties());
-    const transaction = new MosaicDefinitionCreationTransaction(
+    const transaction = new AssetDefinitionCreationTransaction(
       TimeWindow.createWithDeadline(),
       1744830466,
       5,
@@ -64,7 +64,7 @@ describe("MosaicDefinitionCreationTransaction", () => {
   it("should be created from DTO", () => {
     const publicAccount = PublicAccount.createWithPublicKey(PUBLIC_KEY);
     const mosaicDefinition = new AssetDefinition(publicAccount, new AssetId("nem-library", "nem-library"), "my definition", new AssetProperties());
-    const transaction = new MosaicDefinitionCreationTransaction(
+    const transaction = new AssetDefinitionCreationTransaction(
       TimeWindow.createWithDeadline(),
       1744830466,
       5,
@@ -82,7 +82,7 @@ describe("MosaicDefinitionCreationTransaction", () => {
   it("should be created by named constructor", () => {
     const publicAccount = PublicAccount.createWithPublicKey(PUBLIC_KEY);
     const mosaicDefinition = new AssetDefinition(publicAccount, new AssetId("nem-library", "nem-library"), "my definition", new AssetProperties());
-    const transaction = MosaicDefinitionCreationTransaction.create(
+    const transaction = AssetDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
       mosaicDefinition);
     deepEqual(transaction.mosaicDefinition, mosaicDefinition);
@@ -92,7 +92,7 @@ describe("MosaicDefinitionCreationTransaction", () => {
   it("should have the fee calculated for TEST_NET", () => {
     const publicAccount = PublicAccount.createWithPublicKey(PUBLIC_KEY);
     const mosaicDefinition = new AssetDefinition(publicAccount, new AssetId("nem-library", "nem-library"), "my definition", new AssetProperties());
-    const transaction = MosaicDefinitionCreationTransaction.create(
+    const transaction = AssetDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
       mosaicDefinition);
     expect(transaction.fee).to.be.equal(Math.floor(3 * 0.05 * 1000000));
@@ -103,7 +103,7 @@ describe("MosaicDefinitionCreationTransaction", () => {
     NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
     const publicAccount = PublicAccount.createWithPublicKey(PUBLIC_KEY);
     const mosaicDefinition = new AssetDefinition(publicAccount, new AssetId("nem-library", "nem-library"), "my definition", new AssetProperties());
-    const transaction = MosaicDefinitionCreationTransaction.create(
+    const transaction = AssetDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
       mosaicDefinition);
     expect(transaction.creationFeeSink.pretty()).to.be.equal("TBMOSA-ICOD4F-54EE5C-DMR23C-CBGOAM-2XSJBR-5OLC");
@@ -115,7 +115,7 @@ describe("MosaicDefinitionCreationTransaction", () => {
     NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
     const publicAccount = PublicAccount.createWithPublicKey(PUBLIC_KEY);
     const mosaicDefinition = new AssetDefinition(publicAccount, new AssetId("nem-library", "nem-library"), "my definition", new AssetProperties());
-    const transaction = MosaicDefinitionCreationTransaction.create(
+    const transaction = AssetDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
       mosaicDefinition);
     expect(transaction.creationFeeSink.pretty()).to.be.equal("NBMOSA-ICOD4F-54EE5C-DMR23C-CBGOAM-2XSIUX-6TRS");

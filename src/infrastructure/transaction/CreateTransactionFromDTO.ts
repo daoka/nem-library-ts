@@ -31,7 +31,7 @@ import {AssetLevy} from "../../models/asset/AssetLevy";
 import {XEM} from "../../models/asset/XEM";
 import {EncryptedMessage} from "../../models/transaction/EncryptedMessage";
 import {ImportanceTransferTransaction} from "../../models/transaction/ImportanceTransferTransaction";
-import {MosaicDefinitionCreationTransaction} from "../../models/transaction/MosaicDefinitionCreationTransaction";
+import {AssetDefinitionCreationTransaction} from "../../models/transaction/AssetDefinitionCreationTransaction";
 import {AssetSupplyChangeTransaction} from "../../models/transaction/AssetSupplyChangeTransaction";
 import {
   CosignatoryModification,
@@ -187,7 +187,7 @@ export const CreateTransactionFromDTO = (dto: TransactionMetaDataPairDTO): Trans
       AssetProperties.createFromMosaicProperties(transaction.mosaicDefinition.properties),
       levy,
     );
-    return new MosaicDefinitionCreationTransaction(
+    return new AssetDefinitionCreationTransaction(
       TimeWindow.createFromDTOInfo(transaction.timeStamp, transaction.deadline),
       transaction.version,
       transaction.creationFee,
@@ -304,7 +304,7 @@ export const CreateSimpleTransactionFromDTO = (dto: TransactionDTO): Transaction
       AssetProperties.createFromMosaicProperties(transaction.mosaicDefinition.properties),
       levy,
     );
-    return new MosaicDefinitionCreationTransaction(
+    return new AssetDefinitionCreationTransaction(
       TimeWindow.createFromDTOInfo(transaction.timeStamp, transaction.deadline),
       transaction.version,
       transaction.creationFee,

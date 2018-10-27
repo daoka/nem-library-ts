@@ -41,7 +41,7 @@ import {
   ImportanceMode,
   ImportanceTransferTransaction,
 } from "../../src/models/transaction/ImportanceTransferTransaction";
-import {MosaicDefinitionCreationTransaction} from "../../src/models/transaction/MosaicDefinitionCreationTransaction";
+import {AssetDefinitionCreationTransaction} from "../../src/models/transaction/AssetDefinitionCreationTransaction";
 import {
   AssetSupplyChangeTransaction,
   AssetSupplyType,
@@ -185,7 +185,7 @@ describe("TransactionHttp", () => {
   it("creates a MOSAIC_DEFINITION_CREATION without levy", (done) => {
     const transactionHttp = new TransactionHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const account = Account.createWithPrivateKey(privateKey);
-    const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
+    const mosaicDefinitionTransaction = AssetDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
       new AssetDefinition(
         PublicAccount.createWithPublicKey(account.publicKey),
@@ -207,7 +207,7 @@ describe("TransactionHttp", () => {
   it("creates a MOSAIC_DEFINITION_CREATION with levy", (done) => {
     const transactionHttp = new TransactionHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const account = Account.createWithPrivateKey(privateKey);
-    const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
+    const mosaicDefinitionTransaction = AssetDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
       new AssetDefinition(
         PublicAccount.createWithPublicKey(account.publicKey),
@@ -378,7 +378,7 @@ describe("TransactionHttp", () => {
     const transactionHttp = new TransactionHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const account = Account.createWithPrivateKey(privateKey);
 
-    const mosaicDefinitionTransaction = MosaicDefinitionCreationTransaction.create(
+    const mosaicDefinitionTransaction = AssetDefinitionCreationTransaction.create(
       TimeWindow.createWithDeadline(),
       new AssetDefinition(
         multisigAccount,

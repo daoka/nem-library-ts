@@ -32,7 +32,7 @@ import {XEM} from "../../models/asset/XEM";
 import {EncryptedMessage} from "../../models/transaction/EncryptedMessage";
 import {ImportanceTransferTransaction} from "../../models/transaction/ImportanceTransferTransaction";
 import {Message} from "../../models/transaction/Message";
-import {MosaicDefinitionCreationTransaction} from "../../models/transaction/MosaicDefinitionCreationTransaction";
+import {AssetDefinitionCreationTransaction} from "../../models/transaction/AssetDefinitionCreationTransaction";
 import {AssetSupplyChangeTransaction} from "../../models/transaction/AssetSupplyChangeTransaction";
 import {
   CosignatoryModification,
@@ -154,7 +154,7 @@ export const CreateUnconfirmedTransactionFromDTO = (dto: UnconfirmedTransactionM
       AssetProperties.createFromMosaicProperties(transaction.mosaicDefinition.properties),
       levy,
     );
-    return new MosaicDefinitionCreationTransaction(
+    return new AssetDefinitionCreationTransaction(
       TimeWindow.createFromDTOInfo(transaction.timeStamp, transaction.deadline),
       transaction.version,
       transaction.creationFee,

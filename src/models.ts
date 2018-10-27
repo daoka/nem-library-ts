@@ -49,7 +49,7 @@ export * from "./models/transaction/Message";
 export * from "./models/transaction/PlainMessage";
 export * from "./models/transaction/EncryptedMessage";
 export * from "./models/transaction/HexMessage";
-export * from "./models/transaction/MosaicDefinitionCreationTransaction";
+export * from "./models/transaction/AssetDefinitionCreationTransaction";
 export * from "./models/transaction/AssetSupplyChangeTransaction";
 export * from "./models/transaction/MultisigAggregateModificationTransaction";
 export * from "./models/transaction/MultisigSignatureTransaction";
