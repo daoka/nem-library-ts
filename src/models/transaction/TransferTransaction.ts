@@ -66,7 +66,7 @@ export class TransferTransaction extends Transaction {
   /**
    * The array of Asset objects.
    */
-  private readonly _mosaics?: Asset[];
+  private readonly _assets?: Asset[];
 
   /**
    * @internal
@@ -88,7 +88,7 @@ export class TransferTransaction extends Transaction {
               fee: number,
               message: PlainMessage | EncryptedMessage,
               signature?: string,
-              mosaic?: Asset[],
+              asset?: Asset[],
               sender?: PublicAccount,
               transactionInfo?: TransactionInfo) {
     super(TransactionTypes.TRANSFER, version, timeWindow, signature, sender, transactionInfo);
@@ -96,7 +96,7 @@ export class TransferTransaction extends Transaction {
     this.recipient = recipient;
     this._xem = amount;
     this.message = message;
-    this._mosaics = mosaic;
+    this._assets = asset;
   }
 
   /**
@@ -104,7 +104,7 @@ export class TransferTransaction extends Transaction {
    * @returns {XEM}
    */
   public xem(): XEM {
-    if (this.containsMosaics()) { throw new Error("contain assets"); }
+    if (this.containAssets()) { throw new Error("contain assets"); }
     return this._xem;
   }
 
@@ -112,9 +112,9 @@ export class TransferTransaction extends Transaction {
    * in case that the transfer transaction does not contain assets, it throws an error
    * @returns {Asset[]}
    */
-  public mosaics(): Asset[] {
-    if (this.containsMosaics()) {
-      return this._mosaics!.map((mosaic) =>
+  public assets(): Asset[] {
+    if (this.containAssets()) {
+      return this._assets!.map((mosaic) =>
         new Asset(mosaic.assetId, (mosaic.quantity * (this._xem.relativeQuantity()))));
     }
     throw new Error("Does not contain assets");
@@ -124,17 +124,17 @@ export class TransferTransaction extends Transaction {
    *
    * @returns {boolean}
    */
-  public containsMosaics() {
-    return this._mosaics !== undefined && this._mosaics.length > 0;
+  public containAssets() {
+    return this._assets !== undefined && this._assets.length > 0;
   }
 
   /**
    * all the Asset Identifiers of the attached assets
    * @returns {AssetId[]}
    */
-  public mosaicIds(): AssetId[] {
-    if (!this.containsMosaics()) { throw new Error("does not contain assets"); }
-    return this._mosaics!.map((_) => _.assetId);
+  public assetsIds(): AssetId[] {
+    if (!this.containAssets()) { throw new Error("does not contain assets"); }
+    return this._assets!.map((_) => _.assetId);
   }
 
   /**
@@ -150,7 +150,7 @@ export class TransferTransaction extends Transaction {
       signature: this.signature,
       type: this.type,
       version,
-      mosaics: this._mosaics === undefined ? undefined : this._mosaics.map((mosaic) => new Asset(mosaic.assetId, mosaic.quantity).toDTO()),
+      mosaics: this._assets === undefined ? undefined : this._assets.map((mosaic) => new Asset(mosaic.assetId, mosaic.quantity).toDTO()),
       fee: this.fee,
       recipient: this.recipient.plain(),
       amount: this._xem.absoluteQuantity(),
@@ -197,14 +197,14 @@ export class TransferTransaction extends Transaction {
    * @returns {TransferTransaction}
    */
   // tslint:disable-next-line:member-ordering
-  public static createWithMosaics(timeWindow: TimeWindow,
-                                  recipient: Address,
-                                  mosaics: AssetTransferable[],
-                                  message: PlainMessage | EncryptedMessage): TransferTransaction {
+  public static createWithAssets(timeWindow: TimeWindow,
+                                 recipient: Address,
+                                 assets: AssetTransferable[],
+                                 message: PlainMessage | EncryptedMessage): TransferTransaction {
     if (message instanceof EncryptedMessage && recipient.plain() !== message.recipientPublicAccount!.address.plain()) { throw new Error("Recipient address and recipientPublicAccount don't match"); }
     const multiplier = new XEM(1);
     let fee = 0;
-    mosaics.map((mosaic) => {
+    assets.map((mosaic) => {
       if (mosaic.properties.divisibility === 0 && mosaic.properties.initialSupply <= 10000) {
         fee += 0.05 * 1000000;
       } else {
@@ -231,7 +231,7 @@ export class TransferTransaction extends Transaction {
       fee,
       message,
       undefined,
-      mosaics.map((_) => new Asset(_.assetId, _.absoluteQuantity())));
+      assets.map((_) => new Asset(_.assetId, _.absoluteQuantity())));
   }
 
 }

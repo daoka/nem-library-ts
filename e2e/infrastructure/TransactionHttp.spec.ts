@@ -122,7 +122,7 @@ describe("TransactionHttp", () => {
     const transactionHttp = new TransactionHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const account = Account.createWithPrivateKey(privateKey);
 
-    const transferTransaction = TransferTransaction.createWithMosaics(
+    const transferTransaction = TransferTransaction.createWithAssets(
       TimeWindow.createWithDeadline(),
       new Address(recipientAccount),
       [new XEM(10)],
@@ -140,7 +140,7 @@ describe("TransactionHttp", () => {
     const transactionHttp = new TransactionHttp([{domain: TestVariables.DEFAULT_TEST_DOMAIN}]);
     const account = Account.createWithPrivateKey(privateKey);
 
-    const transferTransaction = TransferTransaction.createWithMosaics(
+    const transferTransaction = TransferTransaction.createWithAssets(
       TimeWindow.createWithDeadline(),
       new Address("TCJZJHAV63RE2JSKN27DFIHZRXIHAI736WXEOJGA"),
       [new XEM(1)],
@@ -314,7 +314,7 @@ describe("TransactionHttp", () => {
     const account = Account.createWithPrivateKey(privateKey);
     const amount = 2000000;
 
-    const transferTransaction = TransferTransaction.createWithMosaics(
+    const transferTransaction = TransferTransaction.createWithAssets(
       TimeWindow.createWithDeadline(),
       new Address(recipientAccount),
       [new AssetTransferable(new AssetId("multisigns", "mosaic"), new AssetProperties(), 1),
