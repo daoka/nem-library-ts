@@ -18,7 +18,7 @@
 
 ## Documentation
  
-[nemlibrary.com](http://nemlibrary.com)
+[NEM Library Documentation](https://nemproject.github.io/nem-library-docs/)
 
 ## Usage
 
