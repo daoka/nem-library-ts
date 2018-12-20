@@ -89,6 +89,8 @@ export abstract class HttpEndpoint {
       this.historicalNodes = [
         {protocol: "http", domain: "88.99.192.82", port: 7890},
       ];
+    } else if (NEMLibrary.getNetworkType() === NetworkTypes.MIJIN_NET) {
+      this.historicalNodes = this.nodes;
     } else {
       throw new Error("Nodes uninitialized");
     }
