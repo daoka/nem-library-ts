@@ -1,6 +1,6 @@
 {
   "name": "nem-library",
-  "version": "2.0.0-RC3",
+  "version": "2.0.0-RC4",
   "description": "Reactive Library for NEM",
   "scripts": {
     "pretest": "npm run build",
@@ -22,17 +22,12 @@
     "RX"
   ],
   "license": "MIT",
-  "contributors": [
-    "Aleix <aleix602@gmail.com>",
-    "Guillem <guillemchain@gmail.com>"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/aleixmorgadas/nem-library-ts"
+    "url": "https://github.com/NemProject/nem-library-ts"
   },
   "bugs": {
-    "url": "https://github.com/aleixmorgadas/nem-library-ts/issues",
-    "email": "aleix602@gmail.com"
+    "url": "https://github.com/NemProject/nem-library-ts/issues"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
