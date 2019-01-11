@@ -3,8 +3,6 @@
 ![NEM Library Logo](nemLibraryLogo.jpg)
 
 [![npm version](https://badge.fury.io/js/nem-library.svg)](https://badge.fury.io/js/nem-library)
-[![Build Status](https://travis-ci.org/aleixmorgadas/nem-library-ts.svg?branch=master)](https://travis-ci.org/aleixmorgadas/nem-library-ts)
-[![Coverage Status](https://coveralls.io/repos/github/aleixmorgadas/nem-library-ts/badge.svg?branch=master)](https://coveralls.io/github/aleixmorgadas/nem-library-ts?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Gitter chat](https://badges.gitter.im/nem-library-ts/Lobby.svg)](https://gitter.im/nem-library-ts/)
 
