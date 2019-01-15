@@ -1,10 +1,17 @@
 language: node_js
 node_js:
+- '8'
 - '9'
+- '10'
 cache:
   directories:
   - node_modules
 script: npm run test:cov
-env:
-  global:
-    secure: RnRTBHkw0uxzPEnZb4BaBiYi7nGUi45cEVcxNjmzOm/gPkhSWMsSbgKIPndl9Pdan521k0LVHlux5U+Mdax1o73nMr+Z4kvIha2Lv92BkIz0bS4VxkDUVyyUx3sbU0q/3W6VcWzB3niqWz5OHx66wmU010ON/alJxbnJX07udcKMJLhVH3x5XCUMogFnq2A6mWIBulaurpVUUqA4vf9OwZ6yH25UZpSdJX8PocorqT872Vm5qrXnfUE9HGq2Po53KLtRoTN4XlcZ8a5wXymjgnCPLGMNtiemSMaQ0QRg1AZwHHkpZs1+gPsDPb+SwYfQNc/fJb+nEoyhT+CIfBO7PCN9Ikblla2CmZTYwIq7n+FKB7G3rFbFT0hCuWSKqWZ7VD2LkzGOrj8uFrJHjuAlTXW7uPGgAZHmh2vf5gbMopdeIJPBgm5tw9ArdRox7j9YbMd+tq2PRYz6GkbZb0dJW1xrfv9eT0eGDscFddAuLbN3VS7IHCqnmDTXeSTU6DAHofw2R3ZYOmjATJExNYLlPvxmN0purAA2HIo2GaxjhkRdXh87Xjj9kPUE5PscKlcfkVmG5g0KjytDiAhYQtyGw/ztFW3FD50mjz1KYx8GuRWRR3TCLwKHM64/qDTB1IxZSIeHdwzv05AXt+NxHx9uCwEIjMXc3362Ee55HG0EMWg=
+deploy:
+  provider: npm
+  email: $NPM_EMAIL
+  api_key:
+    secure: $NPM_KEY
+  on:
+    tags: true
+    repo: NemProject/nem-library-ts
