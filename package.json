@@ -1,6 +1,6 @@
 {
   "name": "nem-library",
-  "version": "2.0.0-RC4",
+  "version": "2.0.0-RC5",
   "description": "Reactive Library for NEM",
   "scripts": {
     "pretest": "npm run build",
