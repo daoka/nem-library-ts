@@ -121,6 +121,8 @@ export class AssetDefinitionCreationTransaction extends Transaction {
       creationFeeSink = new Address("TBMOSA-ICOD4F-54EE5C-DMR23C-CBGOAM-2XSJBR-5OLC");
     } else if (NEMLibrary.getNetworkType() === NetworkTypes.MAIN_NET) {
       creationFeeSink = new Address("NBMOSA-ICOD4F-54EE5C-DMR23C-CBGOAM-2XSIUX-6TRS");
+    } else if (NEMLibrary.getNetworkType() === NetworkTypes.MIJIN_NET) {
+      creationFeeSink = new Address("MBMOSA-ICOD4F-54EE5C-DMR23C-CBGOAM-2XSKYH-TOJD");
     }
     const creationFee = Math.floor(10 * 1000000);
     return new AssetDefinitionCreationTransaction(

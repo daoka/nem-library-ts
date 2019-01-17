@@ -131,6 +131,8 @@ export class ProvisionNamespaceTransaction extends Transaction {
       rentalFeeSink = new Address("TAMESP-ACEWH4-MKFMBC-VFERDP-OOP4FK-7MTDJE-YP35");
     } else if (NEMLibrary.getNetworkType() === NetworkTypes.MAIN_NET) {
       rentalFeeSink = new Address("NAMESP-ACEWH4-MKFMBC-VFERDP-OOP4FK-7MTBXD-PZZA");
+    } else if (NEMLibrary.getNetworkType() === NetworkTypes.MIJIN_NET) {
+      rentalFeeSink = new Address("MAMESP-ACEWH4-MKFMBC-VFERDP-OOP4FK-7MTCZT-G5E7");
     }
     const fee = Math.floor(3 * 0.05 * 1000000);
     return new ProvisionNamespaceTransaction(timeWindow, 1, rentalFeeSink, parent === undefined ? RootNamespaceFee : subnamespaceFee, newPart, fee, undefined, parent);
